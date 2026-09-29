@@ -36,8 +36,10 @@ On the literature (Part D): the stall law, the load levers and the "gate"
 reading are all already present in Fisher & Kolomeisky (2001), Liepelt &
 Lipowsky (2007) and Carter & Cross (2005) themselves. What is new here is the
 sizing question and its (mixed) answer. Part E: the published temperature data
-cannot separate the three readings of the odds; §6 names the measurement that
-would.
+disfavour purely enthalpic odds (Taniguchi's ΔΔH‡ ≈ 0; 3.4σ). They lean weakly
+toward odds and lever both being entropic, but cannot exclude "entropic odds,
+fixed lever". Counting ~200 backsteps at 5 pN at 15 and 35 °C would separate
+these two (§6).
 
 Figures: [fig1](figures/fig1_v2_vs_carter_cross.png) (v2 vs Carter & Cross, clock profile),
 [fig2](figures/fig2_gate_vs_grip_kif5a.png) (KIF5A gate vs grip, uncertainty),
@@ -496,7 +498,69 @@ Not reproduced, or not reproducible from what is in the folder:
 
 ---
 
-## 6. Part E: temperature (see end of file)
+## 6. Part E: are the direction odds entropic? (`analysis/part_e_temperature.py`, fig4)
+
+Stall = kT ln O₀/ℓ. Three readings, with their predictions from 15 to 35 °C
+(288 → 308 K):
+
+| reading | ln O₀ vs T | lever ℓ vs T | stall 35 °C / 15 °C | Δln(fwd:back) at 5 pN, 35 − 15 °C (Drosophila values) |
+|---|---|---|---|---|
+| R1: entropic odds, fixed lever | flat | flat | ×1.069 (6.9 → 7.4 pN) | +0.32 nats |
+| R2: odds and lever both entropic (ℓ ∝ T) | flat | ∝ T | flat | 0 |
+| R3: enthalpic odds, fixed lever | ∝ 1/T | flat | flat | −0.13 nats |
+
+**Data in the folder.**
+* **Taniguchi et al. 2005** (bovine brain kinesin, 1 mM ATP). From Table 1
+  (p.345, rendered):
+
+  | T (K) | k_f0 (s⁻¹) | k_b0 (s⁻¹) | ln O₀ | ℓ = d_f − d_b (nm) | 1:1 load (pN) |
+  |---|---|---|---|---|---|
+  | 280 | 100 ± 11 | 0.28 ± 0.04 | 5.88 ± 0.18 | 2.4 ± 0.14 | 9.5 ± 0.6 |
+  | 287 | 209 ± 17 | 0.61 ± 0.06 | 5.84 ± 0.13 | 2.2 ± 0.14 | 10.5 ± 0.7 |
+  | 298 | 544 ± 54 | 1.6 ± 0.2 | 5.83 ± 0.16 | 2.6 ± 0.14 | 9.2 ± 0.6 |
+  | 308 | 1353 ± 78 | 3.8 ± 0.3 | 5.87 ± 0.10 | 2.8 ± 0.14 | 8.9 ± 0.5 |
+
+  Table 2 (p.345) gives ΔH‡ = 18.3 ± 1.1 k_BT₀ (forward) and 18.2 ± 1.4 k_BT₀
+  (back), so ΔΔH‡ = 0.1 ± 1.8 k_BT₀, and ΔΔS‡ = 6.0 k_B.
+  They also write: "At low temperature (7 °C), the speed decreased while the
+  maximum force was unchanged" (p.343). No number is given.
+* **Hong et al. 2016** (Fig. 2 caption, p.1289): KIF5A "5.3 ± 0.2 pN at
+  295 K vs. 5.2 ± 0.2 pN at 280.5 K". This is the force at detachment in a fixed
+  trap, which for KIF5A is grip-limited (Part C), so it is not a clean stall.
+* **Kawaguchi & Ishiwata 2000** is **not in the folder**. Its flat
+  7.34 ± 0.33 pN (15–35 °C) is used only as quoted in the brief. The file
+  "Kawaguchi 2008" is a minireview; it cites Taniguchi's 6 k_BT but gives no
+  stall-vs-temperature numbers.
+
+**What the data can and cannot separate.**
+* **Enthalpic odds (R3) are disfavoured.** Fit ln O₀(T) = a + b(T₀/T − 1):
+  the enthalpic part is b = −0.2 ± 1.8 (χ² = 0.09 for 2 dof). R3 needs b = a
+  = 5.86, which is 3.4σ away, using only Taniguchi's rate SEs. Taniguchi's own
+  ΔΔH‡ = 0.1 ± 1.8 k_BT₀ says the same. This rests on one lab, one
+  preparation, and backstep rates at low load estimated from rare events.
+* **R1 vs R2 is not separated.**
+  - The stall data are flat, within ~4–5% (Kawaguchi & Ishiwata's ±0.33 pN,
+    as quoted; Hong's ±0.2 pN; Taniguchi's unnumbered "unchanged").
+  - R1 predicts +7% from 15 to 35 °C: 0.5 pN at 7 pN, i.e. 1.5 of Kawaguchi &
+    Ishiwata's standard deviations. Hong's pair is 14.5 K apart and predicts
+    −0.26 pN under R1; they see −0.1 ± 0.28.
+  - Taniguchi's levers rise with temperature (2.4, 2.2, 2.6, 2.8 nm). A fixed
+    lever fits badly (χ² = 10.0, 3 dof, p ≈ 0.02) and ℓ ∝ T better (χ² = 4.7);
+    a free power law gives exponent 2.0 ± 0.8. That leans toward R2. But the
+    287-K point is out of line, and the ±0.1 nm errors are fit errors.
+  - Taniguchi's own 1:1 loads (8.9–10.5 pN) show no rise with T.
+
+  So: the published data favour entropic odds, lean weakly toward an entropic
+  lever as well (R2), and do not exclude R1.
+* **The measurement that would decide.** Count forward and backward steps at
+  one fixed load (5 pN) at 15 and 35 °C in the same assay. The three readings
+  predict Δln(fwd:back) = +0.32, 0 and −0.13 nats with Carter & Cross's odds
+  and lever (+0.21, 0, −0.18 with Taniguchi's). The counting error of ln(N_f/N_b)
+  is √(1/N_f + 1/N_b). At 5 pN the odds are ~7:1, so ~200 backsteps (~1500
+  forward steps) per temperature separate R1 from R2 at 3σ. Better: the full
+  ln-ratio-vs-load line at both temperatures, which gives ln O₀(T) and ℓ(T)
+  separately. Taniguchi et al. measured those lines but show them as "data not
+  shown" (p.343); the raw counts would already answer the question.
 
 ---
 
