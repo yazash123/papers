@@ -116,7 +116,7 @@ def trap_statistics(motor: Motor, load, n_max: int = 300, x0: float = 0.0) -> di
     return {
         "absorbed": absorbed,
         "mean_load_at_termination": mean_load,
-        "sd_load_at_termination": np.sqrt((per_site * loads**2).sum() / absorbed - mean_load**2),
+        "sd_load_at_termination": np.sqrt(max(0.0, (per_site * loads**2).sum() / absorbed - mean_load**2)),
         "mean_time": float(v @ hold),
         "site_loads": loads,
         "termination_distribution": per_site,
