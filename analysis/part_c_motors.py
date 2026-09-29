@@ -188,8 +188,8 @@ def main():
                          gate_basis="k_backstep = 3/s assumed for all three", grip=g,
                          grip_basis="linear F-V (Fs = 6 pN assumed), Bell k_off"))
 
-    # Budaitis 2019: observed mean detachment forces (Fig. 3B, p.6), trap stiffness not given
-    budaitis = {"KIF5C WT": 4.8, "CNB": 0.6, "Latch": 0.4, "CNB+Latch": 0.5}
+    # Budaitis 2019: mean +/- SD detachment forces (text p.6, Fig. 3B p.9), trap stiffness not given
+    budaitis = {"KIF5C WT": [4.6, 0.8], "CNB": [0.91, 0.6], "Latch": [0.84, 0.4], "CNB+Latch": [0.81, 0.5]}
 
     out = {"rows": rows, "kondo_grip_single_state_check": g_check, "budaitis_observed": budaitis,
            "kappa": KAPPA, "kT_assumed": KT_RT}

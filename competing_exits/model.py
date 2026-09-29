@@ -299,7 +299,8 @@ class Motor:
             b[i, 0] += 1.0 / s.total_rate(F)
             for e in s.exits:
                 p = P[e.name]
-                b[i, 0] += p * e.cost_time
+                if e.kind != ExitKind.TERMINATING:  # time after termination is not attached time
+                    b[i, 0] += p * e.cost_time
                 b[i, 1] += p * e.step
                 b[i, 2] += p * (e.kind in STEP_KINDS)
                 b[i, 3] += p * e.fuel

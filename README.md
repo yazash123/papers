@@ -12,7 +12,7 @@ what each was used for, are in [papers/INDEX.md](papers/INDEX.md).
 
 Exit *i* has rate k_i(F) = k_i⁰ exp(−F δ_i / kT). Here F > 0 is a hindering
 load in pN, δ_i a load distance in nm, and kT is in pN·nm (4.087 at 23 °C,
-4.114 at 25 °C). Because the exits are independent exponential clocks:
+4.116 at 25 °C). Because the exits are independent exponential clocks:
 
 | quantity | formula |
 |---|---|

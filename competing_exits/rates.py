@@ -6,7 +6,7 @@ Sign convention used throughout the package: F > 0 is a *hindering* load
     k(F) = k0 * exp(-F * delta / kT)
 
 so delta > 0 means the rate is slowed by hindering load, delta < 0 means it
-is sped up.  kT is in pN*nm (4.114 at 25 C, 4.087 at 23 C).
+is sped up.  kT is in pN*nm (4.116 at 25 C, 4.087 at 23 C).
 
 A rate law is any object with ``__call__(F, kT) -> rate``.  Everything else in
 the package only relies on that, so new shapes (e.g. a saturating law) can be

@@ -104,6 +104,8 @@ def trap_statistics(motor: Motor, load, n_max: int = 300, x0: float = 0.0) -> di
 
     P = sp.csr_matrix((vals, (rows, cols)), shape=(N, N))
     A = (sp.identity(N, format="csr") - P.T).tocsc()
+    if not np.isclose(x0 / d, round(x0 / d)):
+        raise ValueError("x0 must be a lattice site (a multiple of step_size)")
     start = np.zeros(N)
     start[idx(int(np.searchsorted(sites, round(x0 / d))), start_phase())] = 1.0
     v = spla.spsolve(A, start)

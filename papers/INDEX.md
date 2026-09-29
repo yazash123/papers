@@ -35,7 +35,7 @@ checks; *read* = consulted for context only; blank = not used this session.
 | Block 2007 - Kinesin motor mechanics… | Block SM, *Biophys. J.* 92:2986 (2007), doi:10.1529/biophysj.106.100677 | |
 | Brown 2018 - Allocating and splitting free energy… | Brown AI, Sivak DA, *J. Phys. Chem. B* 122 (2018), doi:10.1021/acs.jpcb.7b10621 | |
 | Brown 2020 - Theory of nonequilibrium free energy transduction… | Brown AI, Sivak DA, *Chem. Rev.* 120:434–459 (2020) | |
-| Budaitis 2019 - Neck linker docking is critical… | Budaitis BG et al., *eLife* 8:e44146 (2019) | **C(d)**: mean detachment forces (KIF5C WT 4.8 pN; CNB 0.6, Latch 0.4, CNB+Latch 0.5 pN; Fig. 3B, p.6); detachment check only |
+| Budaitis 2019 - Neck linker docking is critical… | Budaitis BG et al., *eLife* 8:e44146 (2019) | **C(d)**: mean ± SD detachment forces (KIF5C WT 4.6 ± 0.8 pN; CNB 0.91 ± 0.6, Latch 0.84 ± 0.4, CNB+Latch 0.81 ± 0.5 pN; text p.6, Fig. 3B p.9); detachment check only |
 | Cao 2014 - Structure of apo-kinesin bound to tubulin… | Cao L et al., *Nat. Commun.* (2014), doi:10.1038/ncomms6364 | |
 | Carter 2005 - Mechanics of the kinesin step | Carter NJ, Cross RA, *Nature* 435:308–312 (2005) | **A**: ratio 802e^−0.95F; dwells 3.6e^0.57F ms (1 mM) and 25.6e^0.55F ms (10 µM) (Fig. 2 legend, p.310); 23 °C (p.312); trap-off velocities (Fig. 2c, read off figure) |
 | Chemla 2008 - Exact solutions for kinetic models… | Chemla YR, Moffitt JR, Bustamante C, *J. Phys. Chem. B* 112 (2008), doi:10.1021/jp076153r | |

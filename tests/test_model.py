@@ -138,3 +138,27 @@ def test_gate_scaling():
     assert shift == pytest.approx(KT * np.log(10) / 3.5)
     with pytest.raises(KeyError):
         s.scaled("nope", 2.0)
+
+
+def test_lattice_solver_multistate_network_under_clamp():
+    """Lattice solver vs first-step analysis for a chained (fast-state) network."""
+    from competing_exits.kinesin import kondo_kif5a
+    m = kondo_kif5a(fast=True, q=0.3)
+    for F in (6.0, 12.0):
+        r = trap_statistics(m, Clamp(F), n_max=400)
+        a = m.run_stats(F)
+        assert r["absorbed"] == pytest.approx(1.0, abs=1e-9)
+        assert r["mean_time"] == pytest.approx(a["time"], rel=1e-8)
+        c = r["mean_counts"]
+        disp = 8.2 * (c["0.forward"] - c["0.back"] - c["fast.fast_back"])
+        assert disp == pytest.approx(a["displacement"], rel=1e-8)
+
+
+def test_terminating_cost_time_is_not_attached_time():
+    s = WaitingState("s", (
+        Exit("f", P, constant(10.0), step=8.0),
+        Exit("d", T, constant(1.0), cost_time=5.0),
+    ), kT=KT)
+    m = Motor.single(s, step_size=8.0)
+    assert m.run_stats()["time"] == pytest.approx(s.run_stats()["time"])
+    assert trap_statistics(m, Clamp(0.0), n_max=300)["mean_time"] == pytest.approx(s.run_stats()["time"], rel=1e-6)

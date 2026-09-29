@@ -99,10 +99,12 @@ def draw_values(rng, inflate=1.0):
     for k, val in KONDO.items():
         if isinstance(val, tuple):
             mu, se = val
-            x = rng.normal(mu, inflate * se)
             if k.startswith("lam"):
-                x = max(x, 0.05 * mu)  # keep rates positive (only matters for the fast rates)
-            v[k] = x
+                # rates: lognormal with the same relative SE (keeps them positive
+                # without clipping; matters for the poorly known fast rates)
+                v[k] = mu * np.exp(rng.normal(0.0, inflate * se / mu) - 0.5 * (inflate * se / mu) ** 2)
+            else:
+                v[k] = rng.normal(mu, inflate * se)
         else:
             v[k] = val
     return v
@@ -188,6 +190,7 @@ def main():
         sweep[name] = {"kappa": kappa, "F_det": F_det, "time": T_att,
                        "shoulders": shoulders(kappa, **kw), **{k: v for k, v in kw.items()}}
     out["sweep_gates"] = gates
+    out["fast_q0.22_gain_by_gate"] = {g: detach_load(g, 0.05, fast=True, q=0.22) for g in (1.0, 2.0, 3.0, 10.0, G_INF)}
     out["F11_vs_gate"] = [F11(kondo_kif5a(gate=g)) for g in gates]
     out["sweep"] = sweep
 

@@ -100,3 +100,11 @@ def test_trap_with_entry_and_delays_matches_exact_lattice():
         sims = simulate_runs(m, Trap(0.08), n_runs=4000, seed=6, fixed_delays=fixed)
         within(sims["load"], exact["mean_load_at_termination"])
         within(sims["time"], exact["mean_time"])
+
+
+def test_simulate_run_stops_at_t_max():
+    m = Motor.single(head_race_v2(1000.0))  # no terminating exit
+    run = simulate_run(m, Clamp(0.0), np.random.default_rng(7), t_max=0.5)
+    assert not run.terminated
+    assert run.time == pytest.approx(0.5)
+    assert 0 < run.x < 0.5 * 600  # moved, but no faster than ~v2 allows

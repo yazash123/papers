@@ -152,10 +152,22 @@
   ],
   "kondo_grip_single_state_check": 6.659589124949189,
   "budaitis_observed": {
-    "KIF5C WT": 4.8,
-    "CNB": 0.6,
-    "Latch": 0.4,
-    "CNB+Latch": 0.5
+    "KIF5C WT": [
+      4.6,
+      0.8
+    ],
+    "CNB": [
+      0.91,
+      0.6
+    ],
+    "Latch": [
+      0.84,
+      0.4
+    ],
+    "CNB+Latch": [
+      0.81,
+      0.5
+    ]
   },
   "kappa": 0.05,
   "kT_assumed": 4.1

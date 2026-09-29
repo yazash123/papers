@@ -1,14 +1,17 @@
 # Competing exits for kinesin: report
 
 **Summary.** I rebuilt head race v2 as a small, general competing-exits package
-with 46 tests. Every v2 regression target is reproduced (stall 7.05 pN,
+with 50 tests. Every v2 regression target is reproduced (stall 7.05 pN,
 0.95 nats/pN, speeds, dwell, prices). Refitting v2 to Carter & Cross's three
 relations pins the odds and the stall, but not the ATP-release clock. The
 clock's allowed range depends on how noisy one assumes the binned dwells are:
 about 40–80 s⁻¹ at 10% per bin, 28–134 s⁻¹ at 20%. v2's unloaded speed
-(454 nm/s) cannot be raised to the measured ~830 nm/s by any refit to the
-3–9 pN data. So below ~3 pN the motor is faster than v2's load-independent
-"rest of cycle" T and ATP binding allow.
+(454 nm/s) stays below 565 nm/s in any refit to the 3–9 pN data with clocks of
+20–160 s⁻¹, against the measured ~830 nm/s. Only clocks of ~600 s⁻¹ and above
+get close (735 nm/s at 634 s⁻¹), and those are poor fits unless the bins are
+assumed ~30% noisy. So below ~3 pN the motor is faster than v2's
+load-independent "rest of cycle" T and ATP binding allow, or the loaded dwells
+are biased (§1.4).
 
 For mouse KIF5A (Kondo et al. 2023) I reproduce the stated checks and the
 earlier gate table, to within the earlier calculation's Monte Carlo error. In
@@ -21,16 +24,19 @@ the measured gate sits **at** the shoulder of the gate–grip curve:
 
 Two things weaken "sized to the grip":
 - Kondo's fast detachments after backsteps move the shoulder to a
-  ~2.5× stronger gate (range 1–7.5).
+  ~2.5× stronger gate (bootstrap range 1–7).
 - In stiffer traps or a force clamp the shoulder moves to 2.6–7.5× stronger
   gates.
 
 So the measured gate is "not much stronger than needed" in a soft trap, and
 2–7× weaker than the shoulder under stiffer loading. Across motors the claim
-that gate strength tracks detachment under load is **not supported**. Kinesin-2
-(KIF3) detaches at 2.5–5 pN in the same model trap, yet its fitted and measured
-backstep odds reach 1:1 only at 8–13 pN, as late as or later than kinesin-1's.
-Only five motors have gate data at all, three of them from one fit.
+that gate strength tracks detachment under load is **not supported**, though
+the evidence is thin. Measured at 4 pN, the backstep fraction varies only 3–8%
+across kinesin-1 and kinesin-2 constructs, while their grips in the same model
+trap vary 2.7-fold (2.5–6.7 pN). The clearest case is KIF3A/A: it detaches
+near 2.5 pN yet its odds at 4 pN are still ~11:1. Only five motors have gate
+data at all, three of them from one fit, and their 1:1 loads are extrapolations
+beyond the measured loads.
 
 On the literature (Part D): the stall law, the load levers and the "gate"
 reading are all already present in Fisher & Kolomeisky (2001), Liepelt &
@@ -97,14 +103,18 @@ tolerance of 0.005 there.
 
 The paper gives fitted curves, not tables of bin means. So I refitted v2's
 seven parameters to the three curves, sampled at 1-pN spacing over 3–9 pN
-(21 points). The weights are **my assumption**: σ(ln dwell) = 0.10 per bin
-(typical s.e.m. of a bin in Fig. 2b) and σ(ln ratio) = 0.20. Profile
-likelihoods refit all other parameters at each value.
+(21 points). The weights are **my assumption**: σ(ln dwell) = 0.10 per bin and
+σ(ln ratio) = 0.20. I did not quantify Fig. 2b's error bars. Because the 21
+"data" are samples of smooth fitted curves, the residuals are pure model-shape
+mismatch, not noise. So the "68%/95% profile" ranges below are **sensitivity
+ranges under assumed weights**, not confidence intervals. Each profile refits
+all other parameters at each value.
 
 **How well v2 matches the curves:**
 * Odds: exactly.
 * Dwells: 15% RMS (1 mM) and 14% RMS (10 µM). The model cannot be a pure
-  exponential in F, so it sags below the 1-mM curve at 9 pN (−33%).
+  exponential in F, so it sags below the 1-mM curve at 9 pN (−28%, i.e. a log
+deviation of −0.33).
 * v2 is not the least-squares optimum under these weights: Δχ² = 12.8 above the
   best fit. It is still inside the joint 95% region for 7 parameters
   (χ²₇ = 14.1).
@@ -129,7 +139,7 @@ likelihoods refit all other parameters at each value.
   0.58 to 2.4 µM⁻¹s⁻¹ as k_c goes from 20 to 160 s⁻¹. Its 95% range depends
   directly on the assumed scatter:
 
-| assumed σ per bin | k_c 95% range (s⁻¹) |
+| assumed σ per bin (dwell σ; ratio σ scaled with it) | k_c 95% range (s⁻¹) |
 |---|---|
 | 10% | 40–80 |
 | 15% | 34–95 |
@@ -137,8 +147,8 @@ likelihoods refit all other parameters at each value.
 | 30% | 20–630 |
 
 The brief's "about 20 to 160 s⁻¹ fits" corresponds to about 20–25% scatter per
-bin. The error bars in Fig. 2b look comparable, but I could not quantify them
-without reading them off the figure.
+bin. I did not read Fig. 2b's error bars off the figure, so which σ applies is
+open.
 
 **What moves with the clock:** the price at stall rises from 2.4 to 4.2 nats
 (11–68 attempts per forward step) as k_c goes from 20 to 160 s⁻¹. So the price
@@ -151,7 +161,12 @@ velocities in Carter & Cross's Fig. 2c (squares) are ≈ 829 and ≈ 142 nm/s.
 These are **read off the figure** from pixel positions. Carter & Cross's *own*
 loaded bins at 1 mM are ≈ 372 and 341 nm/s at 1.6 and 2.6 pN (also read off),
 close to v2's 425 and 370. So v2 agrees with the loaded data; the factor of two
-lies between the trap-off beads and the first loaded bins.
+lies between the trap-off beads and the first loaded bins. That is not an
+independent check of v2, though. C&C computed the loaded velocities as "mean
+amplitude divided by mean dwell time … from b" (Fig. 2c legend, p.310), i.e.
+from the same step-finder dwells v2 was fitted to. The squares are bead
+velocities measured with the trap off. So the gap is also a gap between two
+measurement methods.
 
 What the unloaded speeds imply:
 
@@ -161,28 +176,37 @@ What the unloaded speeds imply:
 2. **ATP binding must be faster at zero load.** At 10 µM the unloaded dwell is
    57.7 ms, shorter than v2's ATP wait alone (65 ms). That requires
    k_on ≥ 1.73 µM⁻¹s⁻¹ at zero load, against v2's 1.54 and the refit's 0.98.
-3. **No refit to the 3–9 pN relations removes the miss.** Across the clock
-   profile (k_c = 20–160 s⁻¹) the refitted unloaded 1-mM speed stays at
-   478–563 nm/s. The load dependence below ~3 pN is simply outside the data v2
-   was fitted to.
+3. **Refits to the 3–9 pN relations do not remove the miss** at plausible
+   weights. With k_c = 20–160 s⁻¹ the refitted unloaded 1-mM speed stays at
+   478–563 nm/s. It reaches 735 nm/s only at k_c = 634 s⁻¹ (inside the σ = 30%
+   range) and 823 nm/s at k_c = 3000 s⁻¹ (Δχ² = 42 at σ = 10%). The load
+   dependence below ~3 pN is largely outside the data v2 was fitted to.
 4. **The knee has precedent.** Kondo's KIF5A forward rate has exactly such a
-   knee (flat below 3.2 pN, then falling), and Fisher & Kolomeisky's fit puts
-   ~13% of the load dependence on ATP binding.
+   knee (flat below 3.2 pN, then falling). In Fisher & Kolomeisky's fit ATP
+   binding carries most of the forward-rate load dependence (θ₀⁺ = 0.135 of a
+   forward total of 0.170 in their N = 2 model): "only the first forward rate,
+   u0 (for ATP binding), is significantly load-dependent" (p.7749). A
+   load-dependent k_on is what point 2 needs.
 
 **A hypothesis, not tested here.** The offset needed to turn the true unloaded
-dwell (9.9 ms) into v2's 18.0 ms is 8.1 ms, which equals the 8-ms step-finder
-window.
+dwell (9.9 ms) into v2's 18.0 ms is 8.1 ms. Kondo et al. raise this problem for
+earlier dwell data: "dwell times could have been overestimated because mean
+dwell time was calculated from data where undetectably short dwell times <4 ms
+were not included" (p.463). Carter & Cross scored a dwell only if both bounding
+steps passed their filters (12-nm cap, 5-nm continuity; p.312), so missed short
+dwells are truncated rather than merged into scored dwells.
 
-Carter & Cross scored a dwell only if both steps bounding it were accepted
-single steps; merged 16-nm events are rejected by the 12-nm cap (p.312). Model
-the step finder as an ideal dead time W: steps closer than W merge. Then the
-scored dwells are exactly the exponential dwells longer than W, and by
-memorylessness their mean is τ + W: 9.9 + 8 = 17.9 ms, against v2's 18.0 ms.
-C&C report exponentially distributed dwells (p.309). A real t-test finder has a
-soft, not sharp, resolution limit, so this is an idealisation. Kondo et al. raise exactly this problem for earlier dwell data:
-"dwell times could have been overestimated because mean dwell time was
-calculated from data where undetectably short dwell times <4 ms were not
-included" (p.463). If so, part of T is a detection offset, not biochemistry.
+Truncating exponential dwells at t_d raises the scored mean by exactly t_d
+(memorylessness). But kinesin dwells at saturating ATP are narrower than
+exponential (randomness < 0.5; Fisher & Kolomeisky p.7751), and for gamma(2)
+dwells the inflation from an 8-ms cutoff is only ~5 ms (independent reviewer's
+calculation). C&C's W = 8 ms is the half-width of their t-test window, not a
+demonstrated detection limit; Kondo's figure of "<4 ms" suggests an offset of
+a few ms.
+
+So the near-equality of 8.1 ms and W = 8 ms is suggestive at most and may be
+coincidence. The direction of the effect is right: part of T may be a detection
+offset rather than biochemistry.
 
 The stall and the odds would be unaffected, since they come from step counts.
 Checking this needs the raw traces, or a simulation of their step finder on
@@ -204,14 +228,14 @@ synthetic data.
 
 The kinesin instances live in `kinesin.py` as data.
 
-Analytic checks in the 46 tests (`python -m pytest -q`, ~10 s):
+Analytic checks in the 50 tests (`python -m pytest -q`, ~10 s):
 * Identities: splitting sums to 1; log-odds = difference of prices; closed-form
   balance point; lever = δ_a − δ_b; gate scaling moves the balance point by
   kT ln g/ℓ.
 * Single-state formulas agree with network first-step analysis. A chained fast
   state agrees with hand-summed geometric series.
 * Under a constant-force clamp, the lattice solver reproduces the closed-form
-  run statistics.
+  run statistics, for a single state and for a chained (fast-state) network.
 * Gillespie agrees with the analytic results within 4 standard errors for:
   - velocity and splitting at constant load (v2 with ATP wait, restarts and
     post-step time);
@@ -242,8 +266,8 @@ Conditions: 25 ± 1 °C (p.473), so kT = 4.116 pN·nm; trap 0.090 pN/nm for
 | unloaded odds | 44:1 | 44.3:1 (3.79 nats) |
 | backstep rate unloaded; rise by 6 pN | 1.99 s⁻¹; ~1.9× | 1.99; 1.90× |
 | fitted k_f, k_b cross | ~9.3 pN | 9.34 pN |
-| unloaded velocity (p.471) | 707 nm/s | 706.8 = d (k_f − k_b) |
-| full model zero velocity (p.471) | ~9.1 pN | 9.09 pN, with fast events at q = 0.22 (see 3.3) |
+| unloaded velocity (journal p.471; PDF page 10) | 707 nm/s | 706.8 = d (k_f − k_b) |
+| full model zero velocity (same page) | ~9.1 pN | 9.09 pN, with fast events at q = 0.22 (see 3.3) |
 
 The last check needs one parameter the paper does not give: the probability
 q that a backstep enters the fast state-3. I reconstructed it from the text,
@@ -251,7 +275,10 @@ q that a backstep enters the fast state-3. I reconstructed it from the text,
 Figure 3B)" (p.470). In the model, fast/slow = qr/(1 − qr) with
 r = k_bf/(k_bf + k_df) ≈ 0.59, so q = 0.22. Their supplementary equation S53
 is not in the folder, so this is a reconstruction; with the slow events only
-the zero-velocity point is 9.34 pN.
+the zero-velocity point is 9.34 pN. The model also keeps q constant at all
+loads, whereas Kondo et al. saw fast events only from ~5 pN up, with a smaller
+fraction at 5 pN (p.467). So q = 0.22 at low load probably overstates their
+effect there.
 
 The lever is 2.22 nm above the knee (0.61 nm below it), against 3.88 nm for
 Drosophila kinesin.
@@ -275,7 +302,8 @@ With the load's SD of ~2.4 pN, a ~1000-run simulation has an SE of ~0.08 pN,
 so the gap is within the earlier calculation's Monte Carlo error. The
 same-sign pattern suggests common random numbers across gates. I found no
 model difference that explains it: d = 8.0 nm or a softer trap move it the
-wrong way. **Reproduced.**
+wrong way. **Reproduced**, assuming the earlier calculation used ~1000 runs
+(its run count is not known).
 
 ### 3.3 (a) Kondo's fast events
 
@@ -319,17 +347,18 @@ The position of the measured gate is given as decades above the shoulder,
 log₁₀(1/g_shoulder).
 
 **(b) Uncertainty.** Parametric bootstrap, 300 draws per row. Table 1's
-parameters are drawn as independent normals from their printed SEs; the
-correlations are unknown. Those SEs are fit errors and look small next to the
+parameters are drawn independently from their printed SEs; the correlations
+are unknown. Rates (λ) are drawn lognormal with the same relative SE, distances
+and knee loads normal. Those SEs are fit errors and look small next to the
 scatter of Fig. 3C (e.g. λ_b = 1.99 ± 0.01 s⁻¹), so I also inflate them 5×. The
 last row also draws q ∈ U(0.15, 0.40) and the fast-rate sign at random.
 Values are median [95% range].
 
 | variant | 1:1 load (pN) | mean load at letting go (pN) | g at S95 | decades above S95 | above S90 | above S× |
 |---|---|---|---|---|---|---|
-| Table 1 SEs | 9.33 [9.11, 9.61] | 6.27 [6.01, 6.55] | 1.10 [0.99, 1.25] | −0.04 [−0.10, 0.01] | 0.29 [0.24, 0.34] | 0.64 [0.57, 0.69] |
-| SEs × 5 | 9.27 [8.29, 10.78] | 6.04 [4.74, 7.84] | 1.08 [0.69, 2.23] | −0.03 [−0.35, 0.16] | 0.30 [0.00, 0.49] | 0.69 [0.20, 0.95] |
-| SEs × 5 + fast events | 9.29 [8.26, 10.85] | 5.65 [4.21, 6.94] | 2.85 [1.05, 7.46] | −0.46 [−0.87, −0.02] | −0.12 [−0.53, 0.30] | 0.67 [0.21, 1.07] |
+| Table 1 SEs | 9.33 [9.11, 9.61] | 6.28 [6.00, 6.55] | 1.10 [0.99, 1.24] | −0.04 [−0.10, 0.01] | 0.29 [0.24, 0.34] | 0.64 [0.57, 0.70] |
+| SEs × 5 | 9.27 [8.29, 10.78] | 6.10 [4.62, 7.53] | 1.10 [0.67, 2.06] | −0.04 [−0.31, 0.18] | 0.29 [0.03, 0.50] | 0.67 [0.34, 1.03] |
+| SEs × 5 + fast events | 9.29 [8.26, 10.85] | 5.79 [4.22, 6.86] | 2.40 [0.99, 7.24] | −0.38 [−0.86, 0.01] | −0.04 [−0.51, 0.33] | 0.65 [0.32, 1.08] |
 
 **(c) Loading protocol.** Shoulders for the central parameter values. "Gain"
 is the rise in mean load at letting go from the measured gate to an
@@ -339,16 +368,17 @@ infinitely strong gate.
 |---|---|---|---|---|
 | trap 0.02 pN/nm | 4.82 pN | 4.66 pN | 0.16 pN (3%) | 0.66 / 2.4 |
 | trap 0.05 pN/nm | 6.66 | 6.29 | 0.37 (6%) | 1.1 / 2.5 |
-| trap 0.09 pN/nm (Kondo's own) | 7.87 | 7.27 | 0.60 (8%) | 1.6 / 3.0 |
+| trap 0.09 pN/nm (Kondo's 200-nm-bead stiffness; they also used 0.25 pN/nm and load jumps) | 7.87 | 7.27 | 0.60 (8%) | 1.6 / 3.0 |
 | trap 0.2 pN/nm | 9.62 | 8.56 | 1.06 (11%) | 2.6 / 4.1 |
 | trap 0.5 pN/nm | 11.97 | 10.31 | 1.67 (14%) | 3.8 / 5.9 |
-| force clamp: largest force with ≥ 1 net step per run | 10.63 | 8.60 | 2.03 (19%) | 6.0 / 7.5 |
+| force clamp: largest force with ≥ 1 net step per run (an arbitrary criterion) | 10.63 | 8.60 | 2.03 (19%) | 6.0 / 7.5 |
 
 A stiffer trap loads the motor faster than it can detach, so it gets closer
 to its 1:1 point. There, backsteps rather than detachment limit it, and the
 shoulder moves to stronger gates. The "shoulder" is not a property of the motor
-alone; it depends on the loading protocol, by a factor ~6 in gate strength over
-these protocols.
+alone; it depends on the loading protocol. Over these protocols the S95
+shoulder spans 0.66 → 6.0 in gate strength (9×) with slow events only, and
+2.4 → 7.5 (3×) with fast events.
 
 ### 3.5 (d) Other motors: does gate strength track detachment under load?
 
@@ -364,12 +394,12 @@ kT = 4.1 pN·nm where a paper gives no temperature.
 |---|---|---|---|
 | mouse KIF5A | 9.34 | 6.66 | Kondo Table 1 (own rates for both) |
 | Drosophila KHC | 7.05 (7.7–10.4 from Block-lab backsteps) | 5.10 (5.97 via v/L) | C&C via v2; alternative: 3% backsteps at 4 pN (Andreasson 2015b p.1169), lever 3.88 or 2.22 nm / Andreasson eLife 3-state v(F) (Table 2) and k_off = 1.11 e^(0.60F/kT) (Fig. 6) |
-| KIF3A/B | 9.4 (10.7 from measured 6%) | 3.41 | Andreasson 2015b: zero velocity of fitted cycle (Fig. 3C) / v/L, L0 = 182 nm, δ = 1.7 nm (Fig. 4E) |
-| KIF3A/A | 11.7 (13.2 from measured 8%) | 2.51 | same; L0 = 102 nm, δ = 1.6 nm |
-| KIF3B/B | 8.3 (10.3 from measured 3%) | 5.19 | same; L0 = 177 nm, δ = 1.3 nm |
+| KIF3A/B | 9.4 (10.7 from measured 6%; 6.9 with kinesin-1's lever) | 3.41 | Andreasson 2015b: zero velocity of fitted cycle (Fig. 3C) / v/L, L0 = 182 nm, δ = 1.7 nm (Fig. 4E) |
+| KIF3A/A | 11.7 (13.2 from measured 8%; 6.6 with kinesin-1's lever) | 2.51 | same; L0 = 102 nm, δ = 1.6 nm |
+| KIF3B/B | 8.3 (10.3 from measured 3%; 7.7 with kinesin-1's lever) | 5.19 | same; L0 = 177 nm, δ = 1.3 nm |
 | DmK +1 to +6 AA neck-linker inserts | not measured | 3.6–4.5 | Andreasson eLife Tables 1–2 (v/L) |
 | Kin1 / KIF3A/A / KIF1A (Gicking) | not measured (k_back = 3 s⁻¹ assumed for all) | 4.7 / 3.7 / 4.8 | Gicking Table 1 model inputs |
-| KIF5C CNB, Latch, CNB+Latch (Budaitis) | not measured | 0.6, 0.4, 0.5 (observed, trap stiffness not given; WT 4.8) | Budaitis Fig. 3B, detachment check only |
+| KIF5C CNB, Latch, CNB+Latch (Budaitis) | not measured | 0.91 ± 0.6, 0.84 ± 0.4, 0.81 ± 0.5 (observed mean ± SD; trap stiffness not given; WT 4.6 ± 0.8) | Budaitis text p.6, Fig. 3B p.9; detachment check only |
 
 Checks behind this table:
 * The single-state representation reproduces KIF5A's exact grip (6.660 vs 6.660).
@@ -379,53 +409,69 @@ Checks behind this table:
   measured (6%, 8%, 3%). So the fitted cycle, if anything, *under*states
   kinesin-2's gate.
 
-**Answer: not supported.** Only five motors have any gate data, and three of
-them come from one kinetic fit. Among them, the 1:1 loads cluster at 7–13 pN
-while grips span 2.5–6.7 pN, with no positive relation.
-* Kinesin-2 detaches within a few steps under load: runs of ~25 nm at 4 pN,
-  Fig. 4D.
-* Yet its backstep fraction at 4 pN (3–8%) is like kinesin-1's (3%, same
-  assay, same paper).
-* So kinesin-2's gate sits far above its shoulder, not at it. The same holds in
-  the model trap, where the 1:1 point is 3–5× its grip. The KIF5A and
-  Drosophila KHC ratios are 1.4.
+**Answer: not supported, on thin evidence.** Only five motors have any gate
+data, and three of them come from one kinetic fit.
+
+All the kinesin-2 1:1 loads are extrapolations. Backsteps were counted only at
+4 pN (5 µM ATP), and the fitted cycle's backstep rate k5 is load-independent
+by assumption. With the fitted per-head levers the 1:1 loads are 8–13 pN; with
+kinesin-1's 3.88-nm lever the same 4-pN fractions give 6.6–7.7 pN. So only the
+measured, same-load comparison is solid:
+* At 4 pN, in the same assay and paper, kinesin-1 backsteps 3% of the time and
+  the KIF3 constructs 3–8%. Gate strength differs by at most ~3× in odds.
+* The grips in the model trap differ 2.7-fold (2.5–6.7 pN).
+* Kinesin-2 detaches within a few steps under load (runs of ~25 nm at 4 pN,
+  Fig. 4D). Near its grip it still wins most races: fitted odds ~12:1 for
+  KIF3A heads at 2.5 pN, and measured 11–32:1 at 4 pN.
+
+So backsteps do not limit kinesin-2 in this protocol: its runs end by
+detachment first. The clearest case is KIF3A/A (grip 2.5 pN, 1:1 point
+≥ 6.6 pN). The gate-to-grip ratio is 1.4 for KIF5A and Drosophila KHC, but
+1.6–2.0 (KIF3B/B), 2.8–3.1 (KIF3A/B) and 4.7–5.3 (KIF3A/A) with the fitted
+levers. KIF3B/B looks like kinesin-1. The claim fails for KIF3A-containing
+motors and cannot be tested beyond these five.
 
 Other motor data sets only add points on the grip axis:
-* The **neck-linker inserts** lose ~20–35% of their grip. Andreasson et al.
-  report "no processive backstepping" under superstall loads for all
-  non-cysteine-light constructs (p.13) and an intact stepping gate up to +3 AA
-  (Fig. 2). That is qualitative, and consistent with a gate that did not
-  weaken along with the grip, the opposite of "tracking".
+* The **neck-linker inserts** lose ~20–35% of their grip. They cannot be
+  placed on the gate axis. "No processive backstepping" under superstall loads
+  (p.13) is an absence of observation, not a backstep rate. Andreasson's
+  "stepping gate" (suppression of rear-head rebinding while waiting for ATP,
+  from mantADP release) is a different quantity. It is intact up to +3 AA but
+  compromised at +4 to +6 AA: 16%, 38% and 65% of motors release both ADPs
+  (p.5). The +5 and +6 AA constructs also have the lowest grips (3.9 and
+  3.6 pN). If anything, that leans toward gate and grip weakening together.
 * Andreasson's **cysteine-light caveat** (pp.11–15): CL constructs are slower
   and more load-sensitive under hindering load than wild type. HsK-CL-6AA
   backsteps processively where DmK-6AA does not. So load data from CL motors
   (e.g. earlier NL-extension backstepping) should not be used as gate data;
   none were used here.
-* The **Budaitis** docking mutants let go at ~0.5 pN, far below any gate-limited
-  load. That is a detachment check: detachment alone limits them.
+* The **Budaitis** docking mutants let go at ~0.8–0.9 pN on average (WT
+  4.6 pN), far below any gate-limited load. That is a detachment check: detachment alone limits them.
 
 ### 3.6 (e) Verdict: does the measured gate sit at the shoulder?
 
 **In the protocol the question was posed in (0.05 pN/nm trap, starting
 unloaded, Kondo's slow events), yes, to within its uncertainty.**
 * The measured gate is 0.04 decades below the 95% shoulder (95% range −0.10 to
-  +0.01 with Table 1's SEs; −0.35 to +0.16 with SEs ×5) and 0.3 decades above
+  +0.01 with Table 1's SEs; −0.31 to +0.18 with SEs ×5) and 0.3 decades above
   the 90% shoulder.
 * A stronger gate buys at most 0.37 pN (6%) of mean load at detachment; a
   10× weaker gate loses 1.9 pN.
 
-Adding Kondo's fast detachments (with a reconstructed q) moves the measured
-gate to 0.46 decades *below* the 95% shoulder [0.87 below to 0.02 below]. So
-KIF5A would gain ~13% (0.8 pN) from a gate ~3× stronger.
+Adding Kondo's fast detachments (with a reconstructed q) puts the measured gate
+0.38 decades *below* the 95% shoulder [0.86 below to 0.01 above]. A gate 3×
+stronger would recover 0.48 pN (8%; 5.90 → 6.38 pN); the ceiling, with an
+infinitely strong gate, is 0.76 pN (13%).
 
-In stiffer traps and in a force clamp the measured gate is 2.6–7.5× weaker
-than the 95% shoulder.
+In stiffer traps and in a force clamp (with its arbitrary one-net-step
+criterion) the measured gate is 2.6–7.5× weaker than the 95% shoulder.
 
 The plain statement the numbers support: KIF5A's gate is **not oversized**. It
 is at the shoulder, or up to a factor of a few below it, depending on the
 fast events and the loading protocol. Without a cost of gate strength, "right
 size" can mean only "not much stronger than a soft-trap grip requires". Across
-motors, gate strength does **not** track detachment under load (kinesin-2).
+motors, gate strength does **not** track detachment under load, as far as five
+motors (three from one fit) can show: it fails for KIF3A-containing kinesin-2.
 
 ---
 
@@ -457,14 +503,18 @@ Cross's point that backsteps are ATP-triggered, not reversals.
 * They also include unbinding.
 * But they route both steps through one mechanical transition whose forward and
   reverse rates split the full step's work, Φ₂₅ = e^(−θF̃), Φ₅₂ = e^((1−θ)F̃),
-  with θ = 0.65 for Carter & Cross's data. So their stepping transition
-  backwards *speeds up* strongly with load, as e^(0.35·8.0·F/kT).
-* That is not the load-insensitive gate. Kondo later measured the gate directly:
-  backsteps rise only 1.9× by 6 pN.
+  with θ = 0.65 for Carter & Cross's data (p.258102-3). So the microscopic
+  backward stepping transition speeds up with load as e^(0.35·8.0·F/kT).
+* That factor is a microscopic rate, not the observed backstep rate. The
+  comparison with the gate should be made on observables. The independent
+  reviewer's approximate reconstruction of their 6-state model (Table I, C&C
+  parameters; not verified by me) gives a backstep flux rising ~46× from 0 to
+  6 pN. That is the push-type reading, not the load-insensitive gate Kondo later
+  measured directly (backsteps up only 1.9× by 6 pN).
 
 **The "gate" reading is not new either.** Carter & Cross themselves write that
 "the probability of a forward step decreases exponentially with increasing
-load, whereas the probability of a backward step is constant" (pp.311–312).
+load, whereas the probability of a backward step is constant" (pp.310–311).
 Kondo et al. fit exactly this competing-exits form.
 
 **Bluntly:**
@@ -586,6 +636,11 @@ Stall = kT ln O₀/ℓ. Three readings, with their predictions from 15 to 35 °C
 | KIF3 run lengths at loads < 1 pN | Andreasson 2015b Fig. 4E | loaded-regime exponential used from 0 pN; the unloaded runs are longer (their "two regimes") |
 | Gicking's F_s = 6 pN, k_back = 3 s⁻¹, linear force–velocity | Gicking Table 1 | model inputs, not measurements; grip only |
 | Budaitis trap stiffness | Budaitis | not given; observed forces used only as a qualitative check |
+| q constant with load | Kondo p.467 (fast events only from ~5 pN) | assumed; probably overstates fast events at low load |
+| clamp criterion "≥ 1 net step per run" | §3.4 | arbitrary; sets the clamp S95 values |
+| earlier table run count (~1000) | §3.2 | assumed, to judge Monte Carlo agreement |
+| KIF3 backstep rate k5 load-independent | Andreasson 2015b model | their assumption; all KIF3 1:1 loads are extrapolations beyond 6 pN |
+| refit weights are not data errors | Part A | ranges are sensitivity ranges, not confidence intervals |
 
 ## 8. Open issues
 
@@ -608,4 +663,61 @@ Stall = kT ln O₀/ℓ. Three readings, with their predictions from 15 to 35 °C
 
 ## 9. Changes after independent review
 
-(See end of file.)
+A subagent with fresh context rederived the formulas (own scratch code and own
+absorbing-chain solver, which reproduced the gate table to all printed
+digits). It reran the tests and scripts (outputs identical), rechecked numbers
+against rendered PDF pages, and spot-checked ~35 INDEX entries. Fixes made:
+
+1. **Budaitis detachment forces were wrong.** The SDs had been used as means.
+   Corrected to 4.6 ± 0.8 (WT), 0.91 ± 0.6, 0.84 ± 0.4, 0.81 ± 0.5 pN (text
+   p.6; Fig. 3B is on p.9), in the report, INDEX and `part_c_motors.py`.
+2. **§3.6:** "~13% (0.8 pN) from a gate ~3× stronger" was the gain to an
+   infinite gate. Now: a 3× gate recovers 0.48 pN (8%); the ceiling is 0.76 pN.
+   Computed and stored as `fast_q0.22_gain_by_gate`.
+3. **§3.5:** "1:1 point is 3–5× its grip" was false for KIF3B/B (1.6). Ratios
+   are now given per motor.
+4. **§1.3:** "−33%" was a log deviation; it is −28%.
+5. **The kinesin-2 argument is restated on the measured 4-pN comparison.**
+   1:1 loads are flagged as extrapolations (with kinesin-1's lever they would
+   be 6.6–7.7 pN), and "as late as or later than kinesin-1" is dropped. The
+   summary is softened to "not supported, on thin evidence".
+6. **Neck-linker inserts:** no longer read as evidence against tracking.
+   Andreasson's stepping gate is a different quantity and is compromised at
+   +4 to +6 AA.
+7. **Dead-time hypothesis:** the exact +W holds only for truncation of
+   exponential dwells. Gamma-like dwells and a ~4-ms real limit give less, so
+   the 8.1 ≈ 8 ms match is now called possibly coincidental. Also added:
+   C&C's loaded velocities come from the same dwells as the fit, so "v2 agrees
+   with the loaded data" is not an independent check.
+8. **"No refit reaches 830 nm/s"** is now qualified with the σ assumption
+   (735 nm/s at k_c = 634 s⁻¹).
+9. **Refit ranges** are now called sensitivity ranges under assumed weights. The
+   inconsistent "typical s.e.m." wording is removed; the σ-rescaling table
+   notes that the ratio σ is scaled too.
+10. **Fisher & Kolomeisky:** "~13% of the load dependence on ATP binding" is
+    replaced by 79% of the forward-rate load dependence, with their quote.
+11. **Liepelt & Lipowsky:** the argument now separates the microscopic factor
+    from observables; the reviewer's reconstruction is cited as unverified.
+12. **Bootstrap:** rates are now drawn lognormal. Normal draws clipped at 5% of
+    the mean had put a point mass on ~30% of fast-rate draws. Table and fig2
+    regenerated; the fast row changes from −0.46 to −0.38 decades.
+13. **New §7 entries:** q constant with load (Kondo saw fast events only from
+    ~5 pN), the arbitrary clamp criterion, the assumed ~1000-run earlier
+    calculation, and KIF3's load-independent k5.
+14. **Minor:** C&C quote page (pp.310–311); the protocol spread of the shoulder
+    (9× slow, 3× fast, not "~6"); kT at 25 °C written as 4.116 everywhere;
+    Kondo's trap-stiffness caveat; Kondo p.471 is PDF page 10.
+15. **Code:**
+    - `Motor.cycle_stats` no longer counts post-termination `cost_time` as
+      attached time (now consistent with the simulator and lattice solver).
+    - `trap_statistics` rejects a starting position off the lattice.
+    - New tests (46 → 50): lattice vs first-step analysis for the multi-state
+      fast network; terminating cost-time consistency; Kondo's V-shaped
+      detachment; `simulate_run` stopping at `t_max`.
+
+Reviewer points not acted on:
+* The pinned `EXACT` values in `test_kondo.py` are circular by design:
+  regression pins. The independent checks are the lattice-vs-Gillespie and
+  clamp-vs-closed-form tests, plus the reviewer's own solver.
+* `part_c_motors.py` uses 4.087 for the v2-lever conversion (the lever was
+  defined at 23 °C) and 4.1 elsewhere, as stated in §7.

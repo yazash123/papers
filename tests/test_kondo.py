@@ -74,3 +74,11 @@ def test_gate_table(gate):
     assert F11 == pytest.approx(old[0], abs=0.05)
     assert r["mean_load_at_termination"] == pytest.approx(old[1], abs=0.15)
     assert r["mean_time"] == pytest.approx(old[2], abs=0.02)
+
+
+def test_detachment_is_v_shaped_around_1_32_pN():
+    """Kondo: log k_d rises with both assisting and hindering load (p.470)."""
+    s = kondo_kif5a().home_state
+    kd = lambda F: float(s.rate("detach", F))
+    assert kd(1.32) == pytest.approx(1.12)
+    assert kd(-5.0) > kd(0.0) > kd(1.32) < kd(5.0)
