@@ -78,8 +78,8 @@
       "gate_alt_basis": "measured backstep fraction at 4 pN (p.1169) with the fitted lever",
       "gate_basis": "zero velocity of fitted cycle (k5 backsteps)",
       "gate_per_head": {
-        "B": 8.312684082493858,
-        "A": 11.72026972488424
+        "A": 11.72026972488424,
+        "B": 8.312684082493858
       },
       "grip": 3.4105272041139325,
       "grip_basis": "v/L, L0 and delta from Fig. 4E (loaded regime)",

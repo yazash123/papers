@@ -162,7 +162,7 @@ def main():
         koff = lambda F, v=v_g, L0=L0, dL=dL: max(v(F), 1e-6) / (L0 * np.exp(-F * dL / KT_RT))
         g, t = grip(v_inf, koff)
         F0 = brentq(v_g, 0.0, 40.0)
-        per_head = {h: KT_RT * np.log(KIF3_HEAD[h]["k2"] / KIF3_HEAD[h]["k5"]) / KIF3_HEAD[h]["delta"] for h in set(heads)}
+        per_head = {h: KT_RT * np.log(KIF3_HEAD[h]["k2"] / KIF3_HEAD[h]["k5"]) / KIF3_HEAD[h]["delta"] for h in sorted(set(heads))}
         pb = []
         for h in heads:
             st = kif3_head(h)

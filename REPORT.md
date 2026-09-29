@@ -171,9 +171,15 @@ What the unloaded speeds imply:
 
 **A hypothesis, not tested here.** The offset needed to turn the true unloaded
 dwell (9.9 ms) into v2's 18.0 ms is 8.1 ms, which equals the 8-ms step-finder
-window. If dwells shorter than roughly the window were missed and merged, then
-for exponential dwells the surviving mean is inflated by roughly the dead time
-(memorylessness). Kondo et al. raise exactly this problem for earlier dwell data:
+window.
+
+Carter & Cross scored a dwell only if both steps bounding it were accepted
+single steps; merged 16-nm events are rejected by the 12-nm cap (p.312). Model
+the step finder as an ideal dead time W: steps closer than W merge. Then the
+scored dwells are exactly the exponential dwells longer than W, and by
+memorylessness their mean is τ + W: 9.9 + 8 = 17.9 ms, against v2's 18.0 ms.
+C&C report exponentially distributed dwells (p.309). A real t-test finder has a
+soft, not sharp, resolution limit, so this is an idealisation. Kondo et al. raise exactly this problem for earlier dwell data:
 "dwell times could have been overestimated because mean dwell time was
 calculated from data where undetectably short dwell times <4 ms were not
 included" (p.463). If so, part of T is a detection offset, not biochemistry.
