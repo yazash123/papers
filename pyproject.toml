@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "competing-exits"
+version = "0.1.0"
+description = "Competing-exits kinetic model: a waiting state left by the first of several Poisson exits"
+requires-python = ">=3.10"
+dependencies = ["numpy", "scipy"]
+
+[project.optional-dependencies]
+analysis = ["matplotlib"]
+test = ["pytest"]
+
+[tool.setuptools]
+packages = ["competing_exits"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
