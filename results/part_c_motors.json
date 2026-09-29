@@ -1,0 +1,162 @@
+{
+  "rows": [
+    {
+      "motor": "KIF5A (mouse)",
+      "source": "Kondo 2023 Table 1",
+      "gate_F11": 9.343436146810586,
+      "gate_basis": "fitted k_f, k_b (direct)",
+      "grip": 6.65958873147822,
+      "grip_basis": "Kondo k_f, k_d",
+      "ln_O0": 3.7913004844185534,
+      "p_back_4pN": 0.053063401217251206
+    },
+    {
+      "motor": "Drosophila KHC",
+      "source": "C&C 2005 (gate); Andreasson 2015 eLife (grip)",
+      "gate_F11": 7.046795134468468,
+      "gate_basis": "v2 fit to C&C ratio (full-length, 23 C)",
+      "gate_F11_alt": [
+        7.661550346741434,
+        10.419821904650728
+      ],
+      "gate_alt_basis": "3% backsteps at 4 pN (truncated DmK, Block lab), lever 3.88 or 2.22 nm",
+      "grip": 5.0968454054632595,
+      "grip_alt_vL": 5.968043544773687,
+      "grip_basis": "3-state v(F) + k_off Fig. 6 (1.11 s^-1, 0.60 nm)",
+      "ln_O0": 6.689886254401197,
+      "p_back_4pN": 0.05252656570522483,
+      "p_back_4pN_measured": 0.03
+    },
+    {
+      "motor": "DmK-1AA",
+      "source": "Andreasson 2015 eLife Tables 1-2",
+      "gate_F11": null,
+      "gate_basis": "no backstep data; 'no processive backstepping' (p.13)",
+      "grip": 4.523533139888766,
+      "grip_basis": "v/L from Table 1 and 3-state model (mutant)"
+    },
+    {
+      "motor": "DmK-2AA",
+      "source": "Andreasson 2015 eLife Tables 1-2",
+      "gate_F11": null,
+      "gate_basis": "no backstep data; 'no processive backstepping' (p.13)",
+      "grip": 4.4669934475273205,
+      "grip_basis": "v/L from Table 1 and 3-state model (mutant)"
+    },
+    {
+      "motor": "DmK-3AA",
+      "source": "Andreasson 2015 eLife Tables 1-2",
+      "gate_F11": null,
+      "gate_basis": "no backstep data; 'no processive backstepping' (p.13)",
+      "grip": 4.296647319693474,
+      "grip_basis": "v/L from Table 1 and 3-state model (mutant)"
+    },
+    {
+      "motor": "DmK-5AA",
+      "source": "Andreasson 2015 eLife Tables 1-2",
+      "gate_F11": null,
+      "gate_basis": "no backstep data; 'no processive backstepping' (p.13)",
+      "grip": 3.8678395819134095,
+      "grip_basis": "v/L from Table 1 and 3-state model (mutant)"
+    },
+    {
+      "motor": "DmK-6AA",
+      "source": "Andreasson 2015 eLife Tables 1-2",
+      "gate_F11": null,
+      "gate_basis": "no backstep data; 'no processive backstepping' (p.13)",
+      "grip": 3.6310928254767534,
+      "grip_basis": "v/L from Table 1 and 3-state model (mutant)"
+    },
+    {
+      "motor": "KIF3A/B",
+      "source": "Andreasson 2015 Curr Biol Fig. 3C, 4E",
+      "gate_F11": 9.414840862970273,
+      "gate_F11_alt": [
+        9.414840862970273,
+        10.69513043529495
+      ],
+      "gate_alt_basis": "measured backstep fraction at 4 pN (p.1169) with the fitted lever",
+      "gate_basis": "zero velocity of fitted cycle (k5 backsteps)",
+      "gate_per_head": {
+        "B": 8.312684082493858,
+        "A": 11.72026972488424
+      },
+      "grip": 3.4105272041139325,
+      "grip_basis": "v/L, L0 and delta from Fig. 4E (loaded regime)",
+      "p_back_4pN": 0.09855416359621372,
+      "p_back_4pN_measured": 0.06,
+      "unloaded_velocity": 495.6763854019777
+    },
+    {
+      "motor": "KIF3A/A",
+      "source": "Andreasson 2015 Curr Biol Fig. 3C, 4E",
+      "gate_F11": 11.720269724884238,
+      "gate_F11_alt": [
+        11.720269724884238,
+        13.186809949553886
+      ],
+      "gate_alt_basis": "measured backstep fraction at 4 pN (p.1169) with the fitted lever",
+      "gate_basis": "zero velocity of fitted cycle (k5 backsteps)",
+      "gate_per_head": {
+        "A": 11.72026972488424
+      },
+      "grip": 2.512739617461816,
+      "grip_basis": "v/L, L0 and delta from Fig. 4E (loaded regime)",
+      "p_back_4pN": 0.11380385108028557,
+      "p_back_4pN_measured": 0.08,
+      "unloaded_velocity": 466.76789555081746
+    },
+    {
+      "motor": "KIF3B/B",
+      "source": "Andreasson 2015 Curr Biol Fig. 3C, 4E",
+      "gate_F11": 8.312684082493858,
+      "gate_F11_alt": [
+        8.312684082493858,
+        10.250879222949393
+      ],
+      "gate_alt_basis": "measured backstep fraction at 4 pN (p.1169) with the fitted lever",
+      "gate_basis": "zero velocity of fitted cycle (k5 backsteps)",
+      "gate_per_head": {
+        "B": 8.312684082493858
+      },
+      "grip": 5.184851602937615,
+      "grip_basis": "v/L, L0 and delta from Fig. 4E (loaded regime)",
+      "p_back_4pN": 0.08330447611214185,
+      "p_back_4pN_measured": 0.03,
+      "unloaded_velocity": 526.0835939413275
+    },
+    {
+      "motor": "Kin1 (Gicking)",
+      "source": "Gicking 2022 Table 1 (model inputs)",
+      "gate_F11": null,
+      "gate_basis": "k_backstep = 3/s assumed for all three",
+      "grip": 4.684955288682369,
+      "grip_basis": "linear F-V (Fs = 6 pN assumed), Bell k_off"
+    },
+    {
+      "motor": "Kin2 KIF3A/A (Gicking)",
+      "source": "Gicking 2022 Table 1 (model inputs)",
+      "gate_F11": null,
+      "gate_basis": "k_backstep = 3/s assumed for all three",
+      "grip": 3.662511987008372,
+      "grip_basis": "linear F-V (Fs = 6 pN assumed), Bell k_off"
+    },
+    {
+      "motor": "Kin3 KIF1A (Gicking)",
+      "source": "Gicking 2022 Table 1 (model inputs)",
+      "gate_F11": null,
+      "gate_basis": "k_backstep = 3/s assumed for all three",
+      "grip": 4.828062332479962,
+      "grip_basis": "linear F-V (Fs = 6 pN assumed), Bell k_off"
+    }
+  ],
+  "kondo_grip_single_state_check": 6.659589124949189,
+  "budaitis_observed": {
+    "KIF5C WT": 4.8,
+    "CNB": 0.6,
+    "Latch": 0.4,
+    "CNB+Latch": 0.5
+  },
+  "kappa": 0.05,
+  "kT_assumed": 4.1
+}
