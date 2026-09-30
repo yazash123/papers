@@ -63,3 +63,22 @@ def test_dwell_statistics_match_gillespie():
     dw = np.diff(times)
     assert dw.mean() == pytest.approx(t["dwell_mean"], rel=0.05)
     assert dw.std() / dw.mean() == pytest.approx(t["dwell_cv"], rel=0.05)
+
+
+def test_fixed_delays_match_gillespie():
+    """entry_cv2 = cost_cv2 = 0 against the simulator's fixed-delay mode (v2 at 5 pN)."""
+    from dataclasses import replace
+    s = head_race_v2(1000.0)
+    s = replace(s, entry_cv2=0.0, exits=tuple(replace(e, cost_cv2=0.0) for e in s.exits))
+    F = 5.0
+    t = s.transport_stats(F)
+    m = Motor.single(s, step_size=8.2)
+    rng = np.random.default_rng(11)
+    tmax, n = 6.0, 2500
+    xs = np.array([simulate_run(m, Clamp(F), rng, t_max=tmax, fixed_delays=True).x for _ in range(n)])
+    assert xs.mean() / tmax == pytest.approx(t["v"], rel=0.04)
+    assert xs.var() / (2 * tmax) == pytest.approx(t["D"], rel=0.08)
+    run, path = simulate_run(m, Clamp(F), rng, t_max=400.0, trace=True, fixed_delays=True)
+    dw = np.diff(np.array([p[0] for p in path[1:]]))
+    assert dw.mean() == pytest.approx(t["dwell_mean"], rel=0.05)
+    assert dw.std() / dw.mean() == pytest.approx(t["dwell_cv"], rel=0.06)

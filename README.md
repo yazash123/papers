@@ -5,8 +5,11 @@ state and leaves by the **first of several independent Poisson exits**. It is
 written for kinesin here, but nothing in the core is kinesin-specific; kinetic
 proofreading and microtubule search-and-capture fit the same template.
 
-Results and their caveats are in [REPORT.md](REPORT.md). The papers used, and
-what each was used for, are in [papers/INDEX.md](papers/INDEX.md).
+Results and their caveats are in [REPORT.md](REPORT.md) (session 1) and
+[REPORT2.md](REPORT2.md) (session 2: is neck-linker docking a "state bet"?).
+Session 2's predictions were fixed in [PREDICTIONS.md](PREDICTIONS.md) before
+any comparison with the limit datasets. The papers used, and what each was used
+for, are in [papers/INDEX.md](papers/INDEX.md).
 
 ## The model
 
@@ -61,8 +64,15 @@ competing_exits/     the package
   simulate.py        Gillespie simulation
   lattice.py         exact trap statistics (absorbing Markov chain)
   kinesin.py         kinesin instances as data: head race v2, Kondo KIF5A
+  diffusion.py       1D diffusive first passage (Scharfetter-Gummel chain): exact
+                     capture probabilities/times, races against Poisson clocks
+  headrace.py        diffusive head races: landscapes, capture rates as rate laws,
+                     head race v1 (regression) and v3 (docked front search + gate)
+  bet.py             the docking "bet": commitment D(q||p0), mismatch D(p||q),
+                     the I-projection family
 tests/               pytest suite (model identities, simulation vs exact, regression targets)
 analysis/            scripts that produce results/*.json and figures/*.png
+data/digitized/      every value read off a figure (analysis/digitize_figures.py)
 papers/              the PDFs and INDEX.md
 ```
 
@@ -70,12 +80,19 @@ papers/              the PDFs and INDEX.md
 
 ```bash
 pip install numpy scipy matplotlib pytest     # or: pip install -e .[analysis,test]
-python -m pytest -q                           # ~10 s
+python -m pytest -q                           # ~30 s
 cd analysis
 PYTHONPATH=.. python part_a_v2.py             # Part A refit             (~15 s)
 PYTHONPATH=.. python part_c_kondo.py          # Part C, KIF5A sizing     (~4 min)
 PYTHONPATH=.. python part_c_motors.py         # Part C(d), other motors  (~2 s)
 PYTHONPATH=.. python part_e_temperature.py    # Part E, temperature      (~1 s)
+# session 2
+PYTHONPATH=.. python digitize_figures.py      # figure readings -> data/digitized (needs pymupdf)
+PYTHONPATH=.. python part_a_v3.py             # v3 fit and chi^2 map     (~10 min)
+PYTHONPATH=.. python part_b_maxent.py         # valley, MaxEnt members   (~1 h)
+PYTHONPATH=.. python part_b_limits.py         # predictions near limits  (~1 min)
+PYTHONPATH=.. python part_b_figures.py        # fig5, fig6
+PYTHONPATH=.. python part_c_confront.py       # data comparison, TUR     (~1 min)
 ```
 
 ## Example

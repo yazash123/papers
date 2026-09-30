@@ -92,7 +92,9 @@ def iproj_residuals(v, kappa0, sig):
         K = kf + kb + p["kc"]
         d = (1.0 / (p["kon"] * atp) + 1.0 / K) / (1.0 - p["kc"] / K) + p["T"]
         out.append(np.log(d / data(LOADS)) / sig[0])
-    return np.concatenate(out)
+    r = np.concatenate(out)
+    r[~np.isfinite(r)] = 1e3      # capture impossible (e.g. an extreme wall): heavy penalty
+    return r
 
 
 def fit_iproj(kappa0, sig, lam0=(0.0, 0.0), theta0=None, fixed_lambda=None):
@@ -115,31 +117,60 @@ def iproj_density(kappa0, lambdas):
     return bet.tilted(bet.iprojection_logdensity(kappa0, lambdas, fs), X)
 
 
-def iproj_scan(kappa0, sig, chimin, level=5.99, n=21):
+def iproj_scan(kappa0, sig, chimin, level=5.99, n=24):
     """Min D(q_lambda || p0) over the I-projection valley.  Along each ray from
-    lambda = 0 (i.e. p0) the commitment grows, so the member is the first point on
-    the valley boundary; scan rays in (l1, l2) and bisect the boundary."""
+    lambda = 0 (p0 itself) the commitment grows, so on each ray the candidate is the
+    first point entering the valley: a geometric scan in the ray length, then
+    bisection to the boundary.  The member is the smallest D over the rays."""
     p0 = bet.tilted(bet.tether_logdensity(kappa0, 0.0), X)
     th_p0, chi_p0 = fit_iproj(kappa0, sig, fixed_lambda=np.zeros(2))
-    if chi_p0 - chimin <= level:
-        return {"member": {"lambdas": [0.0, 0.0], "D": 0.0, "chi2": chi_p0, "dchi2": chi_p0 - chimin},
-                "p0_in_valley": True, "chi2_p0": chi_p0}
+    rec = {"p0_in_valley": bool(chi_p0 - chimin <= level), "chi2_p0": chi_p0}
+    if rec["p0_in_valley"]:
+        rec["member"] = {"lambdas": [0.0, 0.0], "D": 0.0, "chi2": chi_p0, "dchi2": chi_p0 - chimin,
+                         "theta": th_p0[2:].tolist()}
+        return rec
     best = None
-    for ang in np.linspace(-np.pi / 2, np.pi, n):
+    for ang in np.linspace(-np.pi, np.pi, n, endpoint=False):
         u = np.array([np.cos(ang), np.sin(ang)])
-        th = th_p0
-        prev_t, prev_ok = 0.0, False
-        for t in np.geomspace(0.02, 200.0, 40):
-            lam = t * u
-            thr, c = fit_iproj(kappa0, sig, fixed_lambda=lam, theta0=th)
+        th = th_p0[2:]
+        lo_t, lo_th, hit = 0.0, th, None
+        for t in np.geomspace(1e-5, 100.0, 36):
+            thr, c = fit_iproj(kappa0, sig, fixed_lambda=t * u, theta0=th)
             th = thr[2:]
             if c - chimin <= level:
-                q = iproj_density(kappa0, lam)
-                d = bet.commitment(q, p0, X)
-                if best is None or d < best["D"]:
-                    best = {"lambdas": lam.tolist(), "D": d, "chi2": c, "dchi2": c - chimin, "theta": th.tolist()}
+                hit = (t, th, c)
                 break
-    return {"member": best, "p0_in_valley": False, "chi2_p0": chi_p0}
+            lo_t, lo_th = t, th
+        if hit is None:
+            continue
+        hi_t, hi_th, hi_c = hit
+        for _ in range(10):  # bisection to the boundary
+            mid = 0.5 * (lo_t + hi_t)
+            thr, c = fit_iproj(kappa0, sig, fixed_lambda=mid * u, theta0=hi_th)
+            if c - chimin <= level:
+                hi_t, hi_th, hi_c = mid, thr[2:], c
+            else:
+                lo_t = mid
+        lam = hi_t * u
+        d = bet.commitment(iproj_density(kappa0, lam), p0, X)
+        if best is None or d < best["D"]:
+            best = {"lambdas": lam.tolist(), "D": d, "chi2": hi_c, "dchi2": hi_c - chimin, "theta": hi_th.tolist(),
+                    "angle": float(ang)}
+    rec["member"] = best
+    return rec
+
+
+def iproj_best(kappa0, sig):
+    """Best chi^2 within the I-projection family (lambdas free)."""
+    best = (None, np.inf)
+    for lam0 in ((0.0, 0.0), (-0.01, 0.005), (0.05, 0.0), (0.0, 0.02), (-0.05, 0.02)):
+        try:
+            v, c = fit_iproj(kappa0, sig, lam0=np.array(lam0))
+        except Exception:
+            continue
+        if c < best[1]:
+            best = (v, c)
+    return best
 
 
 def main():
@@ -179,10 +210,15 @@ def main():
             W["per_kappa0"][f"{kappa0:g}"] = rec
             print(signame, "kappa0", kappa0, "maxent95", {k: v for k, v in (rec["maxent_95%"] or {}).items() if k != "theta"},
                   "no-bet dchi2 %.2f" % rec["no_bet_dchi2"], "(%.0fs)" % (time.time() - t0))
-        # I-projection family for the named kappa0 values
+        # I-projection family (the MaxEnt family) across the kappa0 bracket
         W["iprojection"] = {}
-        for kappa0 in (0.03, 0.21):
-            ip = iproj_scan(kappa0, sig, chimin)
+        for kappa0 in KAPPA0_BRACKET:
+            vb, cb = iproj_best(kappa0, sig)
+            ref = min(chimin, cb)
+            ip = iproj_scan(kappa0, sig, ref)
+            ip["family_best_chi2"] = cb
+            ip["family_best_lambdas"] = vb[:2].tolist() if vb is not None else None
+            ip["reference_chi2"] = ref
             W["iprojection"][f"{kappa0:g}"] = ip
             print(signame, "iproj kappa0", kappa0, ip["member"] and {k: v for k, v in ip["member"].items() if k != "theta"},
                   "chi2(p0) %.2f" % ip["chi2_p0"], "(%.0fs)" % (time.time() - t0))

@@ -66,7 +66,7 @@ class Member:
         L = replace(L, B_front=self.p["B"] if B is None else B)
         D = stokes_einstein_D(V3_FIXED["kT"], V3_FIXED["eta"], HEAD_RADIUS_NM) * D_scale / eta_rel
         st = start if start is not None else bet_start()
-        return HeadSearch(L, D, start=st, rear=REFLECT)
+        return HeadSearch(L, D, start=st, rear=REFLECT, start_tilt=True)
 
 
 def bet_start(mean=P_MEAN, kappa=V3_FIXED["start_kappa"]):
@@ -90,7 +90,7 @@ def iproj_lnkf(kappa0, lambdas, fs, B, loads):
 def _iproj_lnkf(kappa0, lambdas, fs, B, loads):
     L = IProjLandscape(kappa0, lambdas, fs, B_front=B)
     D = stokes_einstein_D(V3_FIXED["kT"], V3_FIXED["eta"], HEAD_RADIUS_NM)
-    hs = HeadSearch(L, D, start=bet_start(), rear=REFLECT)
+    hs = HeadSearch(L, D, start=bet_start(), rear=REFLECT, start_tilt=True)
     return np.array([np.log(hs.rates(float(F), KT)["front"]) for F in loads])
 
 
@@ -132,20 +132,31 @@ def bookkeeping(member, kappa0, F, atp_uM=1000.0, eta_rel=1.0, gate_viscous=Fals
     P = m.splitting(F)
     c = costs(member, kappa0, F, **kw)
     attempts_per_net = 1.0 / (P["forward"] - P["back"]) if P["forward"] > P["back"] else np.inf
+    steps_per_net = (P["forward"] + P["back"]) / (P["forward"] - P["back"]) if P["forward"] > P["back"] else np.inf
     attempt_rate = 1.0 / ts["cycle_time"]
+    step_rate = (P["forward"] + P["back"]) * attempt_rate
+    D = c["mismatch"]
     return {
         "F": F, "v": ts["v"], "randomness": ts["randomness"], "dwell_mean": ts["dwell_mean"],
         "dwell_cv": ts["dwell_cv"], "odds": P["forward"] / P["back"],
         "P_forward": P["forward"], "P_back": P["back"], "P_clock": P["clock"],
         "attempts_per_step": ts["attempts_per_step"], "attempts_per_net_step": attempts_per_net,
-        "mismatch_per_attempt": c["mismatch"],
-        "mismatch_per_step": c["mismatch"] * ts["attempts_per_step"],
-        "mismatch_per_net_step": c["mismatch"] * attempts_per_net,
-        "mismatch_per_s": c["mismatch"] * attempt_rate,
-        "reverse_per_attempt": c["reverse"] * P["clock"],
-        "reverse_per_step": c["reverse"] * P["clock"] * ts["attempts_per_step"],
+        "steps_per_net_step": steps_per_net,
+        "mismatch_per_quench": D,
+        # primary accounting: one quench per committed step (= per ATP hydrolysed)
+        "mismatch_per_step": D,
+        "mismatch_per_net_step": D * steps_per_net,
+        "mismatch_per_s": D * step_rate,
+        # upper-bound accounting: a quench at every ATP binding (attempt), incl. futile ones
+        "mismatch_per_step_all_attempts": D * ts["attempts_per_step"],
+        "mismatch_per_net_step_all_attempts": D * attempts_per_net,
+        "mismatch_per_s_all_attempts": D * attempt_rate,
+        "reverse_per_step_all_attempts": c["reverse"] * P["clock"] * ts["attempts_per_step"],
         "commitment": c["commitment"],
-        "attempt_rate": attempt_rate,
+        "attempt_rate": attempt_rate, "step_rate": step_rate,
+        # total dissipation per net forward step for Delta mu = 20.5 kT (one ATP per step)
+        "total_dissipation_per_net_step_dmu20.5": 20.5 * steps_per_net - F * V3_FIXED["d"] / KT,
+        "tur_bound_per_net_step_model": 2.0 / ts["randomness"] if ts["randomness"] > 0 else np.inf,
     }
 
 

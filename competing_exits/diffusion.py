@@ -52,6 +52,18 @@ def bernoulli(z):
     return out
 
 
+def log_bernoulli(z):
+    """ln B(z) without overflow: ln z - z for large z, ln(-z) for very negative z."""
+    z = np.asarray(z, dtype=float)
+    out = np.empty_like(z)
+    big, neg = z > 30.0, z < -30.0
+    mid = ~(big | neg)
+    out[big] = np.log(z[big]) - z[big] + np.log1p(np.exp(-z[big]) / (1.0 - np.exp(-z[big])))
+    out[neg] = np.log(-z[neg]) + np.log1p(-np.exp(z[neg]))
+    out[mid] = np.log(bernoulli(z[mid]))
+    return out
+
+
 def stokes_einstein_D(kT: float, eta_mPa_s: float, radius_nm: float) -> float:
     """D = kT / (6 pi eta r) in nm^2/s (kT in pN nm, eta in mPa s = 1e-3 pN s/nm^2 * 1e-6)."""
     eta = eta_mPa_s * 1e-9  # pN s / nm^2   (1 mPa s = 1e-3 Pa s = 1e-3 N s/m^2 = 1e-9 pN s/nm^2)
@@ -114,6 +126,7 @@ class Search1D:
         c = self.D / h ** 2
         self.k_up = c * bernoulli(dU)      # i -> i+1
         self.k_dn = c * bernoulli(-dU)     # i+1 -> i
+        self.log_k_up = np.log(c) + log_bernoulli(dU)
         # transient nodes
         lo = 1 if self.left == ABSORB else 0
         hi = self.N - 1 if self.right == ABSORB else self.N
@@ -208,10 +221,10 @@ class Search1D:
         if self.left == REFLECT:
             lpi = lpi.copy()
             lpi[0] += np.log(0.5)
-        up = self.k_up.copy()
+        lup = self.log_k_up.copy()
         if self.left == REFLECT:
-            up[0] *= 2.0
-        lR = -(lpi[:-1] + np.log(up))            # edges 0..N-1
+            lup[0] += np.log(2.0)
+        lR = -(lpi[:-1] + lup)                   # edges 0..N-1 (log space: no underflow)
         # I_j = sum of pi over transient nodes k <= j (edge j spans nodes j, j+1)
         first = 1 if self.left == ABSORB else 0
         pi = np.exp(lpi)

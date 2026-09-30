@@ -130,10 +130,21 @@ class HeadSearch:
     start: object = -4.0
     rear: str = ABSORB
     N: int = 3200
+    start_tilt: bool = False      # tilt a start density by the load, exp(-F x / 2kT)
 
     def search(self, F: float, kT: float, D: Optional[float] = None) -> Search1D:
         return Search1D(self.landscape.U(F, kT), self.D if D is None else D,
                         a=-SITE, b=SITE, left=self.rear, right=ABSORB, N=self.N)
+
+    def start_at(self, F: float, kT: float):
+        """The start distribution at load F: the head's distribution when docking
+        happens is itself tilted by the load if ``start_tilt`` (it sits in the
+        undocked tether, which feels F/2 like the search)."""
+        if not self.start_tilt or not callable(self.start) or F == 0.0:
+            return self.start
+        f = 0.5 * F / kT
+        base = self.start
+        return lambda x: base(x) * np.exp(-f * (np.asarray(x) - 0.0))
 
     def rates(self, F: float, kT: float, D: Optional[float] = None) -> dict:
         """Capture rates {'front': k, 'rear': k} (1/s) of the exponential race."""
@@ -141,15 +152,15 @@ class HeadSearch:
 
     def exact_race(self, F: float, kT: float, clocks: dict, D: Optional[float] = None):
         """The full race: search + Poisson clocks, no exponential approximation."""
-        return self.search(F, kT, D).race(self.start, clocks)
+        return self.search(F, kT, D).race(self.start_at(F, kT), clocks)
 
     def mean_capture_time(self, F: float, kT: float) -> float:
-        return self.search(F, kT).capture(self.start)["mean_time"]
+        return self.search(F, kT).capture(self.start_at(F, kT))["mean_time"]
 
 
 @lru_cache(maxsize=200000)
 def _rates_cached(hs: HeadSearch, F: float, kT: float, D: Optional[float]):
-    c = hs.search(F, kT, D).capture(hs.start)
+    c = hs.search(F, kT, D).capture(hs.start_at(F, kT))
     T = c["mean_time"]
     return {"front": c["right"] / T, "rear": c.get("left", 0.0) / T}
 
@@ -235,7 +246,7 @@ def v3_search(kappa, x_eq, B, start_mean=None, start_kappa=None, kT=None, eta=No
     sk = f["start_kappa"] if start_kappa is None else start_kappa
     land = Landscape(kappa, x_eq, B_front=B, B_rear=None)
     D = stokes_einstein_D(kT, eta, HEAD_RADIUS_NM)
-    return HeadSearch(land, D, start=start_density(sm, sk), rear=REFLECT, N=N)
+    return HeadSearch(land, D, start=start_density(sm, sk), rear=REFLECT, N=N, start_tilt=True)
 
 
 def head_race_v3(kappa, x_eq, B, kb0, delta_b, kc, kon, T, atp_uM=1000.0,
