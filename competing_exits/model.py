@@ -69,6 +69,9 @@ class Exit:
                attempt (entry wait first); a state name = straight into that
                waiting state; or a mapping {destination: probability}.
                Ignored for TERMINATING exits.
+    cost_cv2   squared coefficient of variation of the post-exit time (1 =
+               exponential, 0 = fixed, 1/n = n equal exponential stages).  Only
+               fluctuation results (``transport_stats``) depend on it.
     """
 
     name: str
@@ -78,6 +81,7 @@ class Exit:
     cost_time: float = 0.0
     fuel: float = 0.0
     to: Destination = None
+    cost_cv2: float = 1.0
 
     def k(self, F, kT):
         return self.rate(F, kT)
@@ -95,12 +99,16 @@ class Exit:
 
 @dataclass(frozen=True)
 class WaitingState:
-    """A waiting state with competing exits (all formulas at constant load F)."""
+    """A waiting state with competing exits (all formulas at constant load F).
+
+    entry_cv2 is the squared coefficient of variation of the entry wait (1 =
+    exponential); only fluctuation results depend on it."""
 
     name: str
     exits: tuple
     kT: float
     entry_time: float = 0.0
+    entry_cv2: float = 1.0
 
     def __post_init__(self):
         names = [e.name for e in self.exits]
@@ -229,6 +237,73 @@ class WaitingState:
     def fuel_per_attempt(self, F=0.0):
         P = self.splitting(F)
         return sum(P[e.name] * e.fuel for e in self.exits)
+
+    # ----- fluctuations (renewal-reward over attempts) -----------------------
+    def transport_stats(self, F=0.0, step_size=None) -> dict:
+        """Velocity, effective diffusion coefficient, randomness and dwell statistics
+        at constant load, for motion *during a run* (terminating exits are removed and
+        the others renormalised).
+
+        Each attempt is a renewal cycle: entry wait E, race R ~ Exp(K) (independent of
+        the winner), then the winner's post-exit time C_j; its displacement is s_j.
+        With tau = E + R + C_J and X = s_J,
+
+            v   = E[X] / E[tau]
+            2 D = E[(X - v tau)^2] / E[tau]
+            r   = 2 D / (|v| d)          (d = step size, default max |s_j|)
+
+        Dwell = time between successive steps = C_prev + (failed attempts) + E + R.
+        In this single-state model the dwell before a forward step and before a
+        backstep have the same distribution (the race time does not depend on the
+        winner), except through C_prev, which is averaged over step types.
+
+        Returns v, D, randomness, dwell_mean, dwell_cv, P_step (per attempt),
+        attempts_per_step, and the step-type fractions."""
+        self._check_single()
+        live = [e for e in self.exits if e.kind != ExitKind.TERMINATING]
+        k = np.array([float(e.k(F, self.kT)) for e in live])
+        K = k.sum()
+        P = k / K
+        s = np.array([e.step for e in live])
+        c = np.array([e.cost_time for e in live])
+        c2 = c ** 2 * (1.0 + np.array([e.cost_cv2 for e in live]))
+        e1 = self.entry_time
+        e2 = e1 ** 2 * (1.0 + self.entry_cv2)
+        er1 = e1 + 1.0 / K                       # E[E + R]
+        er2 = e2 + 2.0 * e1 / K + 2.0 / K ** 2   # E[(E + R)^2]
+        t1 = er1 + P @ c
+        t2 = er2 + 2.0 * er1 * (P @ c) + P @ c2
+        x1, x2 = P @ s, P @ s ** 2
+        xt = P @ (s * (er1 + c))
+        v = x1 / t1
+        D = (x2 - 2.0 * v * xt + v ** 2 * t2) / (2.0 * t1)
+        d = step_size if step_size is not None else float(np.max(np.abs(s)))
+        # dwell between steps
+        is_step = (np.array([e.kind in STEP_KINDS for e in live])) & (s != 0)
+        PS = P[is_step].sum()
+        PR = 1.0 - PS
+        var_er = e1 ** 2 * self.entry_cv2 + 1.0 / K ** 2
+        if PR > 0:
+            cr1 = (P[~is_step] @ c[~is_step]) / PR
+            cr2 = (P[~is_step] @ c2[~is_step]) / PR
+        else:
+            cr1 = cr2 = 0.0
+        af1, af_var = er1 + cr1, var_er + (cr2 - cr1 ** 2)
+        nfail, nfail_var = PR / PS, PR / PS ** 2
+        A1 = nfail * af1 + er1
+        A_var = nfail * af_var + nfail_var * af1 ** 2 + var_er
+        w = P[is_step] / PS
+        cp1 = w @ c[is_step]
+        cp_var = w @ c2[is_step] - cp1 ** 2
+        dwell = cp1 + A1
+        dwell_var = cp_var + A_var
+        return {
+            "v": v, "D": D, "randomness": 2.0 * D / (abs(v) * d) if v != 0 else np.inf,
+            "dwell_mean": dwell, "dwell_cv": np.sqrt(dwell_var) / dwell,
+            "P_step": PS, "attempts_per_step": 1.0 / PS,
+            "step_fractions": {e.name: float(P[i] / PS) for i, e in enumerate(live) if is_step[i]},
+            "cycle_time": t1,
+        }
 
 
 @dataclass(frozen=True)
