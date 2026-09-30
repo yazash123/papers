@@ -1,0 +1,21 @@
+# Visscher 1999 Fig.4a (p.187), raster-digitised. 'filled' merges triangles (1.05 pN) and filled circles (3.59 pN): assignment by eye in REPORT2.md; overlapping markers flagged there. err for open circles = distance from centre to the lower cap.
+marker,atp_uM,r,err_approx
+filled,1,1.324,0.185
+filled,2,1.35,0.1163
+filled,4.99,1.339,0.2326
+filled,5.02,1.217,0.2326
+filled,9.98,1.309,0.2341
+filled,10.02,1.093,0.2341
+filled,19.98,0.6657,0.0408
+filled,39.83,1.234,0.108
+filled,50,0.853,0.068
+filled,69.79,0.7833,0.0483
+filled,100.1,0.6959,0.0461
+filled,100.2,0.4382,0.0272
+filled,398,0.5181,0.0363
+filled,399.7,0.3747,0.0272
+filled,1001,0.4285,0.0279
+filled,1998,0.47,0.0551
+open_5.69pN,399,0.7397,-0.1143
+open_5.69pN,1994,0.7897,-0.116
+open_5.69pN,4977,0.834,-0.121
