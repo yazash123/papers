@@ -181,6 +181,44 @@ def sozanski(d, v0=0.80, v0_range=(0.75, 0.84)):
     return out
 
 
+def budget_exact(L):
+    """POST HOC (after the session-2 review): the docking budget with the exact least
+    cost of a restriction-only docking potential, ln max(q/p0), instead of its lower
+    bound D(q||p0) used in PREDICTIONS.md.  Valley grid points and the seven members."""
+    from competing_exits import bet
+    from partb_common import BUDGET, X
+    V = json.loads((ROOT / "results" / "part_b_valley.json").read_text())
+    A = json.loads((ROOT / "results" / "part_a_v3.json").read_text())
+    k = np.array(A["grid"]["kappa"])
+    xs = np.array(A["grid"]["x_eq"])
+    out = {"budget_kT": BUDGET, "grid": {}, "members": {}}
+    for w in ("session1", "data"):
+        chi = np.array(A[w]["chi2_grid"], dtype=float)
+        mask = np.isfinite(chi) & (chi - V["weights"][w]["chi2_min"] <= 5.99)
+        ii, jj = np.where(mask)
+        out["grid"][w] = {}
+        for k0 in (0.01, 0.03, 0.1, 0.21, 0.3):
+            p0 = bet.tilted(bet.tether_logdensity(k0, 0.0), X)
+            D = np.array(V["weights"][w]["per_kappa0"][f"{k0:g}"]["D_grid"], dtype=float)[mask]
+            R = np.array([bet.restriction_cost(bet.tilted(bet.tether_logdensity(k[i], xs[j]), X), p0)
+                          for i, j in zip(ii, jj)])
+            excl = [(float(k[i]), float(xs[j])) for i, j, r in zip(ii, jj, R) if r > BUDGET]
+            out["grid"][w][f"{k0:g}"] = {"n": int(mask.sum()), "affordable_D": float((D <= BUDGET).mean()),
+                                         "affordable_exact": float((R <= BUDGET).mean()),
+                                         "excluded_kappa_range": [min(e[0] for e in excl), max(e[0] for e in excl)] if excl else None,
+                                         "excluded_xeq_range": [min(e[1] for e in excl), max(e[1] for e in excl)] if excl else None}
+    for n in NAMES:
+        prm = L["members"][n]["params"]
+        if prm["family"] == "gaussian":
+            q = bet.tilted(bet.tether_logdensity(prm["kappa"], prm["x_eq"]), X)
+        else:
+            q = bet.tilted(bet.iprojection_logdensity(prm["kappa0"], prm["lambdas"], prm["fs"]), X)
+        out["members"][n] = {f"k0={k0}": {"D": bet.commitment(q, bet.tilted(bet.tether_logdensity(k0, 0.0), X), X),
+                                          "exact": bet.restriction_cost(q, bet.tilted(bet.tether_logdensity(k0, 0.0), X))}
+                             for k0 in (0.03, 0.21)}
+    return out
+
+
 def main(write=True):
     L = load_predictions()
     d = data_sets()
@@ -232,6 +270,8 @@ def main(write=True):
     out["taniguchi_1to1"] = taniguchi_one_to_one()
     # TUR
     out["tur"] = tur(d)
+    # post hoc: the budget with the exact least restriction cost
+    out["budget_exact"] = budget_exact(L)
     if write:
         save_json("part_c_confront.json", out)
     return out, d, L
@@ -335,6 +375,19 @@ def tables(out, d, L, fh=sys.stdout):
     p(f"\nWeighted linear fit: relative slope {t['relative_slope_per_K'] * 100:+.2f} ± {t['relative_slope_sem'] * 100:.2f} % per K; "
       f"the entropic default predicts {t['entropic_prediction_relative_slope_per_K'] * 100:+.2f} % per K "
       f"(difference {(t['relative_slope_per_K'] - t['entropic_prediction_relative_slope_per_K']) / t['relative_slope_sem']:+.1f} s.e.m.)")
+    b = out["budget_exact"]
+    p("\n### C.8 (post hoc) The docking budget with the exact least restriction cost ln max(q/p₀)\n")
+    p("| weights | κ₀ | valley points | affordable, D(q‖p₀) ≤ 1.2 (as committed) | affordable, ln max(q/p₀) ≤ 1.2 | excluded κ′ range | excluded x′ range |")
+    p("|---|---|---|---|---|---|---|")
+    for w, rec in b["grid"].items():
+        for k0, g in rec.items():
+            p(f"| {w} | {k0} | {g['n']} | {g['affordable_D']:.2f} | {g['affordable_exact']:.2f} | "
+              f"{fmt(g['excluded_kappa_range'][0], 3) + '–' + fmt(g['excluded_kappa_range'][1], 3) if g['excluded_kappa_range'] else '–'} | "
+              f"{fmt(g['excluded_xeq_range'][0], 1) + '–' + fmt(g['excluded_xeq_range'][1], 1) if g['excluded_xeq_range'] else '–'} |")
+    p("\n| member | D(q‖p₀), κ₀ 0.21 | ln max(q/p₀), κ₀ 0.21 | D(q‖p₀), κ₀ 0.03 | ln max(q/p₀), κ₀ 0.03 |")
+    p("|---|---|---|---|---|")
+    for n, rec in b["members"].items():
+        p(f"| {n} | {rec['k0=0.21']['D']:.3f} | {rec['k0=0.21']['exact']:.3f} | {rec['k0=0.03']['D']:.3f} | {rec['k0=0.03']['exact']:.3f} |")
     p("\n### C.7 TUR: entropy per net forward step ≥ 2/r (k_B)\n")
     p("| data | load (pN) | r ± s.e.m. | bound 2/r (k_BT) | 95% range | total per net step, Δμ 20.5 (k_BT) | fraction the bound captures |")
     p("|---|---|---|---|---|---|---|")
@@ -396,7 +449,7 @@ def figure(out, d, L):
         ax.plot(a[:, 0], a[:, 1], mk, ms=4.5, color=col, mec="white", mew=0.6, label=lab)
     ax.axhline(1, color=MUTED, lw=0.8)
     ax.set(xlabel="hindering load F (pN)", ylabel="forward : back steps", yscale="log", ylim=(0.02, 500))
-    ax.set_title("c  step odds: [ATP] moves the 1:1 load", fontsize=8.5)
+    ax.set_title("c  step odds at 1 mM (fitted) and 10 µM (not fitted)", fontsize=8.5)
     ax.legend(fontsize=6.8, loc="upper right")
     # (d) randomness vs load
     ax = axs[1, 0]

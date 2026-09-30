@@ -399,6 +399,31 @@ Above 6 pN: mean ln(10 µM/1 mM) = +0.95 over 7 load bins (s.d. 0.76; s.e. of th
 
 Weighted linear fit: relative slope -0.36 ± 0.28 % per K; the entropic default predicts +0.34 % per K (difference -2.5 s.e.m.)
 
+### C.8 (post hoc) The docking budget with the exact least restriction cost ln max(q/p₀)
+
+| weights | κ₀ | valley points | affordable, D(q‖p₀) ≤ 1.2 (as committed) | affordable, ln max(q/p₀) ≤ 1.2 | excluded κ′ range | excluded x′ range |
+|---|---|---|---|---|---|---|
+| session1 | 0.01 | 32 | 1.00 | 0.91 | 0.348–0.457 | 0.8–1.2 |
+| session1 | 0.03 | 32 | 1.00 | 0.94 | 0.102–0.457 | 1.2–5.2 |
+| session1 | 0.1 | 32 | 1.00 | 0.69 | 0.102–0.154 | 2.8–5.2 |
+| session1 | 0.21 | 32 | 0.88 | 0.31 | 0.102–0.232 | 0.8–5.2 |
+| session1 | 0.3 | 32 | 0.75 | 0.12 | 0.102–0.304 | 0.4–5.2 |
+| data | 0.01 | 115 | 1.00 | 0.82 | 0.059–0.524 | 0.8–8.0 |
+| data | 0.03 | 115 | 1.00 | 0.70 | 0.059–0.524 | 1.2–8.0 |
+| data | 0.1 | 115 | 0.84 | 0.42 | 0.059–0.176 | 2.4–8.0 |
+| data | 0.21 | 115 | 0.57 | 0.17 | 0.059–0.265 | 0.4–8.0 |
+| data | 0.3 | 115 | 0.47 | 0.06 | 0.059–0.348 | 0.0–8.0 |
+
+| member | D(q‖p₀), κ₀ 0.21 | ln max(q/p₀), κ₀ 0.21 | D(q‖p₀), κ₀ 0.03 | ln max(q/p₀), κ₀ 0.03 |
+|---|---|---|---|---|
+| iproj_k0=0.03 | 0.459 | 5.146 | 0.127 | 0.191 |
+| iproj_k0=0.21 | 0.003 | 0.014 | 0.391 | 0.806 |
+| maxent_k0=0.03 | 0.276 | 3.325 | 0.306 | 0.706 |
+| maxent_k0=0.21 | 0.019 | 0.230 | 0.409 | 0.843 |
+| best | 0.178 | 0.513 | 0.676 | 1.140 |
+| middle | 0.069 | 0.768 | 0.417 | 0.852 |
+| floppy_edge | 1.723 | 6.002 | 0.566 | 1.087 |
+
 ### C.7 TUR: entropy per net forward step ≥ 2/r (k_B)
 
 | data | load (pN) | r ± s.e.m. | bound 2/r (k_BT) | 95% range | total per net step, Δμ 20.5 (k_BT) | fraction the bound captures |

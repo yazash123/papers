@@ -104,10 +104,10 @@ digitisation otherwise).
 | Visscher 1999 | 0, C | Fig. 3a force–velocity at 2 mM and 5 µM (p.186); Fig. 4a randomness vs [ATP], Fig. 4b randomness vs load (p.187), all figure-read; "stall force of ~7.0 pN" (p.186) |
 | Block 2003 | 0, C | Fig. 4A velocity and 4C randomness vs load at 1.6 mM and 4.2 µM, with assisting loads (p.2354), figure-read |
 | Sozanski 2015 | 0, C | Fig. 2b velocity vs effective viscosity, figure-read; control speed "about 800 nm/s" (p.218102-2); Michaelis–Menten fits and loss of runs (p.218102-3) |
-| Taniguchi 2005 | 0, B, C | Table 1 rates and distances at 280–308 K and Table 2 enthalpies (p.345); definition of the prefactor A_T (Methods, p.346); P(forward) = 0.5 at about 8 pN (p.343); two rate-limiting transitions (p.343) |
+| Taniguchi 2005 | 0, B, C | Table 1 rates and distances at 280–308 K and Table 2 enthalpies (p.345); definition of the prefactor A_T (Methods, p.347); P(forward) = 0.5 at about 8 pN (p.343); two rate-limiting transitions (p.343) |
 | Hong 2016 | 0, C | force 5.3 ± 0.2 vs 5.2 ± 0.2 pN at 295 and 280.5 K; velocity Ea (p.1289) |
 | Mickolajczyk 2015 | 0, A, B | tethered-head substep 8.4 ± 3.0 nm, 1HB state, ATP binding with two heads bound (p.E7187): the mean of p |
-| Guydosh 2009 | 0, B | free-head mobility under ±0.4 and ±1.7 pN (p.126): the floppy end of the κ₀ bracket |
+| Guydosh 2009 | 0, B | free-head mobility under ±0.4 and ±1.7 pN (p.126) and "readily pulled about its bound partner" (p.127): the basis of the guessed floppy end of the κ₀ bracket |
 | Kutys 2010 | 0, A, B | WLC neck linker, L_p = 0.7 nm, 0.364 nm per residue (p.4): the width of p and κ₀ = 0.21 |
 | Xu 2021 | 0, B | docking free energy ~1.2 k_BT (p.2627); WLC parameters (p.2629) |
 | Block 2007 | 0, B | Rice 2003's docking free energy, second-hand (p.2991) |

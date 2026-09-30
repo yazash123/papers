@@ -10,46 +10,73 @@ hidden dissipation, and would show most clearly near the motor's limits.
 
 I built the model from a diffusive first-passage solver. That solver
 reproduces the earlier "v1" model's targets, and a new v3 model with it fits
-Carter & Cross (C&C) as well as session 1 did. I then fixed the predictions
-of the hypothesis in PREDICTIONS.md and committed that file before comparing
-anything with data.
+Carter & Cross (C&C) as well as session 1 did. I then fixed the predictions in
+PREDICTIONS.md and committed that file before comparing them with the limit
+datasets. Part A had already fitted C&C and checked Kondo, and an unrun
+comparison-script skeleton existed untracked (Part B).
 
 The outcome is negative, and it is specific:
-* **The data need only a small bet.** C&C's arrival times require at most
-  0.4 kT of commitment (at most 0.17 kT for the MaxEnt family). They need
-  none at all if the undocked neck linker is as stiff as a worm-like chain
-  and C&C's own scatter is used.
-* **The bet's imprint is too small to see.** The predicted imprint is
-  0.01–0.17 kT per step at 2 pN, about 1% of the ≈16 kT that Ariga et al.
-  report as hidden. A Harada–Sasa experiment cannot resolve it: the
-  load-dependence of the chemistry alone (≈2.6 kT between 2 and 4 pN in
-  Takaki's fitted cycle) is 5–30 times larger.
+* **Within v3, the data need only a small bet.**
+  - C&C's arrival times require at most 0.4 kT of commitment, and at most
+    0.17 kT in the two-parameter I-projection family.
+  - These are upper bounds at a nominal 95% level; at 68%, up to 0.47 kT.
+  - They need no bet at all if the undocked neck linker is as stiff as a
+    worm-like chain and C&C's own scatter is used, though marginally
+    (Δχ² 5.05 against 5.99).
+  - With the exact restriction cost (corrected after review), the ~1.2 kT
+    docking budget leaves the MaxEnt members affordable. It excludes most of
+    the valley if the undocked tether is that stiff.
+* **The bet's imprint is too small to isolate.**
+  - It is 0.01–0.17 kT per step at 2 pN for the MaxEnt members, about 1% of
+    ≈16 kT of hidden dissipation. The 16 kT is my 0.8 × 20.5 kT, from
+    second-hand statements of Ariga et al.'s 80%.
+  - Under assisting load it reaches ≈1 kT for one MaxEnt member.
+  - An Ariga-type Harada–Sasa measurement cannot separate the imprint from
+    the chemistry. In Takaki's fitted cycle (my reconstruction from their
+    code), the chemical dissipation alone changes by 5.1 kT between 2 and
+    6 pN, 11–320 times the predicted contrast.
+  - Resolving 0.1 kT would also need 10⁶–10⁷ steps.
 * **Near the limits, the landscapes the data allow cannot be told apart**,
   except in their unloaded viscosity response. The bet is therefore not
   visible in the character of the curves.
-* **The limit data contradict the model at many points:**
-  - past stall the motor walks backward 1.4–5.6 times faster than predicted,
+* **The limit data contradict v3 at several points:**
+  - past stall the motor walks backward 1.4–5.7 times faster than predicted,
     with a flat ≈ 300-ms dwell where the model's grows to 0.7–1.8 s;
-  - [ATP] moves the load at which forward and backward steps balance
-    (the model says it cannot);
   - backward-step dwells are 1.3–4 times longer than forward-step dwells at
     intermediate loads;
-  - small crowders slow the unloaded motor several times more than any
-    candidate landscape predicts;
-  - the balance load does not rise with temperature.
+  - small crowders slow the unloaded motor far more than any member
+    predicts: 3–13 times the predicted slowdown for the MaxEnt members, and
+    1.3–2.6 times for the floppiest. This is a different construct,
+    truncated GFP-kinesin.
+  - In Taniguchi's bovine-brain data the balance load does not rise with
+    temperature (1.8–2.5 s.e.m.).
 
-  Every candidate landscape fails in the same way, so these failures refute
-  the kinetic scaffold (a diffusive forward search raced against a backstep
-  gate), not the bet.
+  C&C's own 10 µM odds lie above the 1 mM odds near stall, which v3 cannot
+  produce. But that selection was made after seeing the data, and the
+  authors read their data as ATP-independent.
+
+  Every member fails alike, so these results falsify v3's specific choices:
+  - load-independent ATP binding;
+  - a backstep gate confined to the ATP-bound race and slowing under load;
+  - the search as the only viscous step;
+  - an entropic temperature scaling.
+
+  They do not falsify a search-plus-gate scaffold in general. And since the
+  bet is sized inside v3, they neither convict nor clear the bet.
 
 The thermodynamic uncertainty relation (TUR), applied to measured randomness,
 bounds the total dissipation. The bound captures a quarter to a third of the
-total at low load and falls to 7% near stall, so it goes slack there. It says
-nothing about the imprint.
+total at low load and 5–13% at Visscher's highest load (depending on the
+assumed odds and Δμ). It goes slack toward stall and says nothing about the
+imprint.
+
+An independent review found errors. They are corrected here and listed under
+"Review fixes" at the end. PREDICTIONS.md is left as committed, and its
+errors are listed in Part B.
 
 Deliverables: [PREDICTIONS.md](PREDICTIONS.md) (commit `84a3d19`, before any
-comparison); figures 5–7 in `figures/`; tables in `results/tables_partB.md`
-and `results/tables_partC.md`.
+comparison with the limit datasets); figures 5–7 in `figures/`; tables in
+`results/tables_partB.md` and `results/tables_partC.md`.
 
 ---
 
@@ -171,7 +198,7 @@ are in `data/digitized/`.
 |---|---|---|
 | Visscher et al. 1999, *Nature* 400:184, Fig. 3a (p.186) | squid kinesin, force clamp, 2 mM and 5 µM ATP | 2 mM: 854 → 148 nm/s at 6.3 pN *(fig)*; "stall force of ~7.0 pN" (p.186). 5 µM: 56 → 5.7 nm/s at 5.6 pN *(fig)*; stall ~5.5 pN. Stops short of stall. |
 | Carter & Cross 2005, *Nature* 435:308, Fig. 2c (p.310) | full-length *Drosophila*, 23 °C, 1 mM and 10 µM | **through and past stall**: 1 mM from 824 nm/s (trap off) to −31 nm/s at 12.6–13.5 pN; 10 µM from 142 to −22 nm/s *(fig, vector)* |
-| Block et al. 2003, *PNAS* 100:2351, Fig. 4A (p.2354) | 1.6 mM, 4.2 µM ATP; 2-D force clamp | 1.6 mM: ~650–700 → 128 nm/s at 4.7 pN hindering *(fig)*; "near zero between −4 and −6 pN" (p.2354) |
+| Block et al. 2003, *PNAS* 100:2351, Fig. 4A (p.2354) | 1.6 mM, 4.2 µM ATP; 2-D force clamp | 1.6 mM: ~650–700 → 128 nm/s at 4.7 pN hindering *(fig)*; "near zero between −4 and −6 pN" (p.2354), in Block's sign convention (backward, i.e. hindering, loads negative): 4–6 pN hindering in this report's convention |
 | Nishiyama et al. 2002, *NCB* 4:790, Table 1 (p.790) | bovine brain kinesin, 298 K | v = 930, 230, 0 nm/s at 0, 3.8, 7.6 pN (model rates from dwells) |
 | Kondo et al. 2023, *Traffic* 24:463 | mouse KIF5A, 25 °C | zero velocity ~9.1 pN; loads to >40 pN (session 1) |
 | Khalil et al. 2008, *PNAS* 105:19247, Table 1 (p.19250) | *Drosophila* K401 WT and cover-strand mutants | stall forces 4.96 ± 0.05 (WT), 3.02 ± 0.03 (2G), 1.37 ± 0.04 pN (DEL, biased high) |
@@ -182,7 +209,7 @@ are in `data/digitized/`.
 |---|---|---|
 | Visscher 1999, Fig. 4b (p.187) | 2 mM ATP | r = 0.41–0.48 from 0.5 to 4.2 pN; **0.68 ± 0.06 (5.0 pN), 0.77 ± 0.07 (5.4 pN), 1.13 ± 0.10 (5.76 pN)** *(fig)*. Last point ~1.2 pN below stall. |
 | Visscher 1999, Fig. 4a (p.187) | r vs [ATP] at 1.05, 3.59, 5.69 pN | 5.69 pN: r = 0.74, 0.79, 0.83 at 0.4, 2, 5 mM *(fig)*; "unable to measure r for 5.69 pN at more than a few ATP levels" (p.187) |
-| Block 2003, Fig. 4C (p.2354) | 1.6 mM, 4.2 µM | 1.6 mM: r = 0.36–0.42 from −4.7 (assisting) to 2.7 pN hindering; **0.55 ± 0.04 at 3.7 pN, 0.86 ± 0.06 at 4.8 pN** *(fig)*; text: r = 0.38 ± 0.01 over "−3 to 5 pN". 4.2 µM: 0.8–1.2 |
+| Block 2003, Fig. 4C (p.2354) | 1.6 mM, 4.2 µM | 1.6 mM: r = 0.36–0.42 from −4.7 (assisting) to 2.7 pN hindering; **0.55 ± 0.04 at 3.7 pN, 0.86 ± 0.06 at 4.8 pN** *(fig)*; text: r = 0.38 ± 0.01 over "−3 to 5 pN" in Block's convention, i.e. from 3 pN hindering to 5 pN assisting. 4.2 µM: 0.8–1.2 |
 | Yildiz et al. 2008, *Cell* 134:1030, p.1033 | one head labelled, low ATP | r = 0.57 (WT); 0.97–1.01 for neck-linker-extended mutants (futile cycles) |
 
 **(c) Forward:back ratio against load**
@@ -226,7 +253,7 @@ velocities of the last moving points are noisy and the crowders disagree.
 
 | dataset | range | finding |
 |---|---|---|
-| Taniguchi 2005, Tables 1–2 (p.345) | 280–308 K, bovine brain, 1 mM ATP | k_f0 = 100 → 1353 s⁻¹, k_b0 = 0.28 → 3.8 s⁻¹; ΔH‡ = 18.3 ± 1.1 (forward), 18.2 ± 1.4 k_BT₀ (back); ΔS‡ = 9.9 ± 1.1, 3.9 ± 1.4 k_B; slow dwell phase doubles per 10 °C drop, fast phase less (p.344). *Added in Part C:* these ΔH‡ exclude the diffusion-limited prefactor A_T = k_BT/(3πηr x₀²) (Methods, p.346). The raw Arrhenius enthalpies of Table 1's k_f0 and k_b0 are 26.7 ± 1.1 and 26.4 ± 1.4 k_BT₀ (my weighted fits); k_c (their load-independent step) has 13.8 ± 0.7 k_BT₀. |
+| Taniguchi 2005, Tables 1–2 (p.345) | 280–308 K, bovine brain, 1 mM ATP | k_f0 = 100 → 1353 s⁻¹, k_b0 = 0.28 → 3.8 s⁻¹; ΔH‡ = 18.3 ± 1.1 (forward), 18.2 ± 1.4 k_BT₀ (back); ΔS‡ = 9.9 ± 1.1, 3.9 ± 1.4 k_B; slow dwell phase doubles per 10 °C drop, fast phase less (p.344). *Added in Part C:* these ΔH‡ exclude the diffusion-limited prefactor A_T = k_BT/(3πηr x₀²) (Methods, p.347). The raw Arrhenius enthalpies of Table 1's k_f0 and k_b0 are 26.7 ± 1.1 and 26.4 ± 1.4 k_BT₀ (my weighted fits); k_c (their load-independent step) has 13.8 ± 0.7 k_BT₀. |
 | Hong et al. 2016, *Biophys. J.* 111:1287, p.1289 | ~5–27 °C (Arrhenius fit to 8 °C), KIF5A | velocity Ea ≈ 65 kJ/mol (≈ 26 k_BT at 298 K); force 5.3 ± 0.2 pN (295 K) vs 5.2 ± 0.2 pN (280.5 K) |
 | Kawaguchi 2008 (review) | — | no new temperature data |
 
@@ -247,7 +274,7 @@ Neither end of 5–40 °C is reached with backstep counts: Taniguchi covers
 | dataset | finding |
 |---|---|
 | Mickolajczyk et al. 2015, *PNAS* E7186, p.E7187 | labelled head's substep 8.4 ± 3.0 nm (mean ± SD, 78% component) from its rear site: the tethered intermediate sits over the bound head; 1HB state 8.0 ± 0.5 ms at 1 mM; the motor **waits for ATP with two heads bound** (≥ 10 µM), and the tethered state follows ATP binding and precedes hydrolysis; "ATP binding only partially docks the NL and hydrolysis completes docking" |
-| Guydosh & Block 2009, *Nature* 461:125, p.126 | with a bead on one head, ±1.7 pN alternating loads move the unbound head through ~23 nm; "similar transitions" at ±0.4 pN; "the unbound head is mobile, and can be readily pulled about its bound partner and even rotated" |
+| Guydosh & Block 2009, *Nature* 461:125, pp.126–127 | with a bead on one head, ±1.7 pN alternating loads move the unbound head through ~23 nm; "similar transitions" at ±0.4 pN (p.126); "the unbound head is mobile, and can be readily pulled about its bound partner and even rotated" (p.127) |
 | Kutys et al. 2010, *PLoS Comput. Biol.*, p.4 | WLC neck linker: L_p = 0.7 nm fits MD; 0.364 nm per residue (14 residues ≈ 5.1 nm) |
 | Xu et al. 2021, p.2629 | WLC with l_c = 10 nm, l_p = 0.5 nm |
 
@@ -342,7 +369,9 @@ Checks (`tests/test_diffusion.py`):
 * **Race approximation.** The competing-exits treatment (capture as a Poisson
   exit) agrees with the full diffusive race with the gate and clock:
   - within 2×10⁻³ from 0 to 12 pN (`tests/test_bet.py`);
-  - within 10⁻³ from −15 to +15 pN (checked in Part B).
+  - within 2×10⁻³ from −15 to +15 pN (`tests/test_bet.py`, added after the
+    review; the largest deviation, 1.7×10⁻³, is for the floppy edge at
+    −10 pN).
 
 **The fit** is to C&C's three relations (ratio, dwell at 1 mM, dwell at
 10 µM), each sampled at 3, 4, …, 9 pN as in session 1 (`analysis/part_a_v3.py`,
@@ -402,9 +431,55 @@ fraction divided by the mean dwell):
 
 ## Part B. The valley, the MaxEnt member, and the predictions
 
-Part B is written up in full in **[PREDICTIONS.md](PREDICTIONS.md)**, committed
-as `84a3d19` before `analysis/part_c_confront.py` existed in the repository or
-had been run. The main results:
+Part B is written up in full in **[PREDICTIONS.md](PREDICTIONS.md)**, committed as
+`84a3d19`. PREDICTIONS.md is left as committed. The errors found in it since
+are listed at the end of this Part, and the corrections are applied here and
+in Part C.
+
+**What git does and does not show about the order.**
+* **What it shows.** Commit `84a3d19` (02:16) precedes the first commit of any
+  comparison script or output (`1b4549b`, 02:35). `84a3d19` contains no
+  comparison script or result, its scripts read nothing from
+  `data/digitized/`, and PREDICTIONS.md has not changed since.
+* **What it cannot show.**
+  - An unrun skeleton of `analysis/part_c_confront.py` (data loaders and a TUR
+    function) existed as an untracked file before `84a3d19`. It was first run
+    after that commit.
+  - The README had listed the command `part_c_confront.py` since `c34b200`.
+
+  Git records neither an untracked file nor whether a script was run, so both
+  facts rest on my word.
+* **"Before comparing" is limited to the limit datasets.** Part A had already
+  compared v3 with C&C (the fit) and with Kondo, and PREDICTIONS §0 lists
+  everything I had seen.
+
+**B.0 Why the I-projection family, and when it is the MaxEnt family.**
+The minimiser of D(q‖p₀) under linear constraints ⟨φ_k⟩_q = c_k is
+q ∝ p₀·exp(−Σ_k λ_k φ_k). For any feasible q, the Pythagorean identity gives
+D(q‖p₀) = D(q‖q\*) + D(q\*‖p₀).
+
+The capture rates give such constraints under three conditions. For capture
+over a high barrier from a start inside the well (the Kramers regime, where
+the rate does not depend on the start):
+
+  k_f(F) ≈ D·[∫_well e^(−U−fx) dx · ∫_barrier e^(U+fx) dx]⁻¹.
+
+If the transition state is sharp, load-independent and at x_TS, and the well
+and transition state feel the same lever F/2, this becomes
+
+  ln k_f(F) = const − f·x_TS − ln⟨e^(−fx)⟩_q, with f = F/2kT.
+
+With the constant absorbed by the fitted barrier B, the rates at loads F_k
+fix ⟨e^(−f_k x)⟩_q, which are linear constraints, so φ_k = e^(−f_k x).
+
+**How well the three conditions hold.** A post-hoc check across the seven
+members over 3–9 pN reproduces ln k_f to within 0.003–0.04, but only with a
+member-dependent x_TS: 7.70 nm for the barrier-free best fit, 6.10–6.60 nm
+when B > 0. With x_TS fixed at 8 nm, ln k_f drifts by 0.22–1.39 between 3 and
+9 pN. Since x_TS moves with the refitted barrier, the two-parameter
+I-projection family (φ at 3 and 9 pN) is a well-motivated heuristic, not the
+exact MaxEnt family. Its members are valid members of the valley, so their D
+values are **upper bounds** on the least commitment.
 
 **B.1 The valley.**
 * Under session-1 weights, the docked tethers that fit C&C within
@@ -412,23 +487,44 @@ had been run. The main results:
   - One end is stiff and centred near the bound head, with no barrier.
   - The other end is floppy and parked forward, with a barrier of ~11 kT.
 * Under data weights the ridge is wider: κ′ 0.06–0.52, x′ 0–8 nm.
-* Two landscape parameters suffice to describe the ridge at the data's
-  precision, but the binding barrier is refitted along it.
+* Two landscape parameters describe the ridge at the data's precision, but
+  the binding barrier is refitted along it.
+* **The confidence levels are nominal.** The 21 "points" are samples of three
+  fitted two-parameter curves, not independent bins, so Δχ² ≤ 5.99 (and
+  2.30) does not have its nominal coverage.
+* The MaxEnt members sit at the valley's edge (Δχ² 5.2–5.99), so they depend
+  on the level chosen. At the 68% level the least Gaussian-family commitment
+  is 0.04–0.47 kT (session-1 weights), against up to 0.38 kT at 95%.
 
 **B.2 The MaxEnt member and the budget.**
 * **No bet (q = p₀).**
   - Under session-1 weights it misses C&C at every κ₀ in the bracket
     0.01–0.30 kT/nm² (Δχ² 18–89).
-  - Under C&C's own scatter it fits at κ₀ = 0.21, the worm-like-chain value
-    (Δχ² 5.05).
-* **Least commitment D(q‖p₀).** At most 0.38 kT in the Gaussian family and
-  at most 0.17 kT in the I-projection family. These are upper bounds on the
-  least commitment over all landscapes that fit.
+  - Under C&C's own scatter it fits at κ₀ = 0.21, the worm-like-chain value.
+    But Δχ² is 5.05 against a nominal 5.99, so this is marginal.
+* **Least commitment D(q‖p₀).** At most 0.38 kT in the Gaussian family and at
+  most 0.17 kT in the two-parameter I-projection family. These are upper
+  bounds on the least commitment over all landscapes that fit, within v3.
 * **The MaxEnt bet's shape.** In the I-projection family it is a soft rear
   wall, not a forward shift: it suppresses excursions behind x ≈ −4 to −5 nm.
-* **The budget.** The ~1.2 kT docking budget never binds at the MaxEnt
-  member. It removes the forward-parked end of the valley (x′ ≳ 3–4 nm), and
-  only when κ₀ ≥ 0.21.
+* **The budget, corrected (post hoc).** PREDICTIONS.md compared D(q‖p₀) with
+  the ~1.2 kT docking budget.
+  - For docking that only restricts the head (V ≥ 0), D is a lower bound on
+    the cost. The exact least cost of producing q is ln max(q/p₀), the
+    max-divergence (`bet.restriction_cost`; results/tables_partC.md, C.8).
+  - With the exact cost, **the MaxEnt members remain affordable at their own
+    κ₀**: I-projection 0.19 and 0.01 kT, Gaussian 0.71 and 0.23 kT (κ₀ 0.03
+    and 0.21).
+  - The budget cuts much more of the valley than PREDICTIONS says.
+    - At κ₀ = 0.21 only 31% of it is affordable (session-1 weights; data
+      weights 17%), against 88% and 57% committed.
+    - The excluded points span κ′ 0.10–0.23 and x′ 0.8–5.2 nm: every
+      landscape broader than the undocked tether (κ′ < κ₀), plus the
+      forward-shifted ones.
+    - For a floppy p₀ (κ₀ = 0.01) the stiffest landscapes are excluded
+      instead.
+  - A restriction-only docking potential cannot make the head floppier than
+    it is undocked without paying ln max(q/p₀).
 
 **Choice of p.** p, the head's distribution when docking starts, is the same
 density the search starts from, for every κ₀. The reading "p = the undocked
@@ -447,10 +543,52 @@ the best fit, a mid-valley member and the floppy edge. The conditions were:
 Their predictions for the near-stall kinetics (v, the 1:1 load, randomness,
 odds, dwell CV) differ by less than about 1.4 times a realistic measurement
 precision. The only strongly discriminating feature is the unloaded
-viscosity response: v(5η₀)/v(η₀) = 0.63–0.91. It follows the unloaded capture
-rate, which the 3–9 pN constraints do not fix. The imprint is 0.006–0.23 kT per
-committed step at F = 0 for the MaxEnt members, and at most 1 kT for any
-member. Figures 5 and 6 are in PREDICTIONS.md.
+viscosity response, v(5η₀)/v(η₀) = 0.63–0.91. It follows the unloaded capture
+rate, which the 3–9 pN constraints do not fix.
+
+The imprint per committed step:
+* at F = 0 to 2 pN: 0.006–0.23 kT for the MaxEnt members, and up to 1.02 kT
+  for the floppy edge;
+* under assisting load it is larger for some members (correction 2 below).
+
+Figures 5 and 6 are in PREDICTIONS.md.
+
+**Errors in PREDICTIONS.md found after the commit** (not patched there):
+1. **Budget (R3, P8, the "affordable fraction" column).** It used D(q‖p₀),
+   a lower bound on the cost. The exact least cost is ln max(q/p₀); see B.2.
+   The MaxEnt members stay affordable, but the rest of R3 is wrong.
+2. **B.4, "everywhere at ≤ 2 pN it stays below 1 kT, and below ~0.2 kT for
+   the MaxEnt members".** This is contradicted by the committed JSON:
+   - the floppy edge has 1.02 kT at F = 0;
+   - under assisting load the imprint rises for some members. The I-projection
+     κ₀ 0.03 member has 0.96 kT per step at −5 pN (51 kT/s); the Gaussian
+     MaxEnt κ₀ 0.03 member has 0.33; the floppy edge has 1.52 at −5 pN and
+     1.34 at −2 pN.
+
+   So for the I-projection κ₀ 0.03 member the imprint is largest at *both*
+   ends of the load range (P10). Caveat: under assisting load the search
+   takes microseconds, so capture can outrun relaxation, and the
+   full-relaxation D(p‖q) may overstate what is dissipated.
+3. **R4, "~9 kT at −8 nm".** This holds for κ₀ 0.21; for κ₀ 0.03 the wall
+   reaches 34 kT at −8 nm. (It also dips to −0.014 kT at positive x, a
+   negligible breach of V ≥ 0.)
+4. **Temperature.** Taniguchi's ΔH‡ excludes a T/η prefactor, so the
+   committed rate scalings are too weak (C.6).
+5. **"Git history records the order."** True for the committed files only;
+   see the disclosure above.
+6. **Accounting.** "One quench per committed step" was justified by saying
+   x-independent binding loops cannot dissipate. That holds only if unbinding
+   is x-dependent, i.e. detailed balance with a docking potential. In v3 the
+   clock is x-independent, so bind/unbind loops are a driven (flashing)
+   cycle. The primary accounting is therefore an **assumption** about the
+   real motor, and the "every ATP binding a quench" upper bound is what v3
+   literally implies.
+7. **The κ₀ values "from Guydosh".** 0.01 and 0.03 are guesses. Guydosh
+   report ~23 nm only at ±1.7 pN; at ±0.4 pN they report "similar
+   transitions" (supplement not in the folder). The same displacement at
+   loads 4× apart is itself non-Hookean.
+8. **"The MaxEnt family" should read "the two-parameter I-projection
+   family"** (B.0).
 
 ---
 
@@ -482,30 +620,40 @@ test specific to the hypothesis. "z" is (data − model)/s.e.m.
 
 | # | prediction | data | outcome |
 |---|---|---|---|
-| P1 [v3] | v through stall. Past stall: most negative −10 to −12 nm/s at 9–10 pN, then back toward 0. Saturation under assisting load. | C&C Fig. 2c past stall: **−16 to −31 nm/s at 8.5–14.5 pN, most negative at 12.6–13.5 pN**. Assisting, 1 mM: 381–739 nm/s. Assisting, 10 µM: 130–309 nm/s against a predicted 63–93. | **Fails** past stall: 2–5× too slow and the wrong trend. Fails at 10 µM under assisting load (2–4×). At 1 mM under assisting load, only the fast members reach the data. |
-| P2 [v3] | Odds at 10 µM equal those at 1 mM | C&C Fig. 2a: ln(odds 10 µM / odds 1 mM) = **+0.95 ± 0.29** over the 7 bins above 6 pN. The 1:1 load is ≈ 8.7 pN at 10 µM against 7.1 at 1 mM. | **Fails** (3.3 s.e.). Over all bins +0.25 ± 0.28. |
-| P3 [v3] | r against load | Block, 1.6 mM: r = 0.55 ± 0.04 and 0.86 ± 0.06 at 3.7 and 4.8 pN (model 0.47–0.58 and 0.80–0.92). Block at ≤ 2.7 pN: 0.36–0.42 (model 0.37–0.46). Visscher, 2 mM: fits to 3.6 pN, but 0.44–1.13 at 4.2–5.8 pN (model 0.58–1.62). Block, 4.2 µM: 1.20 ± 0.05 at 2 pN (model 0.91–0.93). | **Mixed.** Block near stall passes (z ≤ 2.1). Block at low load is 1–4 s.e.m. high. Visscher at 4.2–5.8 pN is z −4 to −7. Block at 4.2 µM and 2 pN is z +5.5. |
-| P4 [v3] | r against [ATP] | Visscher Fig. 4a at 5.69 pN: 0.74–0.83 (model 1.44–1.53). At 1.05 and 3.59 pN (markers merged): 1.09–1.35 at ≤ 10 µM (model 0.77–1.07); 0.78–1.23 at 40–70 µM (model 0.37–0.70); 0.37–0.70 at 100–400 µM (model 0.33–0.58). | **Fails** at 5.69 pN (z ≈ −6). The data sit above the model at ≤ 100 µM. |
-| P5 [v3] | Backward and forward dwells equal; mean dwell past stall grows with load | C&C Fig. 2b: backward/forward mean dwell 1.3–3.4 at 3.6–6.6 pN (1 mM) and 1.7–4.3 at 3.4–8.5 pN (10 µM); 0.7–1.5 near and past stall (1 mM). Kondo 1.22 ± 0.23. Backward dwell past stall **252–348 ms, flat, at 10.5–14.5 pN** (model 0.68–1.81 s). At 10 µM: 0.38–1.42 s at 9.7–14.5 pN (model 3.7–11.2 s). | **Fails** at intermediate loads and past stall; consistent near stall and with Kondo. |
+| P1 [v3] | v through stall. Past stall: most negative −10 to −12 nm/s at 9–10 pN, then back toward 0. Saturation under assisting load. | C&C Fig. 2c past stall: **−16 to −31 nm/s at 8.5–14.5 pN, most negative at 12.6–13.5 pN**. Assisting, 1 mM: 381–739 nm/s. Assisting, 10 µM: 130–309 nm/s against a predicted 63–93. | **Fails** past stall: the backward speed is 1.4–5.7× too slow (model −4.5 to −12.1 nm/s), with the wrong trend. Fails at 10 µM under assisting load (2–4×). At 1 mM under assisting load, only the fast members reach the data. |
+| P2 [v3] | Odds at 10 µM equal those at 1 mM | C&C Fig. 2a: over all bins, ln(odds 10 µM / odds 1 mM) = +0.25 ± 0.28 (from the bins' scatter; counting errors not extractable). Above 6 pN, a **post-hoc** selection, +0.95 ± 0.29; the 10 µM points reach 1:1 near 8.7 pN. But C&C conclude the opposite: "The stall force does not seem to depend on the ATP concentration" (p.309). Nishiyama fit 1 mM and 10 µM with one relation (Fig. 4b). Visscher find a **lower** stall force at 5 µM (abstract; ~5.5 vs ~7 pN). | **Not decided.** Suggestive near stall, contrary to the authors' reading; the literature disagrees on the sign. |
+| P3 [v3] | r against load | Block, 1.6 mM: r = 0.55 ± 0.04 and 0.86 ± 0.06 at 3.7 and 4.8 pN (model 0.47–0.58 and 0.80–0.92). Block at ≤ 2.7 pN: 0.36–0.42 (model 0.37–0.46). Visscher, 2 mM: fits to 3.6 pN, but 0.44–1.13 at 4.2–5.8 pN (model 0.58–1.62). Block, 4.2 µM: 1.20 ± 0.05 at 2 pN (model 0.91–0.93). | **Mixed.** Block near stall passes (z ≤ 2.1). Block at low load is 1–4 s.e.m. high. Visscher at 4.2–5.8 pN is z −4 to −7 (squid kinesin, whose force–velocity curve differs from C&C's; Visscher's Figs. 4a and 4b differ by ~0.3 in r near 5.7 pN, so these z overstate). Block at 4.2 µM and 2 pN is z +5.5. |
+| P4 [v3] | r against [ATP] | Visscher Fig. 4a at 5.69 pN: 0.74–0.83 (model 1.44–1.53). At 1.05 and 3.59 pN (markers merged): 1.09–1.35 at ≤ 10 µM (model 0.77–1.07); 0.78–1.23 at 40–70 µM (model 0.37–0.70); 0.37–0.70 at 100–400 µM (model 0.33–0.58). | **Fails** at 5.69 pN (z ≈ −6 nominally; a different construct, and this panel's 0.79 ± 0.12 at ~2 mM disagrees with Fig. 4b's 1.13 ± 0.10 at 5.76 pN). The data sit above the model at ≤ 100 µM. |
+| P5 [v3] | Backward and forward dwells equal; mean dwell past stall grows with load | C&C Fig. 2b: backward/forward mean dwell 1.3–3.4 at 3.6–6.6 pN (1 mM) and 1.3–4.3 at 3.4–8.5 pN (10 µM; the 4.3 rests on an anomalously short forward bin, and C&C note that at 5–8 pN each direction's dwell distribution is distorted by the other, p.310, p.312); 0.7–1.5 near and past stall (1 mM). Kondo 1.22 ± 0.23. Backward dwell past stall **252–348 ms, flat, at 10.5–14.5 pN** (model 0.68–1.81 s). At 10 µM: 0.38–1.42 s at 9.7–14.5 pN (model 3.7–11.2 s). | **Fails** at intermediate loads and past stall; consistent near stall and with Kondo. |
 | P6 [v3, bet] | v(5η₀)/v(η₀) = 0.63–0.91, no stop below 10η₀ | Sozański Fig. 2b, small crowders: v/v₀ = 0.46–0.61 at η_eff = 2.8–3.9 η₀ (BSA, Dextran 10k, PEG 6k, sucrose), 0.12 at 3.2 (TetraEG); **no motion** for PEG 6k from 3.5 and PEG 18k at 4.5. Large crowders ≈ 1.0 up to 3.45 η₀. | **Fails** for small crowders (model 0.70–0.96 at those η). Every member underpredicts the slowdown 1 − v/v₀: the MaxEnt members by 3–13×, the floppy edge by 1.3–2.6×. The floppy edge comes closest, as B.4 anticipated, but it too misses. |
-| P7 [v3] | 1:1 load ∝ T (+0.34%/K) | Taniguchi Table 1 (1:1 load = kT·ln(k_f0/k_b0)/(d_f − d_b)): 9.47, 10.51, 9.22, 8.92 pN at 280–308 K, slope **−0.36 ± 0.28%/K**. Hong's force 5.2 ± 0.2 vs 5.3 ± 0.2 pN at 280.5 and 295 K (ratio 0.98 ± 0.05; model 0.951). | **Fails** at 2.5 s.e.m. (Taniguchi). Hong is consistent but weak. The velocity part of P7 was mis-scaled (C.6). |
-| P8 [bet] | Commitment ≤ 0.38 kT, within the budget | none direct | untested (context: Taniguchi's 6 k_BT directional bias is 3–6× the docking energy, p.345) |
+| P7 [v3] | 1:1 load ∝ T (+0.34%/K) | Taniguchi Table 1 (1:1 load = kT·ln(k_f0/k_b0)/(d_f − d_b)): 9.47, 10.51, 9.22, 8.92 pN at 280–308 K, slope **−0.36 ± 0.28%/K**. Hong's force 5.2 ± 0.2 vs 5.3 ± 0.2 pN at 280.5 and 295 K (ratio 0.98 ± 0.05; model 0.951). | **Fails** at 2.5 s.e.m. (Taniguchi, bovine-brain kinesin), but fragile: without the 287-K point the slope is −0.21 ± 0.30%/K (1.8 s.e.m.), and the errors ignore the covariance of k_f0 with d_f. Hong is consistent but weak. The velocity part of P7 was mis-scaled (C.6). |
+| P8 [bet] | Commitment ≤ 0.38 kT, within the budget | none direct | Untested. Post hoc, the budget statement used a lower bound (B.2): the MaxEnt members stay affordable with the exact cost, but most of the valley does not. Context: Taniguchi's 6 k_BT directional bias is 3–6× the docking energy (p.345). |
 | P9 [bet] | Imprint 0.013–0.165 kT per step at 2 pN (≤ 1% of hidden) | Ariga's ~16 kT hidden (second-hand) | consistent, not a test |
-| P10 [bet] | Imprint rises toward stall (I-projection members) | no per-step hidden dissipation against load | untested |
+| P10 [bet] | Imprint rises toward stall (I-projection members) | no per-step hidden dissipation against load | Untested. Post hoc, the committed JSON shows the imprint also peaks under assisting load for some members (Part B, error 2). |
 | P11 [bet] | Differences in which chemistry cancels ≤ 0.5 kT | no data | untested |
 
 **What the scorecard says.**
-* **The scaffold fails near every limit the data reach:**
+* **v3 fails near most of the limits the data reach:**
   - past stall;
-  - under [ATP] changes;
-  - in the backward/forward dwell ratio;
-  - in small crowders;
-  - against temperature;
-  - near stall for Visscher's construct.
+  - in the backward/forward dwell ratio at intermediate loads;
+  - in small crowders (truncated GFP-kinesin, TIRF);
+  - against temperature (bovine-brain kinesin; 1.8–2.5 s.e.m.);
+  - near stall for Visscher's squid kinesin (a different force–velocity
+    curve);
+  - under [ATP] changes. Only suggestive, against the authors' reading.
 * **The failures do not discriminate between members.** At every failing
   feature the seven members agree with each other to within the data's
-  resolution; in viscosity they differ, but none approaches the data. So the
-  failures refute the kinetic scaffold, not any particular bet.
+  resolution; in viscosity they differ, but none approaches the data.
+* **What is falsified is v3's specific choices:**
+  - a load-independent ATP-binding rate;
+  - a backstep gate that fires only during the ATP-bound race and slows under
+    load (one Bell gate, δ_b fitted at 3–9 pN);
+  - the search as the only viscosity-dependent step;
+  - an entropic temperature scaling.
+
+  A diffusive search raced against a gate is not falsified in general. And
+  the bet's size is itself estimated inside v3, so these results do not
+  exonerate the bet either: a revised scaffold may need a different bet.
 * **The bet-specific predictions (P8–P11) cannot be tested** with any dataset
   in the folder.
 * **"The signal is strongest near the limits, in the character of the
@@ -521,17 +669,25 @@ test specific to the hypothesis. "z" is (data − model)/s.e.m.
     The model is 7–49% faster than the bins at 1.6–4.6 pN; its 1:1 load is
     7.0–7.2 pN, against a velocity zero crossing at ≈ 6.5 pN.
   - **Past stall** (independent): data −16 to −31 nm/s at 1 mM and −4.5 to
-    −22 nm/s at 10 µM (8.4–14.5 pN). Model −4.5 to −11 and −0.7 to −2.0. The model's
+    −22 nm/s at 10 µM (8.4–14.5 pN). Model −4.5 to −12.1 and −0.7 to −2.0. The model's
     backward speed past stall collapses because the fitted gate slows under
     load (δ_b = 0.4–0.8 nm) and, in v3, fires only after ATP binds.
   - **Assisting loads, 10 µM:** stepping is 2–4× faster than v3 allows. v3's
     ATP wait (≈ 94 ms at 10 µM) is load-independent; C&C's dwells under
-    assisting load are 22–50 ms. This is direct evidence for **load-dependent
-    ATP binding**, or for ATP-independent forward steps under assisting load.
+    assisting load are 22–50 ms. This fits **load-dependent ATP binding** (or
+    ATP-independent forward steps under assisting load). The folder already
+    reported load-dependent binding:
+    - Visscher's abstract: loads "raise the apparent Michaelis–Menten
+      constant"; K_M = 88 ± 7, 140 ± 6 and 312 ± 49 µM at 1.05, 3.59 and
+      5.63 pN (Fig. 2 inset, p.185).
+    - Block 2003, Fig. 4B and p.2354: K_M rises under backward load.
+
+    v3's load-independent k_on, inherited from v2, conflicted with both
+    before any comparison.
 * **Visscher 1999 Fig. 3a** (squid kinesin, 2 mM and 5 µM).
   - At 2 mM the model, fitted to C&C, is 120–420 nm/s too slow at every load
     (z 8–32 for the MaxEnt members). Visscher's motor holds 478 nm/s at 5 pN, where C&C's gives
-    ≈ 110. The two force–velocity curves have different shapes, so no single
+    ≈ 87 (interpolated between its 4.6 and 6.5-pN bins). The two force–velocity curves have different shapes, so no single
     parameter set fits both.
   - At 5 µM the model matches from 3.6 to 5.6 pN (z −3.0 to +2.3) but is
     16–42% low at ≤ 1 pN.
@@ -545,7 +701,8 @@ test specific to the hypothesis. "z" is (data − model)/s.e.m.
 * **Nishiyama 2002** (Table 1).
   - v(3.8)/v(0) = 0.25, against the model's 0.43–0.61.
   - Zero-load odds R₀ = 221, inside the model's 135–338.
-  - Total load distance 2.9 nm, against the model's 3.3–3.7 nm.
+  - Total load distance 2.9 nm, against the model's 3.3–3.7 nm (the slope of
+    ln odds over 2–8 pN; a secant over 0–7.6 pN gives 2.8–3.4 nm).
   - 1:1 at 7.6 pN, against 7.0–7.2.
 * **Kondo 2023.** See Part A: the forward-rate shape is shared and the
   backstep-rate structure differs. The 1:1 load is 9.3 pN (KIF5A; a different
@@ -560,7 +717,7 @@ test specific to the hypothesis. "z" is (data − model)/s.e.m.
   - At 4.2–5.8 pN the model is too high (z −4 to −7) on an absolute-load
     axis.
   - Compared at equal v/v(0), however, the model is too **low**. At
-    v ≈ 0.45 v(0), Visscher has r = 1.13 while the model has 0.5–0.6.
+    v ≈ 0.45 v(0), Visscher has r = 1.13 while the model has 0.57–0.63.
     Visscher's randomness rises while the motor still runs at half speed.
     No member does that.
 * **Visscher Fig. 4a.**
@@ -572,13 +729,21 @@ test specific to the hypothesis. "z" is (data − model)/s.e.m.
     0.02–0.08 too high at low and assisting loads.
   - At 4.2 µM the data rise from 0.77 (assisting) to 1.20 (2 pN); the model
     goes from 0.88 to 0.93.
+  - My CSV misses 2 of the 10 points at 4.2 µM. The reviewer's by-eye
+    readings are r ≈ 1.07 at 1 pN hindering (model ≈ 0.90) and ≈ 0.89 at
+    4.4 pN assisting (model 0.88). Neither changes the picture.
 * **Yildiz 2008.** r = 0.57 for one labelled head (16-nm steps, low ATP): a
   different observable, not compared.
 
 **Odds.**
-* **C&C.** In the fit window the 1 mM residuals are within ±0.7 in ln. At
-  10 µM the odds are **higher** than at 1 mM above 6 pN, by a factor of e^0.95.
-  v3 cannot produce this: the race is decided after ATP binds.
+* **C&C.** In the fit window the 1 mM residuals are within ±0.7 in ln.
+  - At 10 µM the points above 6 pN lie above the 1 mM points, by e^(0.95 ± 0.29)
+    in a post-hoc selection. Over all bins the difference is +0.25 ± 0.28.
+  - v3 cannot produce any ATP dependence, because its race is decided after
+    ATP binds.
+  - But the authors read their data as ATP-independent (p.309), and
+    Nishiyama fit both ATPs with one relation (Fig. 4b). Without counting
+    errors, P2 is undecided.
 * **Nishiyama.** See above.
 * **Taniguchi.** P(forward) = 0.5 at "about 8 pN" at all temperatures (p.343),
   counting detachments. See C.6.
@@ -605,6 +770,12 @@ test specific to the hypothesis. "z" is (data − model)/s.e.m.
 
 **Viscosity (Sozański).**
 * **The control.** v₀ = 0.80 µm/s, from "about 800 nm/s" (p.218102-2).
+  - Sozański's own Michaelis–Menten fit (V_max 103.4 s⁻¹ with 8-nm steps,
+    K_M 311 µM) gives 631 nm/s at 1 mM instead.
+  - A cluster of points at η_eff/η₀ ≈ 1.0 (0.72–0.84 µm/s, read by the
+    reviewer; not in my CSV) supports ≈ 0.8.
+  - With v₀ = 0.72 the small-crowder ratios rise by 11% (0.51–0.67). They are
+    still below every member except, marginally, the floppy edge.
 * **Small crowders** slow the motor far more than the model at the same
   η_eff: v/v₀ 0.46–0.61 at 2.8–3.9 η₀, against 0.70–0.96. The MaxEnt members
   underpredict the slowdown 3–13×, the floppy edge 1.3–2.6×.
@@ -687,9 +858,11 @@ smaller.
 | Block, 1.6 mM, −4.7 to +2.7 pN | 4.75–5.55 | 0.16–0.35 |
 | Block, 1.6 mM, 3.7 / 4.8 pN | 3.62 / 2.32 | 0.24 / 0.14 |
 
-The totals use Δμ = 20.5 kT and C&C's odds: 15–20 kT per net step at low
-hindering loads, rising to 26 kT at 5.8 pN. They are larger under assisting
-load, where the assisting work is dissipated too.
+The totals use Δμ = 20.5 kT and **C&C's odds, applied to Visscher's and
+Block's motors (an assumption)**: 15–20 kT per net step at low hindering
+loads, rising to 26 kT at 5.8 pN. They are larger under assisting load, where
+the assisting work is dissipated too. Δμ = 20.5 kT is probably low for
+buffers with no added ADP or Pi; a larger Δμ lowers every fraction.
 
 **Informative, or slack?**
 * **At low load it is informative about the total.** Any motor as precise as
@@ -697,7 +870,11 @@ load, where the assisting work is dissipated too.
   a third of Δμ.
 * **Near stall it goes slack.** v → 0 with D finite, so the bound falls
   (to 1.8 kT at 5.76 pN) while the true dissipation per net step diverges
-  (backsteps waste ATP). At 5.76 pN it captures 7%.
+  (backsteps waste ATP).
+  - At Visscher's 5.76 pN it captures 7% with C&C's odds (R = 3.4); 13% if
+    that motor's odds were ≈ 10; ≈ 5% with Δμ = 25 kT.
+  - Visscher's motor still runs at 45% of its unloaded speed there, so this
+    point is not yet near its stall.
 * **At low ATP** (r ≈ 1–1.3) it gives ≈ 1.5–2 kT per net step, against a Δμ
   itself lowered by kT·ln([ATP] ratio). Slack again.
 
@@ -711,8 +888,8 @@ load, where the assisting work is dissipated too.
 | Ariga's hidden dissipation | ≈ 16 |
 | total (model; data) | 17.0–17.3; 16.8 |
 
-The bound and the hidden dissipation are consistent (the bound is below
-both), but the TUR bounds the total, and the imprint sits two orders of
+The TUR bounds the total dissipation, not the hidden part, so comparing it
+with Ariga's value is not a test. The imprint sits more than an order of
 magnitude below the bound. **The TUR cannot say anything about the imprint.**
 
 ### C.4 Differences in which chemistry cancels
@@ -739,17 +916,26 @@ imprint.
   measurement.
 
 *Evidence against:*
-* **Load-dependent ATP binding.** It appears in two datasets:
+* **Load-dependent ATP binding** is reported in the folder:
+  - Visscher's abstract and Fig. 2 inset: K_M 88 → 312 µM from 1.05 to
+    5.63 pN;
+  - Block 2003, Fig. 4B.
+
+  Two datasets here are consistent with it:
   - C&C at 10 µM under assisting load steps with 22–50-ms dwells, against a
     ≈ 94-ms ATP wait in any load-independent-binding fit;
   - Block's 4.2 µM velocity falls 8× from −1 to +4.25 pN, where
     load-independent binding gives 2–2.7×.
-* **Load-dependent chemical dissipation even with load-independent rate
-  constants.** In Takaki's fitted cycle (my evaluation of their deposited
-  code, REPORT2 §0.3) the chemical entropy production per cycle falls from
-  11.3 to 8.7 kT between 2 and 4 pN (1 mM), because the load shifts the
-  occupancies. That change of **2.6 kT** is 5–30× the predicted imprint
-  difference.
+* **Load-dependent chemical dissipation at fixed chemical free-energy
+  drops.** Takaki's fitted cycle is one example: my reconstruction from their
+  deposited code, not a number printed in their paper.
+  - Its chemical free-energy drop per cycle is load-independent (7.34 kT),
+    but its rate constants are not: the ADP-release pair k₁₂, k₂₁ carries a
+    common load factor 2/(1 + e^(0.4·Fd/kT)).
+  - Its chemical entropy production per cycle falls from 11.30 to 6.23 kT
+    between 2 and 6 pN (1 mM), because the load shifts the occupancies.
+  - That change of **5.1 kT** is 11–320× the predicted imprint difference
+    over the same span (|Δ| = 0.016–0.48 kT for the MaxEnt members).
 * **Mutants.**
   - Budaitis's mutants have no ATPase measurement, and their MD suggests
     changed catalytic-site closure (p.8). They are also 25% faster unloaded,
@@ -787,6 +973,9 @@ and some against.
   −0.36 ± 0.28%/K.
   - The committed default (entropic landscape, equal enthalpies) predicts
     +0.34%/K. The difference is 2.5 s.e.m.
+  - The result is fragile. Without the 287-K point the slope is
+    −0.21 ± 0.30%/K (1.8 s.e.m.), and the errors ignore the covariance
+    between the fitted k_f0 and d_f.
   - ln(k_f0/k_b0) is constant (5.83–5.88), as the entropic picture requires.
     But Taniguchi's fitted d_f rises from 2.4 to 2.8 nm, which cancels the kT
     growth.
@@ -794,7 +983,7 @@ and some against.
     tether makes it rise even faster.
 * **Error found after the commit.**
   - Taniguchi's ΔH‡ = 18.3 and 18.2 k_BT₀ are fitted after removing the
-    diffusion-limited prefactor A_T ∝ T/η(T) (Methods, p.346). The raw
+    diffusion-limited prefactor A_T ∝ T/η(T) (Methods, p.347). The raw
     Arrhenius enthalpies of k_f0 and k_b0 in their Table 1 are 26.7 ± 1.1 and
     26.4 ± 1.4 k_BT₀.
   - The committed temperature model instead gave k_f(0) a **total** enthalpy
@@ -851,49 +1040,67 @@ per step in each condition. For the largest MaxEnt contrast (0.48 kT),
 σ ≈ 0.17 kT per condition. Both are against a hidden dissipation of ≈ 16 kT
 per step: a relative precision of 0.2–1% on each.
 
-**Data volume** (statistical floor; my estimate):
+**Data volume** (statistical floor; my estimate, corrected after the review):
 * **Noise model.** The Harada–Sasa integral's noise is dominated by the
-  bead's thermal velocity noise, C̃ ≈ 2kT/γ, up to the band limit f_max. Its
-  standard error is σ_J ≈ 2kT·√(2f_max/T_rec) for the heat rate. The
-  independently estimated response adds a comparable term, so I take
-  σ_J ≈ 4kT·√(f_max/T_rec), and per step σ_J/k_step.
+  bead's thermal velocity noise. Its two-sided spectrum is C̃ ≈ 2kT/γ up to
+  the band limit f_max.
+  - A periodogram estimate of γ∫C̃ df over ±f_max, from a record of length
+    T_rec, has a standard error of 4kT·√(f_max/T_rec) (the ± frequencies are
+    not independent).
+  - The independently estimated response adds a comparable term, so I take
+    σ_J ≈ 4√2·kT·√(f_max/T_rec) for the heat rate, and σ_J/k_step per step.
 * **Assumed values.** f_max = 5 kHz (a few trap corner frequencies; a guess),
   and the model's step rates (55 s⁻¹ at 2 pN, 9 s⁻¹ at 6 pN).
-* **Resolving 0.1 kT** needs ≈ 21,000 s of record at 2 pN (≈ 1.2×10⁶ steps)
-  and ≈ 790,000 s at 6 pN (≈ 7×10⁶ steps; 9 days of continuous clamp).
-* **Resolving 0.48 kT** needs ≈ 900 s and ≈ 34,000 s.
-* Runs last about a second, so this means thousands of beads, each with its
-  own calibration.
+* **Resolving 0.1 kT at 2σ** needs about:
+  - 42,000 s of record at 2 pN (≈ 2×10⁶ steps);
+  - 1.6×10⁶ s at 6 pN (≈ 1.4×10⁷ steps; 18 days of continuous clamp).
+* **Resolving the largest MaxEnt contrast (0.48 kT)** needs ≈ 1,800 s
+  (≈ 10⁵ steps) and ≈ 68,000 s (≈ 6×10⁵ steps).
+* **In runs.** With Andreasson 2015's WT unbinding rate (1.11 s⁻¹, 0.60 nm;
+  session 1), a run lasts ≈ 0.7 s at 2 pN and ≈ 0.4 s at 6 pN. So these
+  targets need about 10³–10⁵ runs at 2 pN and 10⁵–10⁶ at 6 pN, each bead
+  with its own calibration.
 
 **Biggest confounds.**
-1. **Chemistry that does not cancel.** In Takaki's fitted cycle the chemical
-   dissipation changes by 2.6 kT between 2 and 4 pN, and there is direct
-   evidence of load-dependent ATP binding (C.4). That is 5–30× the predicted
-   imprint difference, and a Harada–Sasa measurement cannot separate it from
-   the imprint.
+1. **Chemistry that does not cancel.**
+   - In Takaki's fitted cycle (my reconstruction from their deposited code,
+     not a printed number), the chemical entropy production changes by
+     5.1 kT between 2 and 6 pN at fixed chemical free-energy drops.
+   - Load-dependent ATP binding is reported by Visscher and by Block (C.4).
+   - That is 11–320× the predicted imprint difference, and a Harada–Sasa
+     measurement alone cannot separate it from the imprint.
 2. **Calibration.**
    - The work difference between 2 and 6 pN is 8.0 kT per step. A 3–5%
-     force-calibration error adds 0.24–0.40 kT of systematic error, as large
-     as the whole predicted signal.
+     force-calibration error (a guess) adds 0.24–0.40 kT of systematic error,
+     comparable to the largest predicted signal.
    - Harada–Sasa also relies on the FDT holding at high frequency to
      calibrate the temperature scale, which S.-W. Wang 2018 shows is biased
      when the perturbation is asymmetric.
 3. **The mutant contrast.** The mutant's ATPase is unmeasured (Budaitis), so
    the chemistry confound is unbounded there.
 
-**Conclusion.** The predicted signal is 0.01–0.5 kT per step. That is below
-the chemistry confound, below the calibration systematics, and it needs
-10⁶–10⁷ steps even without them. **The imprint of the MaxEnt bet is below any
-realistic Harada–Sasa precision: no Harada–Sasa experiment can decide this
-hypothesis.** That is the result of Part D.
+**Conclusion.** The predicted signal is 0.01–0.5 kT per step.
+* A Harada–Sasa measurement of the Ariga type, which infers the hidden part
+  as Δμ − work − probe dissipation, **cannot isolate the imprint from the
+  chemistry and calibration confounds** as they stand.
+* Statistically, resolving 0.1-kT contrasts needs 10⁶–10⁷ steps, and the
+  largest MaxEnt contrast needs 10⁵–10⁶, under the assumed 5-kHz band.
+* These confounds are argued, not proved insurmountable: a chemistry model
+  validated to ≈ 0.1 kT per cycle and a force calibration to ≈ 1% would
+  change the verdict.
+* With what the folder supports, the imprint is **below realistic
+  precision**. That is the result of Part D.
 
 **A better, non-thermodynamic test** (outside the brief's Harada–Sasa frame)
 is direct high-speed tracking of the free head before and after ATP binding
 (p against q) under a 3–6 pN load. The two families make different
 predictions:
 * **I-projection MaxEnt members:** docking removes the rear tail
-  (x < −4 to −5 nm) and moves the mean by less than 0.2 nm.
-* **Gaussian members:** docking moves the mean forward by 0.2–1.6 nm.
+  (x < −4 to −5 nm). The mean moves by 0.06 nm (κ₀ 0.21) or 1.2 nm
+  (κ₀ 0.03).
+* **Gaussian MaxEnt members:** docking shifts the whole distribution forward,
+  by 0.4 nm (κ₀ 0.21) to 1.6 nm (κ₀ 0.03). The other members shift it
+  0.8–3.9 nm.
 
 A before/after comparison with the same label cancels the ±2-nm label offset.
 The required precision is ≈ 0.2 nm on the mean and ≈ 10% on the tail
@@ -914,19 +1121,33 @@ fraction beyond −4 nm.
    KHC have different force–velocity shapes, so cross-construct
    comparisons test universality as much as the model. Block's near-stall
    agreement may be partly fortuitous.
-3. **The unloaded speed** is still 30–40% below the trap-off speeds
-   (C&C 824, Block ~680, Visscher ~820 nm/s).
+3. **The unloaded speed** is still too low. The model gives 428–612 nm/s
+   across members and ATP levels, against the trap-off or unloaded speeds of
+   C&C (824), Block (668 ± 8.5, p.2353) and Visscher (~820 nm/s).
 4. **The MaxEnt search is incomplete.** The I-projection family is MaxEnt only
-   if the data fix exactly ⟨e^(−fx)⟩_q at the basis loads. A general
-   minimum-D search over landscapes (a non-parametric I-projection against
-   the exact capture-rate constraints) was not done. The reported D values
-   are upper bounds.
+   if the data fix exactly ⟨e^(−fx)⟩_q at the basis loads. The fitted
+   transition state moves with the barrier (x_TS 6.1–7.7 nm, B.0), so they do
+   not. A general minimum-D search over landscapes (a non-parametric
+   I-projection against the exact capture-rate constraints) was not done.
+   The reported D values are upper bounds.
 5. **Ariga 2018, Takaki 2022 and Rice 2003 are not in the folder.** Their key
    numbers are second-hand.
 6. **The temperature model's enthalpy reading** needs correcting (C.6) before
    any further temperature prediction.
 7. **Sozański's stops** (PEG 6k, PEG 18k) look like loss of runs, which v3
    does not model (no detachment exit).
+8. **The error model of the fit is nominal.** The 21 constraint points are
+   samples of three fitted curves. A bootstrap over C&C's traces (not
+   available) would be needed to calibrate the valley's confidence levels.
+9. **Visscher's two randomness panels disagree** near 5.7 pN: 0.79 ± 0.12
+   (Fig. 4a) against 1.13 ± 0.10 (Fig. 4b).
+10. **Digitisation gaps.** Block 2003 Fig. 4C at 4.2 µM misses 2 of 10
+    points, and Sozański Fig. 2b misses the η ≈ 1 cluster. Both were found by
+    the reviewer; neither changes a conclusion.
+11. **The imprint under assisting load** assumes that the head fully relaxes
+    in q before capture. At −5 pN the search takes microseconds, so a
+    non-quasi-static treatment (the dissipation of a quench interrupted by
+    capture) is needed before those values are used.
 
 ## Guesses and figure-read values
 
@@ -938,7 +1159,7 @@ fraction beyond −4 nm.
 | Taniguchi ΔH‡ read as total enthalpy | 18.3 | **misreading**, see C.6 | B temperature |
 | gate viscosity | η-independent (variant ∝ 1/η) | guess | B viscosity |
 | p | N(0.2 nm, 1/0.21 nm²); mean ±2 nm label offset | mean from Mickolajczyk (p.E7187); width a WLC guess | A, B |
-| κ₀ bracket | 0.01–0.30 kT/nm² | from Guydosh (p.126, ±0.4 and ±1.7 pN over ~23 nm) and Kutys (p.4); 0.30 a guess | B |
+| κ₀ bracket | 0.01–0.30 kT/nm² | 0.21 from Kutys (p.4, WLC); 0.01 and 0.03 are **guesses** loosely based on Guydosh (p.126: ~23 nm at ±1.7 pN; "similar transitions" at ±0.4 pN, a non-Hookean pair); 0.30 a guess | B |
 | docking budget | 1.2 kT (1–2) | second-hand (Block 2007 p.2991; Xu 2021 p.2627) | B |
 | Δμ | 20.5 kT | Takaki's code reference line | C, D |
 | Ariga hidden dissipation | ≈ 16 kT per step at 2 pN | 0.8 × 20.5, second-hand | C, D |
@@ -952,4 +1173,44 @@ fraction beyond −4 nm.
 | Block Fig. 4A, 4C | velocity, randomness | figure-read (raster) | C |
 | Sozański Fig. 2b | velocity against η_eff (colour blobs; overlapping markers possible) | figure-read (raster) | C |
 | Taniguchi Tables 1–2 | rates, distances, enthalpies | table text (exact) | B, C |
+| Takaki's chemical entropy production (14.35 / 11.30 / 8.69 / 6.23 kT at 0, 2, 4, 6 pN) | my evaluation of their deposited code | reconstruction, not a printed value | 0, C, D |
+| Harada–Sasa noise | σ_J ≈ 4√2·kT·√(f_max/T_rec) | estimate (periodogram noise plus a response term of the same size) | D |
+| run durations | from Andreasson 2015's WT unbinding (1.11 s⁻¹, 0.60 nm) | session-1 value, applied to C&C's construct | D |
+| Sozański control cluster at η ≈ 1 | 0.72–0.84 µm/s | the reviewer's reading of the rendered figure; not digitised | C |
+| Block Fig. 4C, the two missing 4.2-µM points | r ≈ 1.07 (1 pN hindering), ≈ 0.89 (4.4 pN assisting) | the reviewer's by-eye reading | C |
+
+## Review fixes
+
+An independent, fresh-context review re-derived the two key results:
+* the I-projection minimises D(q‖p₀) under linear constraints (the
+  Pythagorean identity), and D is monotone along rays in λ;
+* the TUR per net step is ≥ 2k_B/r.
+
+It reran the tests (all passed), checked the commit order, and checked about
+85 numbers against the PDFs, tables and JSON. Its findings, and what was done:
+
+| # | finding (severity) | fix |
+|---|---|---|
+| 1 | The budget compared D(q‖p₀), a lower bound on the cost of a restriction-only docking potential, with the 1.2 kT budget; the exact least cost is ln max(q/p₀) (must-fix) | `bet.restriction_cost` added and tested; C.8 of `results/tables_partC.md` recomputes affordability; B.2 and the summary corrected; PREDICTIONS error 1. The MaxEnt members stay affordable; most of the valley does not for κ₀ ≥ 0.21. |
+| 2 | PREDICTIONS §4 says the imprint is < 1 kT at ≤ 2 pN; the committed JSON has 1.02 kT (floppy edge, F = 0) and 0.96–1.52 kT under assisting load (must-fix) | PREDICTIONS error 2; B.3–B.4 and P10 corrected; caveat that capture may outrun relaxation (open issue 11) |
+| 3 | P2 verdict ignored C&C's own reading (p.309) and Nishiyama's single fit; the > 6 pN selection was post hoc (must-fix) | P2 is now "not decided", with the quotations, Visscher's opposite finding and the post-hoc label; figure 7c retitled |
+| 4 | Pre-registration disclosure incomplete: untracked skeleton, README line, "before comparing anything" (must-fix) | Disclosure paragraph in Part B; summary and deliverables reworded |
+| 5 | "No Harada–Sasa experiment can decide" overclaimed (must-fix) | Part D and the summary scoped to Ariga-type measurements and to the confounds as they stand, with what would change the verdict |
+| 6 | The small-bet headline and "refutes the scaffold" were not conditional on v3 (must-fix) | "Within v3" throughout; the conclusion now lists the specific v3 choices that fail and says the results neither convict nor clear the bet |
+| 7 | The MaxEnt claim needed a derivation and conditions; x_TS is member-dependent (6.1–7.7 nm) (should-fix) | B.0 added, with the derivation, the conditions and the x_TS check reproduced; "two-parameter I-projection family"; `bet.py` docstring |
+| 8 | TUR "7%" depends on C&C's odds and Δμ; "consistent with Ariga" is not a test (should-fix) | Range 5–13% with the assumptions stated; sentence replaced |
+| 9 | Sozański's control: their MM fit gives 631 nm/s; an η ≈ 1 cluster supports 0.8 (should-fix) | Both noted; conclusions checked at v₀ = 0.72; "several times" reworded to the computed factors |
+| 10 | Cross-construct failures in the summary without caveats; P7 fragile (should-fix) | Constructs named; P7 without the 287-K point is −0.21 ± 0.30%/K (1.8 s.e.m.) |
+| 11 | Load-dependent ATP binding was already in the folder (Visscher abstract and Fig. 2 inset; Block Fig. 4B) (should-fix) | Cited; "direct evidence" removed |
+| 12 | Visscher Figs. 4a and 4b disagree near 5.7 pN (should-fix) | Noted in P3 and P4 and in open issue 9 |
+| 13 | Takaki: the rates are load-dependent (only the chemical drops are not); the load span did not match; not labelled as a reconstruction (should-fix) | Corrected to 5.1 kT over 2→6 pN (11–320× the contrast), labelled as my reconstruction |
+| 14 | The Harada–Sasa noise factor was too small (should-fix) | 4√2·kT·√(f_max/T_rec); record lengths and run counts recomputed |
+| 15 | Δχ² levels are nominal; MaxEnt members sit at the edge; the no-bet fit is marginal (should-fix) | B.1 and B.2 and open issue 8; 68% values given |
+| 16 | κ₀ = 0.01 and 0.03 "from Guydosh" are guesses (should-fix) | Relabelled (PREDICTIONS error 7; guesses table) |
+| 17 | The per-committed-step accounting is an assumption; v3's x-independent clock makes bind/unbind loops driven (should-fix) | PREDICTIONS error 6 |
+| 18 | "≈16 kT that Ariga report" is my 0.8 × 20.5 (should-fix) | Summary reworded |
+| 19–20 | Page citations (Taniguchi A_T p.347; Guydosh quote p.127); Block's sign convention in Part 0; Block's unloaded speed 668 ± 8.5 (nits) | Corrected |
+| 21 | Misquoted ranges: 1.4–5.7× past stall; model −4.5 to −12.1 nm/s; 10 µM dwell ratio 1.3–4.3 with an anomalous bin and C&C's 5–8 pN distortion note; C&C v(5 pN) ≈ 87; model r 0.57–0.63 at 0.45 v₀; Nishiyama's distance method; R4's wall height (nits) | Corrected |
+| 22 | `bet.py` documented reverse = D(q‖p); the wall potential dips to −0.014 kT; the ±15 pN race check had no committed test (nits) | Docstring fixed; dip noted; test added (`tests/test_bet.py`) |
+| 23 | Digitisation omissions (Block 4C, 2 points; Sozański η ≈ 1 cluster) (nit) | Noted with the reviewer's readings (C.2, guesses table, open issue 10); CSVs not edited |
 
