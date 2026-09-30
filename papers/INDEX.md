@@ -89,3 +89,42 @@ checks; *read* = consulted for context only; blank = not used this session.
 | Xie 2021 - Insight into the chemomechanical coupling mechanism… | Xie P, *Commun. Theor. Phys.* 73:057601 (2021) | |
 | Xu 2021 - Diffusion biased by a soft neck linker regulates kinesin stepping | Xu H, Hou R, Tong T, Li H, *J. Phys. Chem. B* 125:2627–2635 (2021) | |
 | Yildiz 2008 - Intramolecular strain coordinates kinesin stepping behavior… | Yildiz A, Tomishige M, Gennerich A, Vale RD, *Cell* 134:1030–1041 (2008) | |
+
+## Session 2 uses
+
+Session 2 (REPORT2.md, PREDICTIONS.md) used these files. Parts: **0** = the
+literature inventory, **A** = model and fit, **B** = inputs to the predictions,
+**C** = the comparison, **D** = the experiment specification. "Figure-read"
+values are in `data/digitized/` (vector extraction for Carter & Cross, raster
+digitisation otherwise).
+
+| File | Parts | What was used (page, table or figure) |
+|---|---|---|
+| Carter 2005 | 0, A, C | Fig. 2a inset (ratio), 2b (dwells before forward and back steps), 2c (velocity incl. superstall and assisting loads, trap-off squares), all figure-read (p.310); exponential dwells at every load (p.309); 23 °C (p.312) |
+| Visscher 1999 | 0, C | Fig. 3a force–velocity at 2 mM and 5 µM (p.186); Fig. 4a randomness vs [ATP], Fig. 4b randomness vs load (p.187), all figure-read; "stall force of ~7.0 pN" (p.186) |
+| Block 2003 | 0, C | Fig. 4A velocity and 4C randomness vs load at 1.6 mM and 4.2 µM, with assisting loads (p.2354), figure-read |
+| Sozanski 2015 | 0, C | Fig. 2b velocity vs effective viscosity, figure-read; control speed "about 800 nm/s" (p.218102-2); Michaelis–Menten fits and loss of runs (p.218102-3) |
+| Taniguchi 2005 | 0, B, C | Table 1 rates and distances at 280–308 K and Table 2 enthalpies (p.345); definition of the prefactor A_T (Methods, p.346); P(forward) = 0.5 at about 8 pN (p.343); two rate-limiting transitions (p.343) |
+| Hong 2016 | 0, C | force 5.3 ± 0.2 vs 5.2 ± 0.2 pN at 295 and 280.5 K; velocity Ea (p.1289) |
+| Mickolajczyk 2015 | 0, A, B | tethered-head substep 8.4 ± 3.0 nm, 1HB state, ATP binding with two heads bound (p.E7187): the mean of p |
+| Guydosh 2009 | 0, B | free-head mobility under ±0.4 and ±1.7 pN (p.126): the floppy end of the κ₀ bracket |
+| Kutys 2010 | 0, A, B | WLC neck linker, L_p = 0.7 nm, 0.364 nm per residue (p.4): the width of p and κ₀ = 0.21 |
+| Xu 2021 | 0, B | docking free energy ~1.2 k_BT (p.2627); WLC parameters (p.2629) |
+| Block 2007 | 0, B | Rice 2003's docking free energy, second-hand (p.2991) |
+| Sumi 2017 | 0 | docking free energy "about 3 kJ/mol" (p.2) |
+| Hwang 2019 - Structural basis… | 0 | Ariga 2018's 80% hidden dissipation at 2 pN, second-hand (p.7 of PDF) |
+| Xie 2019 - Generalized kinetic model… | 0 | Ariga 2018's efficiency at 2 pN, second-hand (p.19 of PDF) |
+| Brown 2020 | 0 | kinesin dissipates most of its input free energy, second-hand (p.437) |
+| Wang 2018 | 0, D | the high-frequency FDT calibration caveat for Harada–Sasa (p.4) |
+| Nishiyama 2002 | 0, C | Table 1 velocities and rates, Fig. 4b ratio, dwells before back steps (pp.790–793) |
+| Kondo 2023 | A, C | session-1 values (knee, lever, gate); dwell ratios (pp.467–468) |
+| Khalil 2008 | 0, C | Table 1 stall forces of WT and cover-strand mutants (p.19250); ATPase inference (p.19249) |
+| Budaitis 2019 | 0, C | mutant unloaded speeds, run lengths and detachment forces (p.6); MD on the catalytic site (p.8) |
+| Yildiz 2008 | 0, C | randomness 0.57; neck-linker-extended mutants hydrolyse futilely (p.1033) |
+| Coy 1999 | C | one 8-nm step per ATP hydrolysed (the paper's title): tight coupling |
+| Andreasson 2015 (eLife) | 0 | listed as a docking/neck-linker dataset; cysteine-light caveat from session 1 |
+
+Not in the folder, used second-hand or through code: Ariga et al. 2018 (via
+Hwang 2019, Xie 2019, Brown 2020); Takaki et al. 2022 (through its deposited
+code, github.com/kibidanngo/information-flow-pnas); Rice et al. 2003 (via
+Block 2007 and Xu 2021).

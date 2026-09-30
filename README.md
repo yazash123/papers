@@ -93,7 +93,7 @@ PYTHONPATH=.. python part_b_maxent.py         # valley, MaxEnt members   (~5 min
 PYTHONPATH=.. python part_b_limits.py         # predictions near limits  (~2 min)
 PYTHONPATH=.. python part_b_figures.py        # fig5, fig6
 PYTHONPATH=.. python make_tables.py > ../results/tables_partB.md && PYTHONPATH=.. python make_tables.py --disc >> ../results/tables_partB.md
-PYTHONPATH=.. python part_c_confront.py       # data comparison, TUR     (~1 min)
+PYTHONPATH=.. python part_c_confront.py       # data comparison, TUR, fig7, results/tables_partC.md (~10 s)
 ```
 
 ## Example

@@ -62,6 +62,12 @@ def dlneta_dT(T):
     return -247.8 * np.log(10) / (T - 140.0) ** 2
 
 
+# NOTE (found in Part C, after PREDICTIONS.md was committed): Taniguchi's Delta H
+# excludes their diffusion-limited prefactor A_T ~ T/eta(T) (Methods, p.346); the raw
+# Arrhenius enthalpy of their k_f0 (Table 1) is 26.7 +- 1.1 k_B T0.  The default below
+# treats 18.3 as the TOTAL enthalpy of k_f(0); it is kept so that PREDICTIONS.md stays
+# reproducible.  It does not affect the 1:1-load prediction (enthalpy difference 0.1 in
+# both readings) or anything at 23 C.  See REPORT2.md, Part C.6.
 H_FORWARD = 18.3   # k_B T0 (Taniguchi 2005 Table 2): enthalpy of the forward capture rate at F = 0
 H_GATE = 18.2      # k_B T0 (Taniguchi 2005 Table 2): backstep
 H_OTHER = 18.3     # k_B T0: clock, ATP binding, rest of cycle (ASSUMPTION; variants below)
