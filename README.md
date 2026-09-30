@@ -89,9 +89,10 @@ PYTHONPATH=.. python part_e_temperature.py    # Part E, temperature      (~1 s)
 # session 2
 PYTHONPATH=.. python digitize_figures.py      # figure readings -> data/digitized (needs pymupdf)
 PYTHONPATH=.. python part_a_v3.py             # v3 fit and chi^2 map     (~10 min)
-PYTHONPATH=.. python part_b_maxent.py         # valley, MaxEnt members   (~1 h)
-PYTHONPATH=.. python part_b_limits.py         # predictions near limits  (~1 min)
+PYTHONPATH=.. python part_b_maxent.py         # valley, MaxEnt members   (~5 min)
+PYTHONPATH=.. python part_b_limits.py         # predictions near limits  (~2 min)
 PYTHONPATH=.. python part_b_figures.py        # fig5, fig6
+PYTHONPATH=.. python make_tables.py > ../results/tables_partB.md && PYTHONPATH=.. python make_tables.py --disc >> ../results/tables_partB.md
 PYTHONPATH=.. python part_c_confront.py       # data comparison, TUR     (~1 min)
 ```
 

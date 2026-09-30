@@ -97,10 +97,18 @@ def _iproj_lnkf(kappa0, lambdas, fs, B, loads):
 # ---------------------------------------------------------------------------
 # Densities and costs
 # ---------------------------------------------------------------------------
+P_KAPPA = V3_FIXED["start_kappa"]   # kT/nm^2: width of p = the search's start distribution (Part A)
+
+
 def densities(member: Member, kappa0: float, F: float = 0.0, p_mean: float = P_MEAN, p_kappa=None, kT=None):
-    """p0, q and p on the grid at load F (all tilted by the load)."""
+    """p0, q and p on the grid at load F (all tilted by the load).
+
+    p, the head's distribution when docking starts, is the SAME density the front
+    search starts from (tracked mean P_MEAN, width 1/P_KAPPA); it does not depend on
+    the reference kappa0.  p_kappa = kappa0 is the variant in which p is the undocked
+    equilibrium itself (shifted to the tracked mean)."""
     kT = KT if kT is None else kT
-    pk = kappa0 if p_kappa is None else p_kappa
+    pk = P_KAPPA if p_kappa is None else p_kappa
     p0 = bet.tilted(bet.tether_logdensity(kappa0, 0.0), X, F, kT)
     q = bet.tilted(member.logq(), X, F, kT)
     p = bet.tilted(bet.tether_logdensity(pk, p_mean), X, F, kT)
