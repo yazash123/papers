@@ -85,6 +85,38 @@ class Landscape:
         return {"at_xb": at, "max": (float(front), float(rear))}
 
 
+@dataclass(frozen=True)
+class IProjLandscape:
+    """Docked landscape of the I-projection family (see ``bet.py``):
+
+        U(x)/kT = (1/2) kappa0 (x - x0)^2 + sum_k lambda_k exp(-f_k x) + (F/2) x / kT + barrier,
+
+    i.e. the undocked tether plus soft walls behind the head whose strengths are
+    the Lagrange multipliers of the capture-rate constraints at tilts f_k."""
+
+    kappa0: float
+    lambdas: tuple
+    fs: tuple
+    B_front: Optional[float] = None
+    x0: float = 0.0
+    x_b: float = BARRIER_X
+    w: float = BARRIER_W
+
+    def U(self, F: float, kT: float):
+        f = 0.5 * F / kT
+
+        def u(x):
+            x = np.asarray(x, dtype=float)
+            out = 0.5 * self.kappa0 * (x - self.x0) ** 2 + f * x
+            for lam, fk in zip(self.lambdas, self.fs):
+                out = out + lam * np.exp(-fk * x)
+            if self.B_front:
+                out = out + self.B_front * np.exp(-(x - self.x_b) ** 2 / (2 * self.w * self.w))
+            return out
+
+        return u
+
+
 # ---------------------------------------------------------------------------
 # The search and its capture rates
 # ---------------------------------------------------------------------------
