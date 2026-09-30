@@ -94,7 +94,7 @@ checks; *read* = consulted for context only; blank = not used this session.
 
 Session 2 (REPORT2.md, PREDICTIONS.md) used these files. Parts: **0** = the
 literature inventory, **A** = model and fit, **B** = inputs to the predictions,
-**C** = the comparison, **D** = the experiment specification. "Figure-read"
+**C** = the comparison, **D** = the experiment specification, **E** = the re-run at Ariga 2018's conditions. "Figure-read"
 values are in `data/digitized/` (vector extraction for Carter & Cross, raster
 digitisation otherwise).
 
@@ -124,7 +124,8 @@ digitisation otherwise).
 | Coy 1999 | C | one 8-nm step per ATP hydrolysed (the paper's title): tight coupling |
 | Andreasson 2015 (eLife) | 0 | listed as a docking/neck-linker dataset; cysteine-light caveat from session 1 |
 
-Not in the folder, used second-hand or through code: Ariga et al. 2018 (via
-Hwang 2019, Xie 2019, Brown 2020); Takaki et al. 2022 (through its deposited
+| Ariga 2018 - Nonequilibrium energetics of molecular motor kinesin (supplied later by the user; 15-page version with supplement, dated 10 July 2018) | 0, E | construct and conditions (pp.1–2, Suppl. pp.7–9); Δμ = 84.5 ± 2.5 pN·nm (p.2); Table I energy flows (p.5); two-state fits (Fig. 3 legend, p.3); f_max choice (Suppl. p.9); stalk stiffness and probe drag (Suppl. p.10); head-motion dissipation estimate (Suppl. p.14). Ariga, Tomishige & Mizuno, *Phys. Rev. Lett.* 121:218101 (2018) |
+
+Not in the folder, used second-hand or through code: Takaki et al. 2022 (through its deposited
 code, github.com/kibidanngo/information-flow-pnas); Rice et al. 2003 (via
 Block 2007 and Xu 2021).

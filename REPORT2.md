@@ -27,15 +27,23 @@ The outcome is negative, and it is specific:
     docking budget leaves the MaxEnt members affordable. It excludes most of
     the valley if the undocked tether is that stiff.
 * **The bet's imprint is too small to isolate.**
-  - It is 0.01–0.17 kT per step at 2 pN for the MaxEnt members, about 1% of
-    ≈16 kT of hidden dissipation. The 16 kT is my 0.8 × 20.5 kT, from
-    second-hand statements of Ariga et al.'s 80%.
+  - It is 0.01–0.17 kT per step at 2 pN for the MaxEnt members: 0.1–1% of
+    the hidden dissipation Ariga et al. measured at the same load
+    (16.4 ± 0.6 k_BT per step at 1 mM ATP, 16.6 ± 0.6 at 10 µM; paper read
+    in Part E).
   - Under assisting load it reaches ≈1 kT for one MaxEnt member.
   - An Ariga-type Harada–Sasa measurement cannot separate the imprint from
     the chemistry. In Takaki's fitted cycle (my reconstruction from their
     code), the chemical dissipation alone changes by 5.1 kT between 2 and
     6 pN, 11–320 times the predicted contrast.
   - Resolving 0.1 kT would also need 10⁶–10⁷ steps.
+  - Reading the full paper sharpens this. Ariga's hidden dissipation is
+    Δμ − work − probe heat, and the probe heat is ≤ 1.3% of Δμ. The hidden
+    part is thus fixed by energy balance, and any internal dissipation lies
+    inside it by construction. A bead-based measurement cannot see the
+    imprint at all, because the head relaxes in ≈ 50 ns, far above the
+    385-Hz stalk cutoff. Only Harada–Sasa on the head coordinate itself,
+    with sub-microsecond tracking, could (Part E).
 * **Near the limits, the landscapes the data allow cannot be told apart**,
   except in their unloaded viscosity response. The bet is therefore not
   visible in the character of the curves.
@@ -87,7 +95,10 @@ comparison with the limit datasets); figures 5–7 in `figures/`; tables in
 **Not in `papers/`**, and not reachable from this session (arxiv.org, PubMed
 Central, journals.aps.org, pnas.org and similar hosts are blocked by the
 environment's network policy):
-* Ariga, Tomishige & Mizuno 2018, *PRL* 121:218101 (arXiv:1704.05302);
+* Ariga, Tomishige & Mizuno 2018, *PRL* 121:218101 (arXiv:1704.05302). *Added
+  later:* the user supplied the paper (a 15-page version with supplement, dated
+  10 July 2018), now in `papers/`; §0.2 has been rewritten from it and Part E
+  re-runs the predictions at its conditions;
 * Takaki, Mugnai & Thirumalai 2022, *PNAS* 119:e2208083119;
 * Rice et al. 2003, *Biophys. J.* 84:1844 (neck-linker docking thermodynamics);
 * Kawaguchi & Ishiwata 2000 (temperature series; noted already in session 1);
@@ -107,43 +118,97 @@ authors' deposited code. Each is labelled with its source.
 
 ### 0.2 Ariga, Tomishige & Mizuno 2018 (hidden dissipation)
 
-What the folder says, verbatim:
+*Rewritten after the paper became available.* Page numbers refer to the
+supplied PDF (pp.1–6 main text, pp.7–15 supplement). The earlier second-hand
+reading is kept at the end of this section for the record.
 
-| source (in folder) | statement |
-|---|---|
-| Hwang & Karplus 2019, *PNAS*, p.7 of PDF | "For kinesin, under a 2-pN hindering load, 80% of the input energy by ATP was dissipated in sources other than work against the load or viscous drag (126). The authors concluded this 'hidden' dissipation to be internal, which should be due to the conformational fluctuation of the motor head itself." |
-| Xie et al. 2019, *IJMS* 20:4911, p.19 of PDF | model efficiency "of about 16% for HsK is in agreement with the available single-molecule value determined recently at F = 2 pN [62]" (ref. 62 = Ariga 2018) |
-| Brown & Sivak 2020, *Chem. Rev.* 120:434, p.437 | "under physiologically relevant conditions, kinesin dissipates most of its input free energy.¹⁰¹" |
-| S.-W. Wang 2018 (arXiv:1710.10531), p.4 | Ariga et al. set the temperature from the high-frequency ratio C̃/2R̃′ "assuming that FDT is satisfied there"; with perturbation asymmetry the FDT is violated even at high frequency, which biases this calibration. |
+**Construct and set-up.**
+* Human kinesin-1 "cysteine-light", truncated at residue 490, His-tagged
+  (Suppl. p.7). This is not C&C's full-length Drosophila KHC.
+* 489-nm polystyrene probe; 25 ± 1 °C (p.2, Suppl. p.9).
+* FPGA force clamp at 20 kHz, trap stiffness 0.02 pN/nm (p.1).
+* Stalk (probe–motor) stiffness k = 0.075 ± 0.012 pN/nm and probe drag
+  γ = (3.09 ± 0.80)×10⁻⁵ pN·s/nm, both from the probe's PSD with the motor
+  locked by AMP-PNP (Suppl. p.10). The stalk cutoff k/2πγ is therefore
+  ≈ 385 Hz (my arithmetic).
 
-Search-engine summaries of the abstract (not verifiable here, flagged): the
-sum of probe dissipation and work "did not amount to the input free energy
-change"; "kinesin loses 80% of input energy to heat"; the hidden part was
-attributed to internal dissipation using a Langevin model of the probe
-coupled to a two-state Markov stepper.
+**Conditions.** One load and two ATP conditions, not one condition:
+* F₀ = 2 pN hindering ("−2 pN" in their sign), chosen as the condition of
+  maximum output power (p.2);
+* **high ATP:** 1 mM ATP, 0.1 mM ADP, 1 mM Pi;
+* **low ATP:** 10 µM ATP, 1 µM ADP, 1 mM Pi.
 
-**What can be confirmed.**
-* **Method.** Harada–Sasa: the probe's velocity correlation and response
-  spectra, measured with optical tweezers, give the heat dissipated through
-  the probe's degree of freedom. This is by construction an **ensemble-averaged,
-  steady-state rate**; a per-step number is that rate divided by the mean
-  stepping rate. It is not a per-step measurement.
-* **Condition.** A **single** hindering load of **2 pN** (two independent
-  folder sources). The ATP concentration, temperature, construct and probe
-  details are **not recoverable** from the folder.
-* **Value.** ~80% of the ATP free energy is "hidden". The absolute value and
-  its uncertainty are not given in any folder source. For use below I take
-  hidden ≈ 0.8 × Δμ with Δμ ≈ 20.5 k_BT (the reference line in Takaki's
-  code, §0.3), i.e. **≈ 16 k_BT per step, uncertainty unknown** (a range of
-  15–17 k_BT follows from Δμ = 19–21 k_BT alone).
-* **A consistency check (mine).** At 2 pN the work per 8.2-nm step is
-  16.4 pN·nm = 4.0 k_BT ≈ 20% of Δμ. So "80% hidden" means that almost all of
-  the non-work free energy escaped the probe: the probe-visible dissipation
-  was a small fraction of Δμ.
+Δμ is the same in both, **84.5 ± 2.5 pN·nm = 20.5 ± 0.6 k_BT** (p.2).
 
-So the brief's belief is confirmed as far as the folder allows: one condition,
-inferred from ensemble-averaged steady-state spectra. It is not confirmed
-against the paper itself.
+**Method.**
+* Harada–Sasa on the probe coordinate.
+* Velocity PSD from records under constant force (Hanning window, no
+  smoothing).
+* Real part of the response from a sinusoidal force of 1/5 of F₀
+  (0.4 pN; 20-nm trap displacement), synchronously averaged (Suppl. p.9).
+* The integral is cut off at f_max = 300 Hz (high ATP) and 50 Hz (low ATP),
+  chosen "such that the standard deviation of the dissipation does not exceed
+  the mean value" (Suppl. p.9). Their J_x therefore omits any probe
+  dissipation above those frequencies.
+* Calibration uses the Lorentzian PSD at equilibrium (Suppl. pp.9–10). The
+  paper does not say it calibrates the temperature from the high-frequency
+  FRR, as Wang 2018 describes.
+* The per-step quantities use τ = d/⟨v⟩ with d = 8 nm, "since the frequency
+  of backsteps at F₀ = −2 pN is negligible" (p.2). Elsewhere backsteps are
+  "only a few percentage points" (p.4).
+* Everything is ensemble-averaged and steady-state: per-probe spectra
+  averaged over probes (n = 8 and 11).
+
+**Values** (Table I, p.5; experiment, mean ± s.d.; pN·nm/s):
+
+| | high ATP (n = 8) | low ATP (n = 11) |
+|---|---|---|
+| power F₀⟨v⟩ | 1150 ± 120 | 410 ± 60 |
+| γ⟨v⟩² | 10.6 ± 1.9 | 1.35 ± 0.37 |
+| Harada–Sasa integral, to f_max | 53.4 ± 41.4 | 2.74 ± 1.52 |
+| J_x (probe dissipation) | 63.9 ± 41.5 | 4.09 ± 1.56 |
+| Δμ/τ | 6160 ± 560 | 2190 ± 310 |
+
+**Per step** (my arithmetic: hidden = Δμ − F₀d − J_x·d/⟨v⟩, d = 8 nm):
+
+| | high ATP | low ATP |
+|---|---|---|
+| hidden per step | 67.6 ± 2.6 pN·nm = **16.4 ± 0.6 k_BT** | 68.3 ± 2.5 pN·nm = **16.6 ± 0.6 k_BT** |
+| fraction of Δμ ("≈80%", pp.2 and 4) | 0.800 | 0.809 |
+
+* The uncertainty is almost all Δμ's.
+* J_x is only 0.89 pN·nm per step at high ATP and 0.16 at low ATP. Its s.d.
+  across probes is 0.58 and 0.06 pN·nm per step; its s.e.m. is 0.05 and
+  0.004 k_BT.
+* So **the "hidden" dissipation is, to within 1.3%, Δμ − F₀d.** Energy
+  balance and tight coupling fix it; the Harada–Sasa integral does not
+  measure it.
+
+**The authors' own analysis.**
+* A two-state Markov stepper (the k_c; k_f, k_b model of Taniguchi) fitted to
+  their force–velocity curves (Fig. 3 legend, p.3):
+  - high ATP: k_f0 = 981, k_b0 = 22.8, k_c = 129 s⁻¹, d_f = 3.3, d_b = 0.47 nm;
+  - low ATP: 889, 0.61, 32.5 s⁻¹, 4.0, −0.83 nm.
+
+  The model reproduces the measured energy flows.
+* They then argue that the hidden part is internal. Futile backsteps are
+  too rare. The soft stalk filters the motor's fluctuations above
+  k/2πγ, but a head-size-corrected estimate of the dissipation of the whole
+  motor's translation is only ≈ 500 (high ATP) and ≈ 5 (low ATP) pN·nm/s,
+  against ≈ 5000 and ≈ 1800 hidden (Suppl. p.14).
+
+**Against the brief's belief.**
+* Confirmed: ensemble-averaged steady-state quantities, and a single load
+  (2 pN).
+* Not quite a single condition: two ATP concentrations at equal Δμ, which
+  give the same hidden fraction.
+* The uncertainty is now known: ±0.6 k_BT per step, dominated by Δμ.
+
+*Earlier second-hand reading (before the paper was available):* Hwang &
+Karplus 2019 (p.7), Xie 2019 (p.19), Brown & Sivak 2020 (p.437) and Wang 2018
+(p.4) reported the 2-pN condition and the 80%. From these I took hidden ≈
+0.8 × 20.5 ≈ 16 k_BT per step with unknown uncertainty. The paper confirms
+16.4–16.6 k_BT.
 
 ### 0.3 Takaki, Mugnai & Thirumalai 2022 (split of ~20.5 k_BT)
 
@@ -628,7 +693,7 @@ test specific to the hypothesis. "z" is (data − model)/s.e.m.
 | P6 [v3, bet] | v(5η₀)/v(η₀) = 0.63–0.91, no stop below 10η₀ | Sozański Fig. 2b, small crowders: v/v₀ = 0.46–0.61 at η_eff = 2.8–3.9 η₀ (BSA, Dextran 10k, PEG 6k, sucrose), 0.12 at 3.2 (TetraEG); **no motion** for PEG 6k from 3.5 and PEG 18k at 4.5. Large crowders ≈ 1.0 up to 3.45 η₀. | **Fails** for small crowders (model 0.70–0.96 at those η). Every member underpredicts the slowdown 1 − v/v₀: the MaxEnt members by 3–13×, the floppy edge by 1.3–2.6×. The floppy edge comes closest, as B.4 anticipated, but it too misses. |
 | P7 [v3] | 1:1 load ∝ T (+0.34%/K) | Taniguchi Table 1 (1:1 load = kT·ln(k_f0/k_b0)/(d_f − d_b)): 9.47, 10.51, 9.22, 8.92 pN at 280–308 K, slope **−0.36 ± 0.28%/K**. Hong's force 5.2 ± 0.2 vs 5.3 ± 0.2 pN at 280.5 and 295 K (ratio 0.98 ± 0.05; model 0.951). | **Fails** at 2.5 s.e.m. (Taniguchi, bovine-brain kinesin), but fragile: without the 287-K point the slope is −0.21 ± 0.30%/K (1.8 s.e.m.), and the errors ignore the covariance of k_f0 with d_f. Hong is consistent but weak. The velocity part of P7 was mis-scaled (C.6). |
 | P8 [bet] | Commitment ≤ 0.38 kT, within the budget | none direct | Untested. Post hoc, the budget statement used a lower bound (B.2): the MaxEnt members stay affordable with the exact cost, but most of the valley does not. Context: Taniguchi's 6 k_BT directional bias is 3–6× the docking energy (p.345). |
-| P9 [bet] | Imprint 0.013–0.165 kT per step at 2 pN (≤ 1% of hidden) | Ariga's ~16 kT hidden (second-hand) | consistent, not a test |
+| P9 [bet] | Imprint 0.013–0.165 kT per step at 2 pN (≤ 1% of hidden) | Ariga Table I (paper read in Part E): hidden 16.4 ± 0.6 k_BT per step (1 mM), 16.6 ± 0.6 (10 µM) | Consistent (0.1–1%), but not a test: the hidden part is Δμ − F·d − J_x·τ by energy balance, so any internal dissipation lies inside it (E.3). |
 | P10 [bet] | Imprint rises toward stall (I-projection members) | no per-step hidden dissipation against load | Untested. Post hoc, the committed JSON shows the imprint also peaks under assisting load for some members (Part B, error 2). |
 | P11 [bet] | Differences in which chemistry cancels ≤ 0.5 kT | no data | untested |
 
@@ -885,7 +950,7 @@ buffers with no added ADP or Pi; a larger Δμ lowers every fraction.
 | predicted imprint, MaxEnt members | 0.014–0.17 |
 | TUR bound, measured (Visscher; Block) | 4.8 (4.2–5.5); 5.55 (4.9–6.4) |
 | TUR bound, model's own randomness | 4.8–5.4 |
-| Ariga's hidden dissipation | ≈ 16 |
+| Ariga's hidden dissipation (Table I; §0.2) | 16.4 ± 0.6 (1 mM), 16.6 ± 0.6 (10 µM) |
 | total (model; data) | 17.0–17.3; 16.8 |
 
 The TUR bounds the total dissipation, not the hidden part, so comparing it
@@ -1090,6 +1155,10 @@ per step: a relative precision of 0.2–1% on each.
   change the verdict.
 * With what the folder supports, the imprint is **below realistic
   precision**. That is the result of Part D.
+* Part E, written after reading Ariga in full, adds a structural reason. A
+  bead-based measurement cannot see the imprint at all, and the experiment
+  that could is Harada–Sasa on the head coordinate with sub-microsecond
+  bandwidth.
 
 **A better, non-thermodynamic test** (outside the brief's Harada–Sasa frame)
 is direct high-speed tracking of the free head before and after ATP binding
@@ -1105,6 +1174,115 @@ predictions:
 A before/after comparison with the same label cancels the ±2-nm label offset.
 The required precision is ≈ 0.2 nm on the mean and ≈ 10% on the tail
 fraction beyond −4 nm.
+
+## Part E. Ariga 2018 read in full: the predictions re-run at its conditions
+
+This part was added after the review, when the user supplied the paper. It is
+**post hoc** with respect to PREDICTIONS.md, which is unchanged. The model, the
+seven members and every parameter are the committed ones; only the conditions
+are Ariga's:
+* F = 2 pN hindering;
+* 1 mM and 10 µM ATP;
+* 25 °C, run three ways: the native 23 °C model, the committed temperature
+  model, and the corrected reading of Taniguchi's enthalpies (C.6).
+
+v3 has no ADP or Pi dependence, and it was fitted to a different construct
+(§0.2). Script: `analysis/ariga_rerun.py`, with results in
+`results/ariga_rerun.json` and `results/tables_ariga.md`.
+
+**E.1 Kinetics at Ariga's conditions.**
+* **Power F·v.**
+  - 1 mM: the model gives 784–1051 pN·nm/s across members and temperature
+    readings, against 1150 ± 120 (s.d.). That is 9–32% low; the fast members
+    at 25 °C lie within 1 s.d.
+  - 10 µM: the model gives 114–152, against 410 ± 60, i.e. 2.7–3.6× too slow.
+    Ariga's truncated human construct runs at 205 nm/s at 10 µM and 2 pN, far
+    faster than C&C's full-length Drosophila motor (≈ 40 nm/s near 2.6 pN).
+    The C&C fit does not transfer at low ATP.
+* **Backsteps at 2 pN.** 1.1–1.8% of steps in the model, against Ariga's
+  "only a few percentage points" (p.4): consistent.
+* **Ariga's own two-state fits** imply forward:back odds of 6.9 (1 mM) and
+  312 (10 µM) at 2 pN, and 1:1 loads of 4.1 and 9.5 pN.
+  - This ATP dependence goes the same way as C&C's 10 µM points (P2).
+  - But it comes from fitting force–velocity curves, not from counting
+    steps. At 1 mM it contradicts the authors' own statement that backsteps
+    are negligible at 2 pN. It does not decide P2.
+
+**E.2 The imprint against the measured hidden dissipation.**
+
+| | 1 mM ATP | 10 µM ATP |
+|---|---|---|
+| hidden per step (Ariga, §0.2) | 16.4 ± 0.6 k_BT | 16.6 ± 0.6 k_BT |
+| hidden rate (Δμ/τ − F⟨v⟩ − J_x) | ≈ 4950 pN·nm/s | ≈ 1780 pN·nm/s |
+| authors' head-translation estimate (Suppl. p.14) | ≈ 500 pN·nm/s | ≈ 5 pN·nm/s |
+| imprint per step, MaxEnt members | 0.013–0.165 k_BT (0.08–1.0% of hidden) | same |
+| imprint per step, all members | ≤ 0.65 k_BT (≤ 4.0%) | same |
+| imprint rate, MaxEnt members (23 °C; 25 °C) | 2.7–33; 3.1–38 pN·nm/s | 0.4–4.8; 0.4–5.4 pN·nm/s |
+| total dissipated per step, model | 16.6–16.8 k_BT | 16.6–16.8 k_BT |
+
+The imprint per step does not depend on [ATP] in v3, since the landscape and p
+do not. P9 is re-confirmed with the measured number: the predicted imprint is
+0.1–1% of the hidden dissipation.
+
+**E.3 What the full paper changes: why "inside the hidden dissipation"
+cannot be tested with a probe.**
+
+The per-step numbers in §0.2 show that Ariga's hidden dissipation is
+Δμ − F·d − J_x·τ, with J_x·τ ≤ 1.3% of Δμ.
+* Energy balance and tight coupling fix it. Any internal mechanism, the
+  imprint included, is "inside" it by construction.
+* The model's total dissipation per step (16.6–16.8 k_BT) "agrees" with it for
+  the same reason. The agreement is automatic, not a test.
+
+A Harada–Sasa measurement on a bead measures J_x only: the heat through the
+probe coordinate. The imprint is the relaxation of the free head in the
+docked well:
+* in bare solution this takes τ ≈ 1/(Dκ′) ≈ 50 ns (D = 93 nm²/µs,
+  κ′ ≈ 0.2 k_BT/nm²);
+* that is five orders of magnitude above the stalk's 385-Hz cutoff and
+  Ariga's 300-Hz integration limit.
+
+So with Δμ and F fixed, a difference of probe-measured hidden dissipation
+between two conditions reflects only ΔW and ΔJ_x. It says nothing about how
+the internal part is split. This is an **identifiability limit, not only a
+precision limit**, and it sharpens Part D. A probe-based Harada–Sasa
+experiment cannot see the imprint at any precision, beyond the chemistry and
+calibration confounds already listed there.
+
+**E.4 The decisive Harada–Sasa experiment, restated.**
+* **The coordinate to measure.** The Harada–Sasa equality must be applied to
+  the coordinate that dissipates the imprint: the free head. That means a
+  small label on the tethered head (as in Isojima 2016, cited by Ariga: 55-µs
+  tracking of a gold particle), a measured head velocity spectrum, and the
+  head's response to a weak force.
+* **Signal size.** The predicted imprint rate is 3–38 pN·nm/s at 1 mM and
+  2 pN (MaxEnt members), 0.4–5.4 at 10 µM. That is ≤ 8% of the authors'
+  estimate of the whole head-translation dissipation at 1 mM, and comparable
+  to it at 10 µM.
+* **Bandwidth needed.**
+  - With a 40-nm gold label, the drag of head plus label gives
+    D ≈ 10 nm²/µs, so the relaxation time in the docked well is ≈ 0.4 µs.
+    The violation of the fluctuation–response relation then extends to
+    ≈ 0.4 MHz.
+  - That needs roughly 20× the bandwidth of the best tracking cited
+    (18 kHz), plus a response measurement at that bandwidth.
+  - A heavier label slows the relaxation into range, but it also changes
+    the landscape the bet acts on.
+* **Verdict.** This refines Part D's result. A bead-based measurement cannot
+  see the imprint at all, and a head-based measurement needs
+  sub-microsecond tracking with a calibrated response. The signal is below
+  realistic reach with current methods; that remains the result.
+
+**E.5 What stands and what changed.**
+* **Unchanged:** every committed prediction, and the scorecard verdicts of
+  Part C. Ariga's force–velocity data (Fig. 3c–d) were not digitised, so
+  they add no near-limit test.
+* **Firmer:** the hidden dissipation is now a measured 16.4 ± 0.6 k_BT
+  (1 mM) and 16.6 ± 0.6 k_BT (10 µM) per step, not an estimate with unknown
+  error. The imprint is 0.1–1% of it for the MaxEnt members.
+* **Changed:** the reason the imprint cannot be tested with Harada–Sasa on a
+  bead is now structural (E.3), not only a matter of precision and
+  confounds.
 
 ---
 
@@ -1130,8 +1308,8 @@ fraction beyond −4 nm.
    not. A general minimum-D search over landscapes (a non-parametric
    I-projection against the exact capture-rate constraints) was not done.
    The reported D values are upper bounds.
-5. **Ariga 2018, Takaki 2022 and Rice 2003 are not in the folder.** Their key
-   numbers are second-hand.
+5. **Takaki 2022 and Rice 2003 are not in the folder.** Their key numbers are
+   second-hand. (Ariga 2018 was supplied later; see §0.2 and Part E.)
 6. **The temperature model's enthalpy reading** needs correcting (C.6) before
    any further temperature prediction.
 7. **Sozański's stops** (PEG 6k, PEG 18k) look like loss of runs, which v3
@@ -1162,7 +1340,7 @@ fraction beyond −4 nm.
 | κ₀ bracket | 0.01–0.30 kT/nm² | 0.21 from Kutys (p.4, WLC); 0.01 and 0.03 are **guesses** loosely based on Guydosh (p.126: ~23 nm at ±1.7 pN; "similar transitions" at ±0.4 pN, a non-Hookean pair); 0.30 a guess | B |
 | docking budget | 1.2 kT (1–2) | second-hand (Block 2007 p.2991; Xu 2021 p.2627) | B |
 | Δμ | 20.5 kT | Takaki's code reference line | C, D |
-| Ariga hidden dissipation | ≈ 16 kT per step at 2 pN | 0.8 × 20.5, second-hand | C, D |
+| Ariga hidden dissipation | 16.4 ± 0.6 / 16.6 ± 0.6 k_BT per step at 2 pN (1 mM / 10 µM) | computed from Ariga Table I (p.5), Δμ 84.5 ± 2.5 pN·nm (p.2), d = 8 nm; earlier 0.8 × 20.5 second-hand | C, D, E |
 | C&C σ(ln) per bin | 0.20 / 0.33 (RMS 0.31 / 0.33 measured) | read off the vector figure | A, B, C |
 | Sozański v₀ | 0.80 µm/s (range ±5% mine) | text, p.218102-2 | C |
 | measurement precisions in B.4 | v 15 nm/s, 1:1 load 0.3 pN, r 0.06–0.10, ln odds 0.3, CV 0.05, v ratio 0.05 | guesses from the folder's error bars | B.4 |

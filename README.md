@@ -94,6 +94,7 @@ PYTHONPATH=.. python part_b_limits.py         # predictions near limits  (~2 min
 PYTHONPATH=.. python part_b_figures.py        # fig5, fig6
 PYTHONPATH=.. python make_tables.py > ../results/tables_partB.md && PYTHONPATH=.. python make_tables.py --disc >> ../results/tables_partB.md
 PYTHONPATH=.. python part_c_confront.py       # data comparison, TUR, fig7, results/tables_partC.md (~10 s)
+PYTHONPATH=.. python ariga_rerun.py           # predictions re-run at Ariga 2018's conditions (~5 s)
 ```
 
 ## Example

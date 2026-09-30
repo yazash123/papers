@@ -1,0 +1,754 @@
+{
+  "conditions": {
+    "F_pN": 2.0,
+    "dmu_pNnm": [
+      84.5,
+      2.5
+    ],
+    "T_C": 25.0,
+    "atp_uM": [
+      1000,
+      10
+    ]
+  },
+  "ariga_table1": {
+    "1000": {
+      "power": [
+        1150,
+        120
+      ],
+      "gv2": [
+        10.6,
+        1.9
+      ],
+      "hs": [
+        53.4,
+        41.4
+      ],
+      "Jx": [
+        63.9,
+        41.5
+      ],
+      "dmu_rate": [
+        6160,
+        560
+      ],
+      "head": 500.0,
+      "n": 8
+    },
+    "10": {
+      "power": [
+        410,
+        60
+      ],
+      "gv2": [
+        1.35,
+        0.37
+      ],
+      "hs": [
+        2.74,
+        1.52
+      ],
+      "Jx": [
+        4.09,
+        1.56
+      ],
+      "dmu_rate": [
+        2190,
+        310
+      ],
+      "head": 5.0,
+      "n": 11
+    }
+  },
+  "ariga_fit_fig3": {
+    "1000": {
+      "kf0": 981,
+      "kb0": 22.8,
+      "kc": 129,
+      "df": 3.3,
+      "db": 0.47
+    },
+    "10": {
+      "kf0": 889,
+      "kb0": 0.61,
+      "kc": 32.5,
+      "df": 4.0,
+      "db": -0.83
+    }
+  },
+  "ariga_hidden": {
+    "1000": {
+      "v_nm_s": 575.0,
+      "Jx_per_step": 0.8890434782608695,
+      "hidden_pNnm": 67.61095652173913,
+      "hidden_err": 2.565809953666967,
+      "hidden_fraction": 0.8001296629791612,
+      "work_per_step": 16.0
+    },
+    "10": {
+      "v_nm_s": 205.0,
+      "Jx_per_step": 0.15960975609756098,
+      "hidden_pNnm": 68.34039024390243,
+      "hidden_err": 2.50074111751363,
+      "hidden_fraction": 0.8087620147207388,
+      "work_per_step": 16.0
+    }
+  },
+  "members": {
+    "iproj_k0=0.03": {
+      "23C_1000": {
+        "v": 391.94418753866677,
+        "power": 783.8883750773335,
+        "dmu_rate": 4132.471544828691,
+        "step_rate": 48.90498869619753,
+        "back_fraction": 0.011317015652706418,
+        "total_dissipation_per_step_pNnm": 68.47119811340878,
+        "total_dissipation_per_step_kT": 16.753412799953214,
+        "imprint_per_step_pNnm": 0.67301863966559,
+        "imprint_per_step_kT": 0.16467302169454123,
+        "imprint_rate_pNnm_s": 32.91396896517591,
+        "imprint_fraction_of_total": 0.00982922247907609,
+        "tur_bound_per_net_step_kT": 4.784768168371233,
+        "randomness": 0.4179930833892028
+      },
+      "25C_committed_1000": {
+        "v": 443.71638429973234,
+        "power": 887.4327685994647,
+        "dmu_rate": 4677.196735790841,
+        "step_rate": 55.35144066024663,
+        "back_fraction": 0.01119832169285147,
+        "total_dissipation_per_step_pNnm": 68.46730495152553,
+        "total_dissipation_per_step_kT": 16.632791248586734,
+        "imprint_per_step_pNnm": 0.6769626463731151,
+        "imprint_per_step_kT": 0.1644548210008664,
+        "imprint_rate_pNnm_s": 37.470857749925,
+        "imprint_fraction_of_total": 0.009887385619346356,
+        "tur_bound_per_net_step_kT": 4.782270711212775,
+        "randomness": 0.4182113729594374
+      },
+      "25C_corrected_1000": {
+        "v": 434.1162713676113,
+        "power": 868.2325427352226,
+        "dmu_rate": 4576.1901214101,
+        "step_rate": 54.15609611136213,
+        "back_fraction": 0.01121838071097563,
+        "total_dissipation_per_step_pNnm": 68.46796288732,
+        "total_dissipation_per_step_kT": 16.632951081206585,
+        "imprint_per_step_pNnm": 0.6769626463731151,
+        "imprint_per_step_kT": 0.1644548210008664,
+        "imprint_rate_pNnm_s": 36.66165414078448,
+        "imprint_fraction_of_total": 0.009887290607538814,
+        "tur_bound_per_net_step_kT": 4.725119901715882,
+        "randomness": 0.4232696823785824
+      },
+      "23C_10": {
+        "v": 56.95183028632085,
+        "power": 113.9036605726417,
+        "dmu_rate": 600.4727855822978,
+        "step_rate": 7.106186811624825,
+        "back_fraction": 0.011317015652706418,
+        "total_dissipation_per_step_pNnm": 68.47119811340878,
+        "total_dissipation_per_step_kT": 16.753412799953214,
+        "imprint_per_step_pNnm": 0.67301863966559,
+        "imprint_per_step_kT": 0.16467302169454123,
+        "imprint_rate_pNnm_s": 4.782596181169295,
+        "imprint_fraction_of_total": 0.00982922247907609,
+        "tur_bound_per_net_step_kT": 2.5528193913841117,
+        "randomness": 0.7834475117002386
+      },
+      "25C_committed_10": {
+        "v": 64.46614574179289,
+        "power": 128.93229148358577,
+        "dmu_rate": 679.5350748843471,
+        "step_rate": 8.041835205731918,
+        "back_fraction": 0.01119832169285147,
+        "total_dissipation_per_step_pNnm": 68.46730495152553,
+        "total_dissipation_per_step_kT": 16.632791248586734,
+        "imprint_per_step_pNnm": 0.6769626463731151,
+        "imprint_per_step_kT": 0.1644548210008664,
+        "imprint_rate_pNnm_s": 5.444022042568763,
+        "imprint_fraction_of_total": 0.009887385619346356,
+        "tur_bound_per_net_step_kT": 2.5537837674057653,
+        "randomness": 0.7831516612824582
+      },
+      "25C_corrected_10": {
+        "v": 64.46062661376247,
+        "power": 128.92125322752494,
+        "dmu_rate": 679.5047829018396,
+        "step_rate": 8.04147672073183,
+        "back_fraction": 0.01121838071097563,
+        "total_dissipation_per_step_pNnm": 68.46796288732,
+        "total_dissipation_per_step_kT": 16.632951081206585,
+        "imprint_per_step_pNnm": 0.6769626463731151,
+        "imprint_per_step_kT": 0.1644548210008664,
+        "imprint_rate_pNnm_s": 5.4437793616144186,
+        "imprint_fraction_of_total": 0.009887290607538814,
+        "tur_bound_per_net_step_kT": 2.570430413370597,
+        "randomness": 0.7780798070224382
+      }
+    },
+    "iproj_k0=0.21": {
+      "23C_1000": {
+        "v": 399.7435758388399,
+        "power": 799.4871516776798,
+        "dmu_rate": 4219.16446303422,
+        "step_rate": 49.930940390937515,
+        "back_fraction": 0.01183358270416048,
+        "total_dissipation_per_step_pNnm": 68.48814151269647,
+        "total_dissipation_per_step_kT": 16.757558481207848,
+        "imprint_per_step_pNnm": 0.0685735603041893,
+        "imprint_per_step_kT": 0.016778458601465453,
+        "imprint_rate_pNnm_s": 3.423942351942835,
+        "imprint_fraction_of_total": 0.001001247205568821,
+        "tur_bound_per_net_step_kT": 4.856958811556343,
+        "randomness": 0.4117803089540981
+      },
+      "25C_committed_1000": {
+        "v": 452.6098972073641,
+        "power": 905.2197944147282,
+        "dmu_rate": 4775.948437285932,
+        "step_rate": 56.520099849537665,
+        "back_fraction": 0.011710620870578324,
+        "total_dissipation_per_step_pNnm": 68.48410836455497,
+        "total_dissipation_per_step_kT": 16.636873308796062,
+        "imprint_per_step_pNnm": 0.06845659120874718,
+        "imprint_per_step_kT": 0.0166301885545381,
+        "imprint_rate_pNnm_s": 3.869173370477373,
+        "imprint_fraction_of_total": 0.0009995981964799584,
+        "tur_bound_per_net_step_kT": 4.8542563902134255,
+        "randomness": 0.4120095518712531
+      },
+      "25C_corrected_1000": {
+        "v": 443.2517841769985,
+        "power": 886.503568353997,
+        "dmu_rate": 4677.4022812439325,
+        "step_rate": 55.353873150815765,
+        "back_fraction": 0.01173158665822598,
+        "total_dissipation_per_step_pNnm": 68.48479604238982,
+        "total_dissipation_per_step_kT": 16.637040366662315,
+        "imprint_per_step_pNnm": 0.06845659120874718,
+        "imprint_per_step_kT": 0.0166301885545381,
+        "imprint_rate_pNnm_s": 3.7893374661062413,
+        "imprint_fraction_of_total": 0.0009995881591933898,
+        "tur_bound_per_net_step_kT": 4.792496854859358,
+        "randomness": 0.41731900104892033
+      },
+      "23C_10": {
+        "v": 57.71545757074452,
+        "power": 115.43091514148904,
+        "dmu_rate": 609.1680323798829,
+        "step_rate": 7.20908914059033,
+        "back_fraction": 0.01183358270416048,
+        "total_dissipation_per_step_pNnm": 68.48814151269647,
+        "total_dissipation_per_step_kT": 16.757558481207848,
+        "imprint_per_step_pNnm": 0.0685735603041893,
+        "imprint_per_step_kT": 0.016778458601465453,
+        "imprint_rate_pNnm_s": 0.49435290892054723,
+        "imprint_fraction_of_total": 0.001001247205568821,
+        "tur_bound_per_net_step_kT": 2.542922464171137,
+        "randomness": 0.7864966502830034
+      },
+      "25C_committed_10": {
+        "v": 65.33779434982799,
+        "power": 130.67558869965598,
+        "dmu_rate": 689.4456766105677,
+        "step_rate": 8.159120433261156,
+        "back_fraction": 0.011710620870578324,
+        "total_dissipation_per_step_pNnm": 68.48410836455497,
+        "total_dissipation_per_step_kT": 16.636873308796062,
+        "imprint_per_step_pNnm": 0.06845659120874718,
+        "imprint_per_step_kT": 0.0166301885545381,
+        "imprint_rate_pNnm_s": 0.5585455721226952,
+        "imprint_fraction_of_total": 0.0009995981964799584,
+        "tur_bound_per_net_step_kT": 2.5439183525939466,
+        "randomness": 0.7861887540379071
+      },
+      "25C_corrected_10": {
+        "v": 65.36976612740213,
+        "power": 130.73953225480426,
+        "dmu_rate": 689.812662066121,
+        "step_rate": 8.163463456403798,
+        "back_fraction": 0.01173158665822598,
+        "total_dissipation_per_step_pNnm": 68.48479604238982,
+        "total_dissipation_per_step_kT": 16.637040366662315,
+        "imprint_per_step_pNnm": 0.06845659120874718,
+        "imprint_per_step_kT": 0.0166301885545381,
+        "imprint_rate_pNnm_s": 0.5588428806825811,
+        "imprint_fraction_of_total": 0.0009995881591933898,
+        "tur_bound_per_net_step_kT": 2.560154493925215,
+        "randomness": 0.7812028550408341
+      }
+    },
+    "maxent_k0=0.03": {
+      "23C_1000": {
+        "v": 418.03072466896515,
+        "power": 836.0614493379303,
+        "dmu_rate": 4435.664190418725,
+        "step_rate": 52.49306734223344,
+        "back_fraction": 0.01441819607737621,
+        "total_dissipation_per_step_pNnm": 68.57291683133795,
+        "total_dissipation_per_step_kT": 16.77830115765548,
+        "imprint_per_step_pNnm": 0.4132804173278546,
+        "imprint_per_step_kT": 0.1011207284873635,
+        "imprint_rate_pNnm_s": 21.69435677801741,
+        "imprint_fraction_of_total": 0.006026875279993699,
+        "tur_bound_per_net_step_kT": 5.115984956725289,
+        "randomness": 0.3909315638957992
+      },
+      "25C_committed_1000": {
+        "v": 473.5076891549547,
+        "power": 947.0153783099094,
+        "dmu_rate": 5023.007499686436,
+        "step_rate": 59.44387573593415,
+        "back_fraction": 0.01429109032723222,
+        "total_dissipation_per_step_pNnm": 68.56874776273321,
+        "total_dissipation_per_step_kT": 16.65743479346822,
+        "imprint_per_step_pNnm": 0.41800119448326306,
+        "imprint_per_step_kT": 0.10154520634954697,
+        "imprint_rate_pNnm_s": 24.847611062335133,
+        "imprint_fraction_of_total": 0.006096089080256541,
+        "tur_bound_per_net_step_kT": 5.114149147205968,
+        "randomness": 0.3910718953303635
+      },
+      "25C_corrected_1000": {
+        "v": 465.8285524114538,
+        "power": 931.6571048229076,
+        "dmu_rate": 4941.806240250406,
+        "step_rate": 58.482914085803614,
+        "back_fraction": 0.014316609062686895,
+        "total_dissipation_per_step_pNnm": 68.56958477725613,
+        "total_dissipation_per_step_kT": 16.657638129759043,
+        "imprint_per_step_pNnm": 0.41800119448326306,
+        "imprint_per_step_kT": 0.10154520634954697,
+        "imprint_rate_pNnm_s": 24.445927944727963,
+        "imprint_fraction_of_total": 0.006096014666577215,
+        "tur_bound_per_net_step_kT": 5.041558549247027,
+        "randomness": 0.39670272207762153
+      },
+      "23C_10": {
+        "v": 60.33694398635845,
+        "power": 120.6738879727169,
+        "dmu_rate": 640.2266771456285,
+        "step_rate": 7.576647066812172,
+        "back_fraction": 0.01441819607737621,
+        "total_dissipation_per_step_pNnm": 68.57291683133795,
+        "total_dissipation_per_step_kT": 16.77830115765548,
+        "imprint_per_step_pNnm": 0.4132804173278546,
+        "imprint_per_step_kT": 0.1011207284873635,
+        "imprint_rate_pNnm_s": 3.1312798617179998,
+        "imprint_fraction_of_total": 0.006026875279993699,
+        "tur_bound_per_net_step_kT": 2.5142220245905027,
+        "randomness": 0.795474695726502
+      },
+      "25C_committed_10": {
+        "v": 68.33025745338128,
+        "power": 136.66051490676256,
+        "dmu_rate": 724.8528450644015,
+        "step_rate": 8.578140178276941,
+        "back_fraction": 0.01429109032723222,
+        "total_dissipation_per_step_pNnm": 68.56874776273321,
+        "total_dissipation_per_step_kT": 16.65743479346822,
+        "imprint_per_step_pNnm": 0.41800119448326306,
+        "imprint_per_step_kT": 0.10154520634954697,
+        "imprint_rate_pNnm_s": 3.5856728409646323,
+        "imprint_fraction_of_total": 0.006096089080256541,
+        "tur_bound_per_net_step_kT": 2.515339820617275,
+        "randomness": 0.795121193409641
+      },
+      "25C_corrected_10": {
+        "v": 68.55929817022924,
+        "power": 137.11859634045848,
+        "dmu_rate": 727.3207401541333,
+        "step_rate": 8.607346037327021,
+        "back_fraction": 0.014316609062686895,
+        "total_dissipation_per_step_pNnm": 68.56958477725613,
+        "total_dissipation_per_step_kT": 16.657638129759043,
+        "imprint_per_step_pNnm": 0.41800119448326306,
+        "imprint_per_step_kT": 0.10154520634954697,
+        "imprint_rate_pNnm_s": 3.597880924933476,
+        "imprint_fraction_of_total": 0.006096014666577215,
+        "tur_bound_per_net_step_kT": 2.5306949875906026,
+        "randomness": 0.7902967405424621
+      }
+    },
+    "maxent_k0=0.21": {
+      "23C_1000": {
+        "v": 407.4134669899457,
+        "power": 814.8269339798914,
+        "dmu_rate": 4307.918984609239,
+        "step_rate": 50.981289758689215,
+        "back_fraction": 0.012717612870444034,
+        "total_dissipation_per_step_pNnm": 68.51713770215056,
+        "total_dissipation_per_step_kT": 16.764653218045158,
+        "imprint_per_step_pNnm": 0.0538250496404063,
+        "imprint_per_step_kT": 0.013169818850111648,
+        "imprint_rate_pNnm_s": 2.7440704519933843,
+        "imprint_fraction_of_total": 0.0007855706097120995,
+        "tur_bound_per_net_step_kT": 4.952093205881805,
+        "randomness": 0.403869619744741
+      },
+      "25C_committed_1000": {
+        "v": 461.3685224531014,
+        "power": 922.7370449062028,
+        "dmu_rate": 4877.172223689429,
+        "step_rate": 57.7180144815317,
+        "back_fraction": 0.012591913780241942,
+        "total_dissipation_per_step_pNnm": 68.51301477199193,
+        "total_dissipation_per_step_kT": 16.64389555453782,
+        "imprint_per_step_pNnm": 0.053999996693861664,
+        "imprint_per_step_kT": 0.013118241956058804,
+        "imprint_rate_pNnm_s": 3.1167725911789717,
+        "imprint_fraction_of_total": 0.0007881713696816742,
+        "tur_bound_per_net_step_kT": 4.949413697498588,
+        "randomness": 0.40408826625480737
+      },
+      "25C_corrected_1000": {
+        "v": 452.50676017164307,
+        "power": 905.0135203432861,
+        "dmu_rate": 4783.714717863112,
+        "step_rate": 56.61200849542145,
+        "back_fraction": 0.012614437227506953,
+        "total_dissipation_per_step_pNnm": 68.51375354106223,
+        "total_dissipation_per_step_kT": 16.644075024019436,
+        "imprint_per_step_pNnm": 0.053999996693861664,
+        "imprint_per_step_kT": 0.013118241956058804,
+        "imprint_rate_pNnm_s": 3.057048271585627,
+        "imprint_fraction_of_total": 0.0007881628709992942,
+        "tur_bound_per_net_step_kT": 4.882180578751188,
+        "randomness": 0.40965301625766154
+      },
+      "23C_10": {
+        "v": 58.76654371923614,
+        "power": 117.53308743847228,
+        "dmu_rate": 621.3871898206395,
+        "step_rate": 7.353694554090408,
+        "back_fraction": 0.012717612870444034,
+        "total_dissipation_per_step_pNnm": 68.51713770215056,
+        "total_dissipation_per_step_kT": 16.764653218045158,
+        "imprint_per_step_pNnm": 0.0538250496404063,
+        "imprint_per_step_kT": 0.013169818850111648,
+        "imprint_rate_pNnm_s": 0.3958129744143017,
+        "imprint_fraction_of_total": 0.0007855706097120995,
+        "tur_bound_per_net_step_kT": 2.5330578324979203,
+        "randomness": 0.7895595490718595
+      },
+      "25C_committed_10": {
+        "v": 66.53711558491119,
+        "power": 133.07423116982238,
+        "dmu_rate": 703.3704212192522,
+        "step_rate": 8.323910310287008,
+        "back_fraction": 0.012591913780241942,
+        "total_dissipation_per_step_pNnm": 68.51301477199193,
+        "total_dissipation_per_step_kT": 16.64389555453782,
+        "imprint_per_step_pNnm": 0.053999996693861664,
+        "imprint_per_step_kT": 0.013118241956058804,
+        "imprint_rate_pNnm_s": 0.44949112923549944,
+        "imprint_fraction_of_total": 0.0007881713696816742,
+        "tur_bound_per_net_step_kT": 2.5340992790401966,
+        "randomness": 0.7892350613656741
+      },
+      "25C_corrected_10": {
+        "v": 66.63189981847658,
+        "power": 133.26379963695317,
+        "dmu_rate": 704.4049457292542,
+        "step_rate": 8.3361532038965,
+        "back_fraction": 0.012614437227506953,
+        "total_dissipation_per_step_pNnm": 68.51375354106223,
+        "total_dissipation_per_step_kT": 16.644075024019436,
+        "imprint_per_step_pNnm": 0.053999996693861664,
+        "imprint_per_step_kT": 0.013118241956058804,
+        "imprint_rate_pNnm_s": 0.45015224544993526,
+        "imprint_fraction_of_total": 0.0007881628709992942,
+        "tur_bound_per_net_step_kT": 2.549975428356758,
+        "randomness": 0.7843212831618654
+      }
+    },
+    "best": {
+      "23C_1000": {
+        "v": 449.29367515501605,
+        "power": 898.5873503100321,
+        "dmu_rate": 4746.072722130951,
+        "step_rate": 56.166541090307106,
+        "back_fraction": 0.012237085098641333,
+        "total_dissipation_per_step_pNnm": 68.50137639123544,
+        "total_dissipation_per_step_kT": 16.76079676810263,
+        "imprint_per_step_pNnm": 1.9298726866961105,
+        "imprint_per_step_kT": 0.47219786804406916,
+        "imprint_rate_pNnm_s": 108.39427355637847,
+        "imprint_fraction_of_total": 0.02817275780962311,
+        "tur_bound_per_net_step_kT": 5.192879561647144,
+        "randomness": 0.3851427664087041
+      },
+      "25C_committed_1000": {
+        "v": 509.04677393273886,
+        "power": 1018.0935478654777,
+        "dmu_rate": 5375.80657539631,
+        "step_rate": 63.61901272658355,
+        "back_fraction": 0.012104383506833271,
+        "total_dissipation_per_step_pNnm": 68.49702377902413,
+        "total_dissipation_per_step_kT": 16.640010855876476,
+        "imprint_per_step_pNnm": 1.9352709903796839,
+        "imprint_per_step_kT": 0.4701361973458805,
+        "imprint_rate_pNnm_s": 123.12002976635306,
+        "imprint_fraction_of_total": 0.02825335881195356,
+        "tur_bound_per_net_step_kT": 5.189710402391097,
+        "randomness": 0.38537795848464373
+      },
+      "25C_corrected_1000": {
+        "v": 500.6254952332257,
+        "power": 1001.2509904664514,
+        "dmu_rate": 5287.108104495969,
+        "step_rate": 62.569326680425675,
+        "back_fraction": 0.012126045606879477,
+        "total_dissipation_per_step_pNnm": 68.49773429590564,
+        "total_dissipation_per_step_kT": 16.64018346204196,
+        "imprint_per_step_pNnm": 1.9352709903796839,
+        "imprint_per_step_kT": 0.4701361973458805,
+        "imprint_rate_pNnm_s": 121.08860281221737,
+        "imprint_fraction_of_total": 0.028253065744035303,
+        "tur_bound_per_net_step_kT": 5.114579640769235,
+        "randomness": 0.39103897885520056
+      },
+      "23C_10": {
+        "v": 64.64215816370685,
+        "power": 129.2843163274137,
+        "dmu_rate": 682.8415366732955,
+        "step_rate": 8.080964931044917,
+        "back_fraction": 0.012237085098641333,
+        "total_dissipation_per_step_pNnm": 68.50137639123544,
+        "total_dissipation_per_step_kT": 16.76079676810263,
+        "imprint_per_step_pNnm": 1.9298726866961105,
+        "imprint_per_step_kT": 0.47219786804406916,
+        "imprint_rate_pNnm_s": 15.595233502572704,
+        "imprint_fraction_of_total": 0.02817275780962311,
+        "tur_bound_per_net_step_kT": 2.530571452262956,
+        "randomness": 0.7903353205899426
+      },
+      "25C_committed_10": {
+        "v": 73.22179121939153,
+        "power": 146.44358243878307,
+        "dmu_rate": 773.2613324674783,
+        "step_rate": 9.15102168600566,
+        "back_fraction": 0.012104383506833271,
+        "total_dissipation_per_step_pNnm": 68.49702377902413,
+        "total_dissipation_per_step_kT": 16.640010855876476,
+        "imprint_per_step_pNnm": 1.9352709903796839,
+        "imprint_per_step_kT": 0.4701361973458805,
+        "imprint_rate_pNnm_s": 17.709706801262136,
+        "imprint_fraction_of_total": 0.02825335881195356,
+        "tur_bound_per_net_step_kT": 2.531743875330005,
+        "randomness": 0.7899693248944094
+      },
+      "25C_corrected_10": {
+        "v": 73.45263969756503,
+        "power": 146.90527939513007,
+        "dmu_rate": 775.7336578727326,
+        "step_rate": 9.180279974825238,
+        "back_fraction": 0.012126045606879477,
+        "total_dissipation_per_step_pNnm": 68.49773429590564,
+        "total_dissipation_per_step_kT": 16.64018346204196,
+        "imprint_per_step_pNnm": 1.9352709903796839,
+        "imprint_per_step_kT": 0.4701361973458805,
+        "imprint_rate_pNnm_s": 17.766329518842817,
+        "imprint_fraction_of_total": 0.028253065744035303,
+        "tur_bound_per_net_step_kT": 2.547389129308383,
+        "randomness": 0.7851175845062197
+      }
+    },
+    "middle": {
+      "23C_1000": {
+        "v": 441.96125103462606,
+        "power": 883.9225020692521,
+        "dmu_rate": 4684.129426009538,
+        "step_rate": 55.43348433147382,
+        "back_fraction": 0.013852374690019122,
+        "total_dissipation_per_step_pNnm": 68.55435788983263,
+        "total_dissipation_per_step_kT": 16.7737601883613,
+        "imprint_per_step_pNnm": 0.24477393683945547,
+        "imprint_per_step_kT": 0.05989085804733435,
+        "imprint_rate_pNnm_s": 13.568672192543117,
+        "imprint_fraction_of_total": 0.0035705087812624406,
+        "tur_bound_per_net_step_kT": 5.245828094368047,
+        "randomness": 0.3812553450135379
+      },
+      "25C_committed_1000": {
+        "v": 500.75698979519376,
+        "power": 1001.5139795903875,
+        "dmu_rate": 5305.8380349635645,
+        "step_rate": 62.7909826622907,
+        "back_fraction": 0.01372057741776482,
+        "total_dissipation_per_step_pNnm": 68.55003493930269,
+        "total_dissipation_per_step_kT": 16.652888879385404,
+        "imprint_per_step_pNnm": 0.24604463005317,
+        "imprint_per_step_kT": 0.059771725678519544,
+        "imprint_rate_pNnm_s": 15.449384099818328,
+        "imprint_fraction_of_total": 0.0035892706731809705,
+        "tur_bound_per_net_step_kT": 5.244076602805393,
+        "randomness": 0.3813826821160606
+      },
+      "25C_corrected_1000": {
+        "v": 493.3637676469824,
+        "power": 986.7275352939648,
+        "dmu_rate": 5227.765696303884,
+        "step_rate": 61.867049660401,
+        "back_fraction": 0.013745091628385794,
+        "total_dissipation_per_step_pNnm": 68.55083900541105,
+        "total_dissipation_per_step_kT": 16.653084211503995,
+        "imprint_per_step_pNnm": 0.24604463005317,
+        "imprint_per_step_kT": 0.059771725678519544,
+        "imprint_rate_pNnm_s": 15.222055346174463,
+        "imprint_fraction_of_total": 0.0035892285728807566,
+        "tur_bound_per_net_step_kT": 5.169944801201188,
+        "randomness": 0.3868513256728232
+      },
+      "23C_10": {
+        "v": 63.54571559622576,
+        "power": 127.09143119245152,
+        "dmu_rate": 673.4897134631244,
+        "step_rate": 7.970292467019224,
+        "back_fraction": 0.013852374690019122,
+        "total_dissipation_per_step_pNnm": 68.55435788983263,
+        "total_dissipation_per_step_kT": 16.7737601883613,
+        "imprint_per_step_pNnm": 0.24477393683945547,
+        "imprint_per_step_kT": 0.05989085804733435,
+        "imprint_rate_pNnm_s": 1.9509198649141513,
+        "imprint_fraction_of_total": 0.0035705087812624406,
+        "tur_bound_per_net_step_kT": 2.512957221671206,
+        "randomness": 0.7958750681278725
+      },
+      "25C_committed_10": {
+        "v": 71.98179140187212,
+        "power": 143.96358280374423,
+        "dmu_rate": 762.6927520294237,
+        "step_rate": 9.02594972815886,
+        "back_fraction": 0.01372057741776482,
+        "total_dissipation_per_step_pNnm": 68.55003493930269,
+        "total_dissipation_per_step_kT": 16.652888879385404,
+        "imprint_per_step_pNnm": 0.24604463005317,
+        "imprint_per_step_kT": 0.059771725678519544,
+        "imprint_rate_pNnm_s": 2.2207864617433573,
+        "imprint_fraction_of_total": 0.0035892706731809705,
+        "tur_bound_per_net_step_kT": 2.5141533605161595,
+        "randomness": 0.7954964209460146
+      },
+      "25C_corrected_10": {
+        "v": 72.28862009046534,
+        "power": 144.5772401809307,
+        "dmu_rate": 765.9824112022831,
+        "step_rate": 9.064880605944179,
+        "back_fraction": 0.013745091628385794,
+        "total_dissipation_per_step_pNnm": 68.55083900541105,
+        "total_dissipation_per_step_kT": 16.653084211503995,
+        "imprint_per_step_pNnm": 0.24604463005317,
+        "imprint_per_step_kT": 0.059771725678519544,
+        "imprint_rate_pNnm_s": 2.230365195165691,
+        "imprint_fraction_of_total": 0.0035892285728807566,
+        "tur_bound_per_net_step_kT": 2.5293970401884733,
+        "randomness": 0.7907022773502469
+      }
+    },
+    "floppy_edge": {
+      "23C_1000": {
+        "v": 463.4429448035931,
+        "power": 926.8858896071862,
+        "dmu_rate": 4952.387811541646,
+        "step_rate": 58.608139781557945,
+        "back_fraction": 0.017836323557011386,
+        "total_dissipation_per_step_pNnm": 68.68503141266997,
+        "total_dissipation_per_step_kT": 16.805733157002685,
+        "imprint_per_step_pNnm": 2.651121406096209,
+        "imprint_per_step_kT": 0.6486717411539538,
+        "imprint_rate_pNnm_s": 155.37729394636705,
+        "imprint_fraction_of_total": 0.03859824115341629,
+        "tur_bound_per_net_step_kT": 5.413965725711358,
+        "randomness": 0.3694149725591796
+      },
+      "25C_committed_1000": {
+        "v": 525.4228679605599,
+        "power": 1050.8457359211197,
+        "dmu_rate": 5613.1643327407155,
+        "step_rate": 66.4279802691209,
+        "back_fraction": 0.01770353962446812,
+        "total_dissipation_per_step_pNnm": 68.68067609968256,
+        "total_dissipation_per_step_kT": 16.68462559153743,
+        "imprint_per_step_pNnm": 2.6807621488855102,
+        "imprint_per_step_kT": 0.6512386786816559,
+        "imprint_rate_pNnm_s": 178.0776151323728,
+        "imprint_fraction_of_total": 0.039032262073172876,
+        "tur_bound_per_net_step_kT": 5.42063835584322,
+        "randomness": 0.36896023470078654
+      },
+      "25C_corrected_1000": {
+        "v": 523.09141745347,
+        "power": 1046.18283490694,
+        "dmu_rate": 5588.622164293587,
+        "step_rate": 66.13754040584126,
+        "back_fraction": 0.017735042130631325,
+        "total_dissipation_per_step_pNnm": 68.6817093818847,
+        "total_dissipation_per_step_kT": 16.68487660721829,
+        "imprint_per_step_pNnm": 2.6807621488855102,
+        "imprint_per_step_kT": 0.6512386786816559,
+        "imprint_rate_pNnm_s": 177.29901494036528,
+        "imprint_fraction_of_total": 0.039031674852178046,
+        "tur_bound_per_net_step_kT": 5.400560870933224,
+        "randomness": 0.3703319058515486
+      },
+      "23C_10": {
+        "v": 66.25890884488435,
+        "power": 132.5178176897687,
+        "dmu_rate": 708.0479188404082,
+        "step_rate": 8.379265311720808,
+        "back_fraction": 0.017836323557011386,
+        "total_dissipation_per_step_pNnm": 68.68503141266997,
+        "total_dissipation_per_step_kT": 16.805733157002685,
+        "imprint_per_step_pNnm": 2.651121406096209,
+        "imprint_per_step_kT": 0.6486717411539538,
+        "imprint_rate_pNnm_s": 22.214449635262454,
+        "imprint_fraction_of_total": 0.03859824115341629,
+        "tur_bound_per_net_step_kT": 2.442843286107143,
+        "randomness": 0.8187180943510921
+      },
+      "25C_committed_10": {
+        "v": 75.09503754131651,
+        "power": 150.19007508263303,
+        "dmu_rate": 802.2505528335394,
+        "step_rate": 9.494089382645436,
+        "back_fraction": 0.01770353962446812,
+        "total_dissipation_per_step_pNnm": 68.68067609968256,
+        "total_dissipation_per_step_kT": 16.68462559153743,
+        "imprint_per_step_pNnm": 2.6807621488855102,
+        "imprint_per_step_kT": 0.6512386786816559,
+        "imprint_rate_pNnm_s": 25.451395455131685,
+        "imprint_fraction_of_total": 0.039032262073172876,
+        "tur_bound_per_net_step_kT": 2.4442716249477643,
+        "randomness": 0.8182396668139292
+      },
+      "25C_corrected_10": {
+        "v": 75.89903610723555,
+        "power": 151.7980722144711,
+        "dmu_rate": 810.8927451006147,
+        "step_rate": 9.596363847344552,
+        "back_fraction": 0.017735042130631325,
+        "total_dissipation_per_step_pNnm": 68.6817093818847,
+        "total_dissipation_per_step_kT": 16.68487660721829,
+        "imprint_per_step_pNnm": 2.6807621488855102,
+        "imprint_per_step_kT": 0.6512386786816559,
+        "imprint_rate_pNnm_s": 25.725568968894603,
+        "imprint_fraction_of_total": 0.039031674852178046,
+        "tur_bound_per_net_step_kT": 2.4585981601186244,
+        "randomness": 0.8134716898606572
+      }
+    }
+  },
+  "ariga_fit_implied": {
+    "1000": {
+      "odds_at_2pN": 6.89031323146606,
+      "one_to_one_pN": 4.107464558868788
+    },
+    "10": {
+      "odds_at_2pN": 312.37821625220715,
+      "one_to_one_pN": 9.459152685806634
+    }
+  }
+}
